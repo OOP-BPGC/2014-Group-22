@@ -11,12 +11,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 /**
- *
+ * This the core module of the loginmodule package which connects
+ * to moodle server and authenticates the credentials provided by the 
+ * user
  * @author nisarg
  */
 public class LoginModuleCore {
 
-    public static String connect(String usrname, String pwd) {
+    public static boolean connect(String usrname, String pwd) {
         
         String username = usrname;
         String password = pwd;
@@ -44,7 +46,7 @@ public class LoginModuleCore {
             
         } finally {
            
-            return String.valueOf(status);
+            return status;
             
         }
     }

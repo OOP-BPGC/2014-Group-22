@@ -24,7 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="335" max="32767" attributes="0"/>
+              <EmptySpace pref="231" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -35,8 +35,8 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="usernameTextField" min="-2" pref="134" max="-2" attributes="0"/>
-                              <Component id="pwdTextField" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Component id="usernameTextField" linkSize="1" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Component id="pwdField" linkSize="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -50,14 +50,14 @@
                       <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="210" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -67,7 +67,7 @@
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="pwdTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pwdField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="loginButton" min="-2" max="-2" attributes="0"/>
@@ -76,7 +76,7 @@
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="resultLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="104" max="32767" attributes="0"/>
+              <EmptySpace pref="93" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -99,8 +99,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="usernameTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="pwdTextField">
-    </Component>
     <Component class="javax.swing.JButton" name="loginButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Login"/>
@@ -116,8 +114,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="resultLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="None"/>
+        <Property name="text" type="java.lang.String" value="Unverified"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="pwdField">
     </Component>
   </SubComponents>
 </Form>
