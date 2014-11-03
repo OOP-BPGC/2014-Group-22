@@ -5,6 +5,11 @@
  */
 package loginmodule;
 
+import java.io.IOException;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 /**
  * This module provides a GUI interface to verify the user's identity
  * by authenticating his Moodle credentials
@@ -117,7 +122,7 @@ public class LoginModuleGui extends javax.swing.JFrame {
         String username = usernameTextField.getText();
         char[] pass = pwdField.getPassword();
         String password = new String(pass);
-        boolean result = LoginModuleCore.connect(username, password);
+        boolean result = connect(username, password);
         
         if(result) {
             loginGui.setVisible(false);
@@ -128,7 +133,41 @@ public class LoginModuleGui extends javax.swing.JFrame {
     }//GEN-LAST:event_loginButtonActionPerformed
 
 
-    public static void main(String args[]) {
+    public static boolean connect(String usrname, String pwd) {
+        
+        String username = usrname;
+        String password = pwd;
+        boolean status = false;
+        
+        try {
+            
+            Connection.Response loginForm = Jsoup
+                    .connect("http://10.1.1.242/moodle/login/index.php")
+                    .method(Connection.Method.GET)
+                    .execute();
+
+            Document document = Jsoup
+                    .connect("http://10.1.1.242/moodle/login/index.php")
+                    .data("username", username)
+                    .data("password", password)
+                    .cookies(loginForm.cookies())
+                    .post();
+            
+            status = document.body().html().contains("You are logged in as");
+
+        } catch (IOException e) {
+            
+            System.out.println("IO exception!");
+            
+        } finally {
+           
+            return status;
+            
+        }
+    }
+    
+    public static void main(String args[])
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
