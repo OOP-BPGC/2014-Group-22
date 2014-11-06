@@ -1,8 +1,4 @@
 
-<<<<<<< HEAD
-=======
-import Project.Room;
->>>>>>> cb495fdd9d204f060ec9b22a56a6b2ec9cc461de
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.RandomAccessFile;
@@ -43,10 +39,7 @@ public class RoomDB
 		//as opposed to this we can write each object to DB as it is taken, DISCUSS which is better.
 		writeToDB();
 	}
-<<<<<<< HEAD
-        
-=======
->>>>>>> cb495fdd9d204f060ec9b22a56a6b2ec9cc461de
+
 	private static void writeToDB()
 	{
 		PrintWriter out = null;
@@ -106,8 +99,34 @@ public class RoomDB
 		catch(IOException io)
 		{
 			System.out.println("Caught file IOException while writing to DB");
-		}	
+		}
+	}
+	
+	public static void displayRoom(String r)
+	{
+		String line = null;
+		try{
+			RandomAccessFile raf = new RandomAccessFile("RoomDB.txt","r");
+			while((line=raf.readLine())!=null && !line.equals("*"))	//firstline reads Room Number as that is first entry of DB
+			{
+				System.out.println("Room Number :\t"+line);
+				if(line.equals(r))
+				{
+					return line;
+				}
+				line=raf.readLine();
+				
+				//next readLine() will pick up "*" and break out of this loop
+				//line=raf.readLine();
+				//furthermore, the readLine() of outer loop will read in the Room Number of the next Room. 					
+			}
+		}catch(FileNotFoundException fnf)
+		{
+			System.out.println("Caught file not found exception while writing to DB");
+		}
+		catch(IOException io)
+		{
+			System.out.println("Caught file IOException while writing to DB");
+		}
 	}
 }
-
-

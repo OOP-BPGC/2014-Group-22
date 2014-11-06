@@ -1,24 +1,12 @@
 
-<<<<<<< HEAD
-import java.util.Scanner;
-/*
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.util.ArrayList;
-*/
-=======
-import Project.User;
-import Project.Book;
-import Project.Room;
-import Project.RoomDB;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.ArrayList;
->>>>>>> cb495fdd9d204f060ec9b22a56a6b2ec9cc461de
 
 public class RoomBook extends Book
-{		
+{	
+	Scanner inp = new Scanner(System.in);
 	/*
 	 *String array to hold 10 lines of reason for requesting a room.
 	 */
@@ -78,31 +66,31 @@ public class RoomBook extends Book
 		Scanner inp = new Scanner(System.in);
 		/*if(applicant.setDetails()){*/ // removed this as we already
                                             // authenticated the user
-                //user details have been taken.
-                char roomch = 'y';
-                //take reason for booking	
-                //take attendance count			
-                System.out.println("Room is to be booked for how many persons?");
-                //put in check for negative values
-                setAttendanceCount(inp.nextInt());
-                RoomDB.displayRooms();
-                System.out.println("\n\nChoose a room");
-                
-                while(roomch=='y'||roomch=='Y')
+        //user details have been taken.
+        char roomch = 'y';
+        //take reason for booking	
+        //take attendance count			
+        System.out.println("Room is to be booked for how many persons?");
+        //put in check for negative values
+        setAttendanceCount(inp.nextInt());
+        RoomDB.displayRooms();
+        System.out.println("\n\nChoose a room");
+        
+        while(roomch=='y'||roomch=='Y')
+        {
+                room=inp.next();				
+                if(roomChoiceCheck(room)==-1)
+                        System.out.println("Sorry!! The room chosen does not exist.");
+                else if(roomChoiceCheck(room)==0)
+                        System.out.println("Sorry!! The room chosen is not available.");
+                else if(roomChoiceCheck(room)==1)
                 {
-                        room=inp.next();				
-                        if(roomChoiceCheck(room)==-1)
-                                System.out.println("Sorry!! The room chosen does not exist.");
-                        else if(roomChoiceCheck(room)==0)
-                                System.out.println("Sorry!! The room chosen is not available.");
-                        else if(roomChoiceCheck(room)==1)
-                        {
-                                System.out.println(room+"\t Has been marked for booking for you.");
-                                requestUID=generateUID();
-                                System.out.println("Your request UID is\t"+requestUID+"\nYou can use it to review request status or cancel Booking Request.");
+                        System.out.println(room+"\t Has been marked for booking for you.");
+                        requestUID=generateUID();
+                        System.out.println("Your request UID is\t"+requestUID+"\nYou can use it to review request status or cancel Booking Request.");
 
-                        }
                 }
+        }
 			
 	}	
 	@Override
