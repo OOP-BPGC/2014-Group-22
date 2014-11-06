@@ -1,4 +1,8 @@
 
+<<<<<<< HEAD
+=======
+import Project.Room;
+>>>>>>> cb495fdd9d204f060ec9b22a56a6b2ec9cc461de
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.RandomAccessFile;
@@ -39,7 +43,10 @@ public class RoomDB
 		//as opposed to this we can write each object to DB as it is taken, DISCUSS which is better.
 		writeToDB();
 	}
+<<<<<<< HEAD
         
+=======
+>>>>>>> cb495fdd9d204f060ec9b22a56a6b2ec9cc461de
 	private static void writeToDB()
 	{
 		PrintWriter out = null;
