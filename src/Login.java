@@ -12,8 +12,22 @@ import org.jsoup.nodes.Document;
  */
 
 public class Login {
+	
+	private static String id;
+	private static String name;
+	
+	public static String getId()
+	{
+		return id;
+	}
+	
+	public static String getName()
+	{
+		return name;
+	}
     
     private static String bodyHtml = "null";
+    
     
     /**
      * This method extracts the user's name from the HTML obtained from
@@ -21,7 +35,7 @@ public class Login {
      * 
      * @return Name of the user
      */
-    public static String getName()
+    public static String extractName()
     {
         String name = "John Doe";
         int endIndex = bodyHtml.indexOf(" .</a> ");
@@ -43,46 +57,44 @@ public class Login {
      * user details.
      * @return A string array of the form [userid, name]
      */
-    public static String[] authenticateUser()
+    public static boolean authenticateUser()
     {
-        // TODO: Implement password hiding in console
+        // TODO: Implement password hiding in console. To be done after project
+    	// runs successfully in console.
         
-        String username = "null";
+        id = "null";
         String password = "null";
         
         System.out.println("Enter your Moodle login credentials:");
-        while(!connect(username, password))
+        while(!connect(id, password))
         {
-            if(!username.equals("null"))
+            if(!id.equals("null"))
             {
                 System.out.println("Authentication failed! Try again!");
             }
             
             Scanner sc = new Scanner(System.in);
-            System.out.println("Enter username: ");
-            username = sc.nextLine();
+            System.out.println("Enter id: ");
+            id = sc.nextLine();
             System.out.println("Enter password: ");
             password = sc.nextLine();
         }
         
-        String name = getName();
-        return new String[]{username, name};
-    }
-    
+        name = extractName();
+        return true;
+    }    
     
     
     /**
      * Core method which connects to Moodle server and authenticates
      * the user's credentials.
-     * @param usrname
+     * @param id
      * @param pwd
      * @return True if login successful else False.
      */
     
-    public static boolean connect(String usrname, String pwd) {
-        
-        String username = usrname;
-        String password = pwd;
+    public static boolean connect(String id, String password) {
+
         boolean status = false;
         
         try {
@@ -94,7 +106,7 @@ public class Login {
 
             Document document = Jsoup
                 .connect("http://10.1.1.242/moodle/login/index.php")
-                .data("username", username)
+                .data("id", id)
                 .data("password", password)
                 .cookies(loginForm.cookies())
                 .post();
