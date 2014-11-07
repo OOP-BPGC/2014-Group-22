@@ -1,16 +1,22 @@
-
+package Project;
+import Project.Room;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.RandomAccessFile;
-import java.io.PrintWriter;
-import java.io.FileWriter;
+//for writing objects
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.ObjectOutputStream;
+//for reading objects
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+//exceptions
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.io.BufferedWriter;
 
-public class RoomDB
+public class RoomDB 
 {
 	private static ArrayList<Room> RoomList = new ArrayList<Room>();
+	private static ArrayList<Room> recoveredRoomList = new ArrayList<Room>();
 	public static void addRoom()
 	{
 		char addRoom = 'y';
@@ -39,94 +45,118 @@ public class RoomDB
 		//as opposed to this we can write each object to DB as it is taken, DISCUSS which is better.
 		writeToDB();
 	}
-
-	private static void writeToDB()
+	public static void writeToDB()
 	{
-		PrintWriter out = null;
-		for(Room aroom : RoomList)
-		{
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		readFromDB();
+		recoveredRoomList.addAll(RoomList);
+		try{
+			fos = new FileOutputStream("RoomDB");
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(recoveredRoomList);
+		}catch(IOException e){
+			System.out.println("Caught IOException while writing to DB.");
+		}finally{
 			try{
-				out = new PrintWriter(new BufferedWriter(new FileWriter("RoomDB.txt",true)));
-				//'true' flag in above tells FileWriter to append rather than clear.
-				out.println(aroom.getRoomNumber());
-				out.println(aroom.getProjectorStatus());
-				out.println(aroom.getStatus());
-				out.println(aroom.getBookingDate());
-				out.println(aroom.getStartingTime());
-				out.println(aroom.getDuration());
-				out.println(aroom.getCapacity());
-				out.println("*");			
-			}catch(IOException e1){
-				System.out.println("Caught IOException while writing to DB.");
-			}finally{
-				if(out!=null)
-				out.close();
+				if(fos!=null)
+					fos.close();
+			}catch(IOException e){
+				System.out.println("IOEx1");
+			}
+		}
+	}
+	public static void readFromDB()
+	{
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try{
+			fis = new FileInputStream("RoomDB");
+			ois = new ObjectInputStream(fis);
+			recoveredRoomList=(ArrayList<Room>)ois.readObject();
+		}catch(FileNotFoundException e){
+			System.out.println("Caught FileNotFoundException while reading from DB.");
+		}catch(ClassNotFoundException e){
+			System.out.println("Caught ClassNotFoundException while reading from DB.");
+		}catch(IOException e){
+			System.out.println("Caught IOException while reading from DB.");
+		}finally{
+			try{
+				if(fis!=null)
+					fis.close();
+			}catch(IOException e)
+			{	System.out.println("Caught IOEx while closing fileinputstream for reading from DB");
 			}
 		}
 	}
 	public static void displayRooms()
-	{
-		String line = null;
-		try{
-			RandomAccessFile raf = new RandomAccessFile("RoomDB.txt","r");
-			while((line=raf.readLine())!=null)	//firstline reads Room Number as that is first entry of DB
-			{
-				while(!line.equals("*"))
-				{
-					System.out.println("Room Number :\t"+line);
-					line=raf.readLine();
-					System.out.println("Projector Available: \t"+line);
-					line=raf.readLine();
-					System.out.println("Room Status: \t"+line);
-					line=raf.readLine();
-					System.out.println("Booking Date: \t"+line);
-					line=raf.readLine();
-					System.out.println("Booking Time: \t"+line);
-					line=raf.readLine();
-					System.out.println("Booking Duration: \t"+line);
-					line=raf.readLine();
-					System.out.println("Room Capacity: \t"+line);
-					System.out.println("---------------------------------");
-					//next readLine() will pick up "*" and break out of this loop
-					line=raf.readLine();
-					//furthermore, the readLine() of outer loop will read in the Room Number of the next Room. 					
-				}
-			}
-		}catch(FileNotFoundException fnf)
-		{
-			System.out.println("Caught file not found exception while writing to DB");
-		}
-		catch(IOException io)
-		{
-			System.out.println("Caught file IOException while writing to DB");
-		}
+	{	
+		readFromDB();
+		for(Room aroom : recoveredRoomList)
+			aroom.displayRoom();
 	}
-	
-	public static void displayRoom(String r)
+	public static ArrayList<Room> getRoomList()
 	{
-		String line = null;
-		try{
-			RandomAccessFile raf = new RandomAccessFile("RoomDB.txt","r");
-			while((line=raf.readLine())!=null && !line.equals("*"))	//firstline reads Room Number as that is first entry of DB
-			{
-				System.out.println("Room Number :\t"+line);
-				if(line.equals(r))
-				{
-					return line;
-				}
-				line=raf.readLine();
-				
-				//next readLine() will pick up "*" and break out of this loop
-				//line=raf.readLine();
-				//furthermore, the readLine() of outer loop will read in the Room Number of the next Room. 					
-			}
-		}catch(FileNotFoundException fnf)
-		{
-			System.out.println("Caught file not found exception while writing to DB");
-		}
-		catch(IOException io)
-		{
-			System.out.println("Caught file IOException while writing to DB");
-		}
+		readFromDB();
+		return recoveredRoomList;
 	}
 }
+	/*
+	private static void copyappend(String src, String dst)
+	{
+		//append file1 to file2, both are required to be binary files holding object data
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		try{
+			fis = new FileInputStream(src);
+			fos=new FileOutputStream(dst,true);	//append mode
+			byte[] buffer = new byte[1024];
+			int noOfBytes=0;
+			while((noOfBytes=fis.read(buffer))!=-1)
+				fos.write(buffer);
+		}catch(FileNotFoundException e){
+			System.out.println("Caught FileNotFoundException while copying RoomDBtemp to RoomDB.");
+		}catch(IOException e){
+			System.out.println("Caught IOException while copying RoomDBtemp to RoomDB.");
+		}finally{
+			try{
+				if(fis!=null)
+					fis.close();
+				if(fos!=null)
+					fos.close();
+			}catch(IOException e){
+				System.out.println("Caught IOException while closing input output streams when copying RoomDBtemp to RoomDB.");
+			}
+		}
+	}*/
+
+	/*
+	private static void writeToDB()
+	{
+		//serialize the RoomList
+		try{
+			File file1 = new File("RoomDB");
+			int flag=0;
+			FileOutputStream file = null;
+			ObjectOutputStream output = null;
+			if(file1.exists())
+			{
+				file = new FileOutputStream("RoomDBtemp");
+				flag=1;
+			}
+			else
+				file = new FileOutputStream("RoomDB");
+			output = new ObjectOutputStream(file);
+			output.writeObject(RoomList);
+			output.close();
+			if(flag==1)
+			{
+				flag=0;
+				copyappend("RoomDBtemp","RoomDB");
+			}
+		}catch(IOException e){
+			System.out.println("Caught an IOException1 while writing to DB. Printing StackTrace");
+			e.printStackTrace();
+		}
+	}
+	*/

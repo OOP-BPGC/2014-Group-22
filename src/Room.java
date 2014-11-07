@@ -1,8 +1,9 @@
-
+package Project;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.io.Serializable;
 
-public class Room
+public class Room implements Serializable
 {
 	/*
 	 *To hold room number.
@@ -63,16 +64,15 @@ public class Room
 		}
 		return true;
 	}
-        
 	public boolean setBookingDate(String dt)
 	{
-		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{1,4}$");
+		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}$");
 		Matcher match = pat.matcher(dt);
 		if(match.find())
 			bookingDate=dt;
 		else
 		{
-			System.out.println("Failed to set Booking Date. Please date as 7/9/14 or 7/9/2014.");
+			System.out.println("Failed to set Booking Date. Please date as 7/9/2014.");
 			return false;
 		}
 		return true;
@@ -98,18 +98,16 @@ public class Room
 	public int getCapacity()
 	{	return capacity;
 	}
-	/*FOR TESTING PURPOSE ONLY SINCE WE WILL ULTIMATELY READ FROM FILE*/
 	public void displayRoom()
 	{
-		System.out.println("Room Number:\t"+roomNumber+"\nProjector Status:\t"+projectorStatus+"\nRoom Status:\t"+status);
+		System.out.println("Room Number:\t"+roomNumber+"\nProjector Status:\t"+projectorStatus+"\nRoom Status:\t"+status+"\nRoom Capacity:\t"+capacity);
 		if(status.equals("Booked"))
 		{
 			System.out.println("Booking Date :\t"+bookingDate);
 			System.out.println("Rooms is booked from:\t"+bookingTime[0]+"\nFor the duration of:\t"+bookingTime[1]+" hours.");
 		}
+		System.out.println("-----------------------------");
 	}
-        
-        /*
 	public static void main(String[] args)
 	{
 		Room C306 = new Room();
@@ -117,5 +115,4 @@ public class Room
 		C306.setBookingTime("1:45","1.5");
 		C306.setBookingDate("5/11/14");		
 	}
-        */
 }

@@ -1,12 +1,18 @@
-
+package Project;
+import Project.User;
+import Project.Book;
+import Project.Room;
+import Project.RoomDB;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.ArrayList;
-
+//DB management
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 public class RoomBook extends Book
-{	
-	Scanner inp = new Scanner(System.in);
+{		
 	/*
 	 *String array to hold 10 lines of reason for requesting a room.
 	 */
@@ -26,7 +32,7 @@ public class RoomBook extends Book
 	/*
 	 *String to store Booking Date in format : dd/mm/yyyy
 	 */
-	private String bookingDay;
+	private String bookingDate;
 	/*
 	 *String to store Starting Time of Booking in 24 hour format : hh:mm
 	 */
@@ -40,8 +46,9 @@ public class RoomBook extends Book
 	 */	
 	private User applicant;
 	
-	public void setReason()
+	private void setReason()
 	{
+		Scanner inp = new Scanner(System.in);
 		System.out.println("Enter the reason for booking: \n(Max. 10lines) \n(After you are done entering your reason, please enter '...' as final line.)\n");
 		int j=0;
 		while(j<10)
@@ -59,39 +66,109 @@ public class RoomBook extends Book
 	public void setRoom(String room)
 	{	this.room=room;
 	}
+	public boolean setBookingDate(String dt)
+	{
+		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}$");
+		Matcher match = pat.matcher(dt);
+		if(match.find())
+			bookingDate=dt;
+		else
+		{
+			System.out.println("Failed to set Booking Date. Please date as 7/9/2014.");
+			return false;
+		}
+		return true;
+	}
+	public boolean setStartingTime(String begin)
+	{
+		Pattern pat = Pattern.compile("^\\d{1,2}([:])\\d{1,2}$");
+		Matcher match = pat.matcher(begin);
+		if(match.find())
+			startingTime=begin;
+		else
+		{
+			System.out.println("Failed to set beginning time of booking. Please enter time in hh:mm format.");
+			return false;
+		}
+		return true;
+	}
+	public boolean setDuration(String d)
+	{
+		Pattern pat=Pattern.compile("\\d|\\d([.])\\d");
+		Matcher match=pat.matcher(d);
+		if(match.find())
+			duration=d;
+		else
+		{
+			System.out.println("Failed to set 'duration; of Booking. Please enter no of hours for booking. Example : 1 for 1 hour or 1.5 for 1 and a 1/2 hours.");
+			return false;
+		}
+		return true;
+	}
 	@Override
 	public void generateForm()
 	{
 		applicant = new User();
 		Scanner inp = new Scanner(System.in);
-		/*if(applicant.setDetails()){*/ // removed this as we already
-                                            // authenticated the user
-        //user details have been taken.
-        char roomch = 'y';
-        //take reason for booking	
-        //take attendance count			
-        System.out.println("Room is to be booked for how many persons?");
-        //put in check for negative values
-        setAttendanceCount(inp.nextInt());
-        RoomDB.displayRooms();
-        System.out.println("\n\nChoose a room");
-        
-        while(roomch=='y'||roomch=='Y')
-        {
-                room=inp.next();				
-                if(roomChoiceCheck(room)==-1)
-                        System.out.println("Sorry!! The room chosen does not exist.");
-                else if(roomChoiceCheck(room)==0)
-                        System.out.println("Sorry!! The room chosen is not available.");
-                else if(roomChoiceCheck(room)==1)
-                {
-                        System.out.println(room+"\t Has been marked for booking for you.");
-                        requestUID=generateUID();
-                        System.out.println("Your request UID is\t"+requestUID+"\nYou can use it to review request status or cancel Booking Request.");
+		int roomBookedFlag=0;
+		if(applicant.setDetails())
+		{
+			//user details have been taken.
+			String room="";
+			//char variable to run room choosing menu
+			char roomch = 'y';
 
-                }
-        }
+			//take reason for booking	
+			setReason();
+
+			//take attendance count			
+			System.out.println("Room is to be booked for how many persons? (Enter digit 'n' for 'n' persons)");
+
+			//put in check for negative values
+			setAttendanceCount(inp.nextInt());
+
+			//take booking day input
+			System.out.println("Please enter the following Booking Details to resolve clashes with other bookings, if any...");
+			System.out.println("Room is to be booked for which day? (Enter date in format as 7/1/2014 or 12/11/2014 only)");
+			setBookingDate(inp.next());
+
+			//take starting time of booking
+			System.out.println("Starting time of booking? (Enter time in 24 hour format as hh:mm only)");
+			setStartingTime(inp.next());
+
+			//take 'duration' of booking input
+			System.out.println("Room is to be booked for how long (enter digit 'n' for 'n' hours or 'm.5' for m and a half hours)?");
+			setDuration(inp.next());
 			
+			//display rooms from DB for choosing
+			while(roomch=='y'||roomch=='Y')
+			{
+				roomBookedFlag=0;
+				System.out.println("ROOMS\n----------------------------");
+				RoomDB.displayRooms();
+				System.out.println("\n\nChoose a room");
+				room=inp.next();				
+				if(roomChoiceCheck(room)==-1)
+					System.out.println("Sorry!! The room you chose does not exist.");
+				else if(roomChoiceCheck(room)==0)
+					System.out.println("Sorry!! The room chosen is not available.");
+				else if(roomChoiceCheck(room)==1)
+				{
+					setRoom(room);
+					System.out.println(room+"\t Has been marked for booking for you.");
+					System.out.println("Please keep in mind that in case there are multiple bookings for the same room\nand at the same time slot then the admin will approve the first posted booking request with valid reason and the others shall be denied.");
+					requestUID=generateUID();
+					System.out.println("Your request UID is\t"+requestUID+"\nYou can use it to review request status or cancel Booking Request.");	
+					roomBookedFlag=1;
+				}
+				System.out.println("Choose a different Room?(y/n)\n[Current request will be discarded.]");
+				roomch=inp.next().charAt(0);
+			}
+			if(roomBookedFlag==1)		
+				writeRequestToDB();
+		}
+		else 
+			System.out.println("Could not register request. Please ensure that you enter a Valid ID. Please Try Again.");
 	}	
 	@Override
 	public void displayStatus(String UID)
@@ -103,9 +180,54 @@ public class RoomBook extends Book
 	{
 		System.out.println("UnderConstruction");
 	}
+	private int roomChoiceCheck(String room)
+	{
+		ArrayList<Room> roomList = new ArrayList<Room>();
+		roomList=RoomDB.getRoomList();
+		String roomName = "";
+		for(Room aroom : roomList)
+		{
+			roomName=aroom.getRoomNumber();
+			if(roomName.equals(room))
+			{
+				if( (aroom.getStatus()).equals("Booked") && (aroom.getBookingDate()).equals(bookingDate))
+				{
+					System.out.println(room+" is already for "+bookingDate+" at "+aroom.getStartingTime());
+					return 0;
+					/*Make it more efficient and helpful by allowing user to choose to book on the same day 
+					  the room is already booked for but at a different time slot*/
+				}
+				else if((aroom.getStatus()).equals("Available"))
+					return 1;				
+			}
+		}
+		return -1;//no such room found		
+	}
+	private void writeRequestToDB()
+	{	
+		PrintWriter out = null;
+		try{
+			out = new PrintWriter(new FileWriter("RequestRoomDB",true));
+			//'true' flag in above tells FileWriter to append rather than clear.
+			out.println(applicant.getID());
+			out.println(requestUID);
+			out.println(room);
+			for(int j=0; reason[j]!=null; j++)
+				out.println(reason[j]);
+			out.println(bookingDate);
+			out.println(startingTime);
+			out.println(duration);
+			out.println(attendanceCount);
+			out.println("*");
+		}catch(IOException e1){
+				System.out.println("Caught IOException while writing booking request to DB.");
+		}finally{
+			if(out!=null)
+				out.close();
+		}	
+	}
 }
 
-/*
 class RoomBookTester
 {
 	public static void main(String[] args)
@@ -114,4 +236,3 @@ class RoomBookTester
 		book.generateForm();
 	}
 }
-*/
