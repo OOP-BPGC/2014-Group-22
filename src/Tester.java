@@ -168,7 +168,7 @@ public class Tester extends TestCase {
 		{
 			assertTrue(true);
 		}
-		String[] d ={"Madgaon","Vasco"};
+		String[] d ={"Margaon","Vasco"};
 		String[] g = new String[CabBookDestinationBased.nextdest];
 		for(int i=0;i<CabBookDestinationBased.nextdest;i++)
 			g[i]=book2.get_destinations()[i];
