@@ -118,14 +118,7 @@ public class Tester extends TestCase {
 		assertEquals("26/10/2016", book2.getBookingDay());
 		assertEquals("12:04", book2.getStartingTime());
 		assertEquals("17:06", book2.getDuration());
-		try{
-			book2.Set_Booking_Time(-1);
-			fail("invalid time");
-			
-		}catch(Exception ex)
-		{
-			assertTrue(true);
-		}
+		
 	}
 	
 	public void testCabBookDistanceBased() {
