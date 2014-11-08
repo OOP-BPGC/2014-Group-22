@@ -1,0 +1,203 @@
+//The test class. Please suggest more tests.
+
+
+package project_tests;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * @author Ahmad
+ *
+ */
+public class CabTest {
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	
+
+	@Test
+	public void test() {
+		CabBookDistanceBased testcab1 = new CabBookDistanceBased();
+		CabBookTimeBased	testcab2 = new CabBookTimeBased();
+		CabBookDestinationBased testcab3 = new CabBookDestinationBased();
+		try{
+			testcab1.set_distance(-1);
+		fail("Negative values not accepted");
+		}
+		catch(BadArgumentException  ex)
+		{
+			assertTrue(true);
+		}
+		try{
+			testcab2.Set_Booking_Time(-1);
+			fail("invalid time");
+			
+		}catch(BadArgumentException ex)
+		{
+			assertTrue(true);
+		}
+		try
+		{
+			testcab3.set_destination("wagamama");
+			fail("invalid destination passed");
+		}catch(BadArgumentException ex)
+		{
+			assertTrue(true);
+		}
+		try {
+			testcab2.Set_Booking_Time(4);
+			assertEquals(testcab2.Get_Booking_Time(),4);
+			CabBookDestinationBased.nextdest=0;
+			testcab3.set_destination("Madgaon");
+			testcab3.set_destination("Bogmalo");
+			String[] d ={"Madgaon","Bogmalo"};
+			String[] g = new String[CabBookDestinationBased.nextdest];
+			for(int i=0;i<CabBookDestinationBased.nextdest;i++)
+				g[i]=testcab3.get_destinations()[i];
+				assertArrayEquals(g,d);
+		} catch (BadArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+}
+
+
+//I am writing all files here without seperation as this is just what i assumed for testing. 
+//will adjust tests for final cab class you make.most of this is clutter. sorry :D
+
+public abstract class CabBook {
+	
+	/**
+	 * @param args
+	 */
+		long fare;
+		public abstract void Generate_Form();
+		public abstract void Check_Status();
+		public abstract void Cancel_Request();
+		public abstract long Calc_Fare();
+
+}
+
+//distancebased
+
+public class CabBookDistanceBased extends CabBook{
+	long dist=0;
+	long rate;
+	public void Display_Cabs()
+	{
+		
+	}
+	public void set_distance (long dist) throws BadArgumentException 
+	{
+		if( dist<0)
+			throw new BadArgumentException("Distance cannot be negative.");
+		
+	}
+	@Override
+	public long Calc_Fare() {
+		
+		return dist*rate;
+	}
+	@Override
+	public void Generate_Form() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void Check_Status() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void Cancel_Request() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+}
+
+//timebased
+
+public class CabBookTimeBased extends CabBook {
+	long journey_time;
+	long rate;
+	public void Set_Booking_Time(long d) throws BadArgumentException
+	{
+		if(d<0) throw new BadArgumentException("Invalid time");
+		journey_time=d;
+	}
+	public long Get_Booking_Time()
+	{
+		return journey_time;
+	}
+	@Override
+	public long Calc_Fare() {
+		// TODO Auto-generated method stub
+		return journey_time*rate;
+	}
+	@Override
+	public void Generate_Form() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void Check_Status() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void Cancel_Request() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+
+
+//dest based.
+public class CabBookDestinationBased extends CabBook{
+	static int nextdest=0;
+	String[] serviced = {"Madgaon", "Vasco","Panjim","Anjuna","Colva","Bogmalo"};//extend this list
+	String [] destination = new String[2];
+	public String[] get_destinations()
+	{
+		return destination;
+	}
+	
+	public void set_destination(String a) throws BadArgumentException
+	{	if(Arrays.asList(serviced).contains(a)==true && Arrays.asList(destination).contains(a)==false)
+		{destination[nextdest]=a;}
+		else
+			throw new BadArgumentException("Location not serviced, sorry");
+	}
+	
+	@Override
+	public long Calc_Fare() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void Generate_Form() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void Check_Status() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void Cancel_Request() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
