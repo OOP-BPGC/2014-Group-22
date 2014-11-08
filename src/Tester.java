@@ -1,27 +1,16 @@
-
 import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
 
 public class Tester extends TestCase {
-	/*public void testUser() {
+	public void testUser() {
 		User use = new User();
 		use.setID("2013A7PS049G");
 		use.setname("Shubham");
 		
 		assertEquals("2013A7PS049G", use.getID());
 		assertEquals("Shubham", use.getname());
-	}*/
-	
-	public void testLogin() {
-		Login log = createNiceMock(Login.class);
-		expect(log.connect("test", "loop")).andReturn(true);
-		
-		replay(log);
-		
-		assertTrue(log.connect("test", "loop"));
 	}
 	
-	/*public void testRoom() {
+	public void testRoom() {
 		Room room = new Room();
 		room.setRoomNumber("A604");
 		room.setProjectorStatus(false);
@@ -68,5 +57,34 @@ public class Tester extends TestCase {
 		assertEquals("12:04", str[4]);
 		assertEquals("17:06", str[5]);
 		assertEquals("56", str[6]);
-	}*/
+/*		roomDB.modifyRoom();
+ * I have just added this. CAll modifyRoom such that it modifies below two things of room A609
+ *Set projector status as true
+ *set status as available
+		str = roomDB.displayRoom("A609");
+		assertEquals("A609", str[0]);
+		assertEquals("true", str[1]);
+		assertEquals("available", str[2]);
+		assertEquals("26/12/1256", str[3]);
+		assertEquals("12:04", str[4]);
+		assertEquals("17:06", str[5]);
+		assertEquals("56", str[6]);
+*/
+	}
+	
+	public void testCab() {
+		Cab cab = new Cab();
+		cab.setCabNumber("RJ25SB7676");
+		cab.setStatus("booked");
+		cab.setBookingTime("12:04", "17.06");
+		cab.setBookingDate("10/15/2016");
+		cab.setCapacity(5);
+		
+		assertEquals("RJ25SB7676", cab.getCabNumber());
+		assertEquals("booked", cab.getStatus());
+		assertEquals(5, cab.getCapacity());
+		assertEquals("12:04", cab.getStartingTime());
+		assertEquals("17.06", cab.getDuration());
+		assertEquals("10/15/2016", cab.getBookingDate());
+	}
 }
