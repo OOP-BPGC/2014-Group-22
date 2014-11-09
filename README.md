@@ -16,11 +16,12 @@ Resource Management software as a part of the course Object Oriented Programming
 <b> INSTRUCTIONS</B>
 
 <ol>
-  <li>The JUnit tests are present in src/Tests directory</li>
+  <li>The JUnit tests are present in <i>src/Tests</i> directory</li>
   <li>Dependencies -
     <ul>
       <li>JSoup library (http://jsoup.org/packages/jsoup-1.8.1.jar)</li>
       <li>JUnit 3 library</li>
     </ul>
   </li>
+  <li>Along with the tests, also download the source files (<i>src/Project</i>)to see tests run
 </ol>
