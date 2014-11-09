@@ -13,14 +13,14 @@ Resource Management software as a part of the course Object Oriented Programming
 6. Shubham Jain       (2013A7PS049G)
 7. Varsheeth Talluri  (2013A7PS045G)
 
-<b> INSTRUCTION</B>
+<b> INSTRUCTIONS</B>
 
 <ol>
-<li>The JUnit tests are written in src/Tests/Tester.java file.</li>
-<li>Dependencies -
+  <li>The JUnit tests are present in src/Tests directory</li>
+  <li>Dependencies -
     <ul>
       <li>JSoup library (http://jsoup.org/packages/jsoup-1.8.1.jar)</li>
       <li>JUnit 3 library</li>
     </ul>
-</li>
+  </li>
 </ol>
