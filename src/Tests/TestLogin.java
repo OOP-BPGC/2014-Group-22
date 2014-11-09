@@ -7,7 +7,12 @@ public class TestLogin extends TestCase {
 
 	public void testLoginConnect()
 	{
-		assertEquals(false, Login.connect("f2013694", "qwerty")); // Not using real password.
+		/*
+		Not used real password due to privacy reasons.
+		Replace "f2013694" and "qwerty" with appropriate
+		userid and password to see it glow!
+		*/
+		assertEquals(false, Login.connect("f2013694", "qwerty"));
 	}
 
 }

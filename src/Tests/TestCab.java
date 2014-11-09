@@ -45,9 +45,8 @@ public class TestCab {
 		cab.setBookingTime("12:04", "17.06");
 		cab.setBookingDate("10/15/2016");
 		cab.setCapacity(5);
-		CabDB cabDB = new CabDB();
-		cabDB.addSingleCab(cab);
-		String[] str = cabDB.displayCab("RJ25SB7676");
+		CabDB.addCab(cab);
+		String[] str = CabDB.displayCab("RJ25SB7676");
 		assertEquals("RJ25SB7676", str[0]);
 		assertEquals("booked", str[1]);
 		assertEquals("26/12/1256", str[2]);
@@ -58,30 +57,28 @@ public class TestCab {
 	
 	public void testCabBookTimeBased() {
 		
-		CabBookTimeBased book2 = new CabBookTimeBased();
-		String UID = book2.generateUID();
-		book2.bookCab(5, "RJ25SB7676", UID, "26/10/2016", "12:04", "17:06");
-		assertEquals("RJ25SB7676", book2.getCab());
-		assertEquals(5, book2.getAttendanceCount());
-		assertEquals(500, book2.calcFare());
-		assertEquals("26/10/2016", book2.getBookingDay());
-		assertEquals("12:04", book2.getStartingTime());
-		assertEquals("17:06", book2.getDuration());
+		String UID = CabBookTimeBased.generateUID();
+		CabBookTimeBased.bookCab(5, "RJ25SB7676", UID, "26/10/2016", "12:04", "17:06");
+		assertEquals("RJ25SB7676", CabBookTimeBased.getCab());
+		assertEquals(5, CabBookTimeBased.getAttendanceCount());
+		assertEquals(500, CabBookTimeBased.calcFare());
+		assertEquals("26/10/2016", CabBookTimeBased.getBookingDay());
+		assertEquals("12:04", CabBookTimeBased.getStartingTime());
+		assertEquals("17:06", CabBookTimeBased.getDuration());
 		
 	}
 	
 	public void testCabBookDistanceBased() {
-		CabBookDistanceBased book2 = new CabBookDistanceBased();
-		String UID = book2.generateUID();
-		book2.bookCab(5, "RJ25SB7676", UID, "26/10/2016", "12:04", 56);
-		assertEquals("RJ25SB7676", book2.getRoom());
-		assertEquals(5, book2.getAttendanceCount());
-		assertEquals(500, book2.calcFare());
-		assertEquals("26/10/2016", book2.getBookingDay());
-		assertEquals("12:04", book2.getStartingTime());
-		assertEquals(56, book2.getDistance());
+		String UID = CabBookDistanceBased.generateUID();
+		CabBookDistanceBased.bookCab(5, "RJ25SB7676", UID, "26/10/2016", "12:04", 56);
+		assertEquals("RJ25SB7676", CabBookDistanceBased.getRoom());
+		assertEquals(5, CabBookDistanceBased.getAttendanceCount());
+		assertEquals(500, CabBookDistanceBased.calcFare());
+		assertEquals("26/10/2016", CabBookDistanceBased.getBookingDay());
+		assertEquals("12:04", CabBookDistanceBased.getStartingTime());
+		assertEquals(56, CabBookDistanceBased.getDistance());
 		try{
-			book2.set_distance(-1);
+			CabBookDistanceBased.set_distance(-1);
 		fail("Negative values not accepted");
 		}
 		catch(Exception  ex)
