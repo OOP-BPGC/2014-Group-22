@@ -119,14 +119,52 @@ public class RoomBook extends Book
 			return false;
 		}
 		return true;
-	}/*
-	public void setID()
-	{
-		ID=Login.getID();
 	}
-	public String getID()
-	{	return ID;
-	}*/
+	
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public String getRequestUID() {
+		return requestUID;
+	}
+
+	public void setRequestUID(String requestUID) {
+		this.requestUID = requestUID;
+	}
+
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String iD) {
+		ID = iD;
+	}
+
+	public int getAttendanceCount() {
+		return attendanceCount;
+	}
+
+	public String getRoom() {
+		return room;
+	}
+
+	public String getBookingDate() {
+		return bookingDate;
+	}
+
+	public String getStartingTime() {
+		return startingTime;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+	
 	@Override
 	public void generateForm()
 	{
@@ -256,14 +294,5 @@ public class RoomBook extends Book
 			if(out!=null)
 				out.close();
 		}	
-	}
-}
-
-class RoomBookTester
-{
-	public static void main(String[] args)
-	{
-		RoomBook book = new RoomBook();
-		book.generateForm();
 	}
 }

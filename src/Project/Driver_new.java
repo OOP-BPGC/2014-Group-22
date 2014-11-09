@@ -6,7 +6,8 @@ package Project;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/*
+/* Main driver file.
+ * 
  * In the whole program, while loops are used for checking the validity of inputs i.e., if
  * it is an invalid input, while loop keeps continuing until user enters valid input.
  */

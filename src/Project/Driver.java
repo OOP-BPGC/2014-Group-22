@@ -6,17 +6,18 @@ import java.util.Scanner;
 
 public class Driver
 {
+	
+	/**
+	 * This class will be pulled out later.
+	 */
     
     public static void main(String[] args)
     {
         Scanner in = new Scanner(System.in);
         
         // Authenticate user, get userid and name
-        String[] credentials;
-        credentials = Login.authenticateUser();
-        String username = credentials[0];
-        String name = credentials[1];
-        System.out.println(username + " " + name);
+        Login.authenticateUser();
+        System.out.println(Login.id + " " + Login.name);
         // end
 
         char menu1='y';
