@@ -1,7 +1,8 @@
-package Project;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Room implements Serializable
 {
@@ -18,45 +19,73 @@ public class Room implements Serializable
 	 */
 	private String status;
 	/*
-	 *To store booking date.
+	 *ArrayList to store booking dates.
 	 */
-	private String bookingDate;
+	private ArrayList<String> bookingDate = new ArrayList<String>();
 	/*
-	 *bookingTime[0] stores begining of booking time.
-	 *bookingTime[1] stores duration of booking.
+	 *ArrayList to store starting time of bookings.
 	 */
-	private String[] bookingTime = new String[2];
+	private ArrayList<String> startingTime = new ArrayList<String>();
+	/*
+	 *ArrayList to store duration of bookings.
+	 */
+	private ArrayList<String> duration = new ArrayList<String>();
 	/*
 	 *To hold upper limit of capacity for each room
-	*/
+	 */
+	
 	private int capacity;
+	
 	public void setCapacity(int cpc)
-	{	capacity=cpc;
+	{	
+		capacity=cpc;
 	}
+	
 	public void setRoomNumber(String rn)
-	{	roomNumber = rn;
+	{	
+		roomNumber = rn;
 	}
+	
 	public void setProjectorStatus(boolean p)
-	{	projectorStatus=p;
+	{	
+		projectorStatus=p;
 	}
+	
 	public void setStatus(String stat)
-	{	status=stat;
+	{	
+		status=stat;
 	}
-	public boolean setBookingTime(String begin, String duration)
-	{		
+	
+	public boolean setBookingDate(String dt)
+	{
+		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}$");
+		Matcher match = pat.matcher(dt);
+		if(match.find())
+			bookingDate.add(dt);
+		else
+		{
+			System.out.println("Failed to set Booking Date. Please enter date in the format 7/9/2014.");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean setBookingTime(String begin, String dtn)
+	{	
 		Pattern pat = Pattern.compile("^\\d{1,2}([:])\\d{1,2}$");
 		Matcher match = pat.matcher(begin);
 		if(match.find())
-			bookingTime[0]=begin;
+			startingTime.add(begin);
 		else
 		{
 			System.out.println("Failed to set beginning time of booking. Please enter time in hh:mm format.");
 			return false;
 		}
 		pat=Pattern.compile("\\d|\\d([.])\\d");
-		match=pat.matcher(duration);
+		match=pat.matcher(dtn);
 		if(match.find())
-			bookingTime[1]=duration;
+			duration.add(dtn);
 		else
 		{
 			System.out.println("Failed to set 'duration; of Booking. Please enter no of hours for booking. Example : 1 for 1 hour or 1.5 for 1 and a 1/2 hours.");
@@ -64,50 +93,58 @@ public class Room implements Serializable
 		}
 		return true;
 	}
-	public boolean setBookingDate(String dt)
-	{
-		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}$");
-		Matcher match = pat.matcher(dt);
-		if(match.find())
-			bookingDate=dt;
-		else
-		{
-			System.out.println("Failed to set Booking Date. Please date as 7/9/2014.");
-			return false;
-		}
-		return true;
-	}
+	
 	public String getRoomNumber()
-	{	return roomNumber;
+	{	
+		return roomNumber;
 	}
+	
 	public boolean getProjectorStatus()
-	{	return projectorStatus;
+	{	
+		return projectorStatus;
 	}
+	
 	public String getStatus()
-	{	return status;
+	{	
+		return status;
 	}
-	public String getStartingTime()
-	{	return bookingTime[0];
+	
+	public ArrayList<String> getStartingTime()
+	{	
+		return startingTime;
 	}
-	public String getDuration()
-	{	return bookingTime[1];
+	
+	public ArrayList<String> getDuration()
+	{	
+		return duration;
 	}
-	public String getBookingDate()
-	{	return bookingDate;
+	
+	public ArrayList<String> getBookingDate()
+	{	
+		return bookingDate;
 	}
+	
 	public int getCapacity()
-	{	return capacity;
+	{	
+		return capacity;
 	}
+	
 	public void displayRoom()
 	{
 		System.out.println("Room Number:\t"+roomNumber+"\nProjector Status:\t"+projectorStatus+"\nRoom Status:\t"+status+"\nRoom Capacity:\t"+capacity);
 		if(status.equals("Booked"))
 		{
-			System.out.println("Booking Date :\t"+bookingDate);
-			System.out.println("Rooms is booked from:\t"+bookingTime[0]+"\nFor the duration of:\t"+bookingTime[1]+" hours.");
+			int noOfBookings = bookingDate.size();
+			for(int j=0; j<noOfBookings; j++)
+			{
+				System.out.println("Booking no. :"+j);
+				System.out.println("Booking Date :\t"+bookingDate.get(j));
+				System.out.println("Rooms is booked from:\t"+startingTime.get(j)+"\nFor the duration of:\t"+duration.get(j)+" hours.");
+			}
 		}
 		System.out.println("-----------------------------");
 	}
+	
 	public static void main(String[] args)
 	{
 		Room C306 = new Room();

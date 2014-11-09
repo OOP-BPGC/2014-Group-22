@@ -1,8 +1,8 @@
-package Project;
-import Project.Room;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 //for writing objects
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.ObjectOutputStream;
@@ -22,6 +22,9 @@ public class RoomDB
 		char addRoom = 'y';
 		char projector = 'n';
 		Scanner inp = new Scanner(System.in);
+		//Clear RoomList first to avoid repition of objects while adding multiple rooms in the same login session
+		if(RoomList.size()!=0)
+			RoomList.clear();				
 		while(addRoom=='y'||addRoom=='Y')
 		{
 			Room newroom = new Room();
@@ -49,7 +52,10 @@ public class RoomDB
 	{
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
-		readFromDB();
+		File fileCheck = new File("RoomDB");
+		//this check ensures system doesnt crash with FNF exception when writing to DB for the first Time	
+		if(fileCheck.exists())
+			readFromDB();
 		recoveredRoomList.addAll(RoomList);
 		try{
 			fos = new FileOutputStream("RoomDB");
@@ -89,6 +95,25 @@ public class RoomDB
 			}
 		}
 	}
+	public static void updateDB(ArrayList<Room> listOfRoomsToWrite)
+	{
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		try{
+			fos = new FileOutputStream("RoomDB");
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(listOfRoomsToWrite);
+		}catch(IOException e){
+			System.out.println("Caught IOException while writing to DB.");
+		}finally{
+			try{
+				if(fos!=null)
+					fos.close();
+			}catch(IOException e){
+				System.out.println("IOEx1");
+			}
+		}
+	}
 	public static void displayRooms()
 	{	
 		readFromDB();
@@ -101,62 +126,3 @@ public class RoomDB
 		return recoveredRoomList;
 	}
 }
-	/*
-	private static void copyappend(String src, String dst)
-	{
-		//append file1 to file2, both are required to be binary files holding object data
-		FileInputStream fis = null;
-		FileOutputStream fos = null;
-		try{
-			fis = new FileInputStream(src);
-			fos=new FileOutputStream(dst,true);	//append mode
-			byte[] buffer = new byte[1024];
-			int noOfBytes=0;
-			while((noOfBytes=fis.read(buffer))!=-1)
-				fos.write(buffer);
-		}catch(FileNotFoundException e){
-			System.out.println("Caught FileNotFoundException while copying RoomDBtemp to RoomDB.");
-		}catch(IOException e){
-			System.out.println("Caught IOException while copying RoomDBtemp to RoomDB.");
-		}finally{
-			try{
-				if(fis!=null)
-					fis.close();
-				if(fos!=null)
-					fos.close();
-			}catch(IOException e){
-				System.out.println("Caught IOException while closing input output streams when copying RoomDBtemp to RoomDB.");
-			}
-		}
-	}*/
-
-	/*
-	private static void writeToDB()
-	{
-		//serialize the RoomList
-		try{
-			File file1 = new File("RoomDB");
-			int flag=0;
-			FileOutputStream file = null;
-			ObjectOutputStream output = null;
-			if(file1.exists())
-			{
-				file = new FileOutputStream("RoomDBtemp");
-				flag=1;
-			}
-			else
-				file = new FileOutputStream("RoomDB");
-			output = new ObjectOutputStream(file);
-			output.writeObject(RoomList);
-			output.close();
-			if(flag==1)
-			{
-				flag=0;
-				copyappend("RoomDBtemp","RoomDB");
-			}
-		}catch(IOException e){
-			System.out.println("Caught an IOException1 while writing to DB. Printing StackTrace");
-			e.printStackTrace();
-		}
-	}
-	*/
