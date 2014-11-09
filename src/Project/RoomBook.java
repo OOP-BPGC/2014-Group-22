@@ -1,13 +1,15 @@
 package Project;
 
-import java.util.Scanner;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.util.ArrayList;
-//DB management
-import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+//DB management
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RoomBook extends Book
 {		
 	/*
@@ -59,6 +61,20 @@ public class RoomBook extends Book
 		}
 	}*/
 
+    public String generateUID(){
+        
+        StringBuffer randStr = new StringBuffer();
+        for(int i=0; i<6; i++)
+        {
+        	Random rn = new Random();
+        	int number = 0 + rn.nextInt(10 + 1);
+            
+            char ch = "abcdefghijkklmnopqrstuvwxyz".charAt(number);
+            randStr.append(ch);
+        }
+        return randStr.toString();
+    }
+    
 	public void setAttendanceCount(int att)		
 	{	attendanceCount=att;
 	}
