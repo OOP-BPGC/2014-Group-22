@@ -4,6 +4,11 @@ import Project.*;
 import junit.framework.TestCase;
 
 public class TestLogin extends TestCase {
+	
+	public TestLogin(String str)
+	{
+		super(str);
+	}
 
 	public void testLoginConnect()
 	{
