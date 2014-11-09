@@ -25,3 +25,11 @@ Resource Management software as a part of the course Object Oriented Programming
   </li>
   <li>Along with the tests, also download the source files (<i>src/Project</i>)to see tests run
 </ol>
+
+
+<b>NOTE</b>
+<ul>
+  <li>The arrows in the collaboration diagram may get cluttered. This
+issue could not be resolved even on editing teh zargo file.
+This might be due to some bug in ArgoUML.</li>
+</ul>
