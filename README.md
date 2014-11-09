@@ -15,7 +15,7 @@ Resource Management software as a part of the course Object Oriented Programming
 
 <b> INSTRUCTIONS</B>
 
-<ol>
+<ul>
   <li>The JUnit tests are present in <i>src/Tests</i> directory</li>
   <li>Dependencies -
     <ul>
@@ -24,7 +24,7 @@ Resource Management software as a part of the course Object Oriented Programming
     </ul>
   </li>
   <li>Along with the tests, also download the source files (<i>src/Project</i>)to see tests run
-</ol>
+</ul>
 
 
 <b>NOTE</b>
