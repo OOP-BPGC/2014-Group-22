@@ -101,7 +101,7 @@ public class RoomBook extends Book
 	@Override
 	public void displayStatus(String UID)
 	{
-		ArrayList<String> adminResponses = AdminRoom.getResponseAndUID();
+		ArrayList<String> adminResponses = AdminRoom.getresponseAndUID();
 		String[] temp = new String[2];
 		int found =0;
 		for(String line : adminResponses)

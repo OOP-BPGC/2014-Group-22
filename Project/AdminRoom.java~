@@ -147,9 +147,9 @@ public class AdminRoom
 			//But first check if the ResponseUIDDB already has an entry for this request (will happen if it were left..
 			//...as pending by the admin in some previous session) in that case remove it and add new entry.
 			int index=-1;
-			String[] temp = new String[2];
 			for(String rplusUID : responseAndUID)
 			{
+				String[] temp = new String[2];
 				temp = rplusUID.split("-",0); 
 				if(temp[0].equals(areq.getRequestUID()))
 				{

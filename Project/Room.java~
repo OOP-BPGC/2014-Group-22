@@ -112,7 +112,7 @@ public class Room implements Serializable
 			int noOfBookings = bookingDate.size();
 			for(int j=0; j<noOfBookings; j++)
 			{
-				System.out.println("Booking no. :"+j);
+				System.out.println("Booking no. :"+(j+1));
 				System.out.println("Booking Date :\t"+bookingDate.get(j));
 				System.out.println("Rooms is booked from:\t"+startingTime.get(j)+"\nFor the duration of:\t"+duration.get(j)+" hours.");
 			}

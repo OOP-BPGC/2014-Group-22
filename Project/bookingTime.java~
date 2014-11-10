@@ -1,0 +1,27 @@
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+public class bookingTime
+{
+	String time;
+	public void setTime(String t)
+	{
+		if(checkTime(t))
+		{
+			time=t;
+			System.out.println("Valid format. Matches dd/mm/yyyy hh:mm hh:mm");
+		}
+		else
+			System.out.println("Failed regex check. Wrong format.");
+	}
+	public boolean checkTime(String time)
+	{
+		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}\\babc$");
+		Matcher match = pat.matcher(time);
+		return match.find();
+	}
+	public static void main(String[] args)
+	{
+		bookingTime obj = new bookingTime();
+		obj.setTime(args[0]);
+	}
+}

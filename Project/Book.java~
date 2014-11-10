@@ -1,5 +1,5 @@
 package Project;
-abstract class Book
+public abstract class Book
 {
 	public String generateUID()
 	{
@@ -13,8 +13,7 @@ abstract class Book
 		int rand4=(int)(Math.random()*len2);
 		return letters[rand1]+nos[rand2]+letters[rand3]+nos[rand4];		
 	}
-	public abstract void generateForm();
+	public abstract void provideForm();
 	public abstract void displayStatus(String UID);
 	public abstract void cancelRequest(String UID);
 }
-

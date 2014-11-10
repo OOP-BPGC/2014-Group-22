@@ -9,7 +9,6 @@ public class Driver
 	{
 		char menu1='y';
 		int inp;
-		String UID = null;
 		Scanner in = new Scanner(System.in);
 		RoomBook bookaroom = new RoomBook();
 		while(menu1=='y'||menu1=='Y')
@@ -37,11 +36,13 @@ public class Driver
 								bookaroom.generateForm();						
 							break;
 						case 2:	
+							String UID = null;
 							System.out.println("\nEnter your request UID :\n");	
 							UID=in.next();
 							bookaroom.displayStatus(UID);
 							break;
 						case 3: 
+							String UID = null;
 							System.out.println("\nEnter your request UID :\n");	
 							UID=in.next();
 							bookaroom.cancelRequest(UID);
