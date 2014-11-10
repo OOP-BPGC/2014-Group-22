@@ -16,13 +16,7 @@ public class Login {
 	
 	public static String id;
 	public static String name;
-	
     private static String bodyHtml = "null";
-    
-    public static void main(String[] args)
-    {
-    	System.out.println(connect("f2013694", "Qwerty1234-"));
-    }
     
     
     /**
@@ -51,7 +45,6 @@ public class Login {
     /**
      * This is the main method which will be called from Driver.java to get
      * user details.
-     * @return A string array of the form [userid, name]
      */
     public static void authenticateUser()
     {
@@ -89,25 +82,40 @@ public class Login {
      */
     
     public static boolean connect(String id, String password) {
+    	
     	boolean status = false;
+    	
     	try {
-    	Connection.Response loginForm = Jsoup
-    	.connect("http://10.1.1.242/moodle/login/index.php")
-    	.method(Connection.Method.GET)
-    	.execute();
-    	Document document = Jsoup
-    	.connect("http://10.1.1.242/moodle/login/index.php")
-    	.data("id", id)
-    	.data("password", password)
-    	.cookies(loginForm.cookies())
-    	.post();
-    	bodyHtml = document.body().html();
-    	System.out.println(bodyHtml);
-    	status = bodyHtml.contains("You are logged in as");
+    		
+	    	Connection.Response loginForm = Jsoup.connect("http://10.1.1.242/moodle/login/index.php")
+		    	.method(Connection.Method.GET)
+		    	.execute();
+	    	Document document = Jsoup
+		    	.connect("http://10.1.1.242/moodle/login/index.php")
+		    	.data("username", id)
+		    	.data("password", password)
+		    	.cookies(loginForm.cookies())
+		    	.post();
+	    	
+	    	bodyHtml = document.body().html();
+	    	// System.out.println(bodyHtml); // Debug statement
+	    	
+	    	status = bodyHtml.contains("You are logged in as");
+	    	
     	} catch (IOException e) {
-    	System.out.println("IO exception!");
+    		
+    		System.out.println("IO exception!");
+    		
     	} finally {
-    	return status;
+    		
+    		return status;
+    		
     	}
-    	}
+    }
+
+/* Debug method. Do not remove this.
+    public static void main(String[] args)
+    {
+    	System.out.println(connect("f2013694", "Qwerty1234-"));
+    }*/
 }
