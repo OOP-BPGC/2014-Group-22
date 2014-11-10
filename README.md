@@ -38,5 +38,5 @@ This might be due to some bug in ArgoUML.</li>
 <ul>
   <li>The UML Diagrams have been made by Varsheeth Talluri  (2013A7PS045G)
       The Login.java code has been written by Nisarg Shah (2013A7PS694G)
-      The Rest of the code (EXCLUDING JUnit Tests, INCLUDING everything else)has been written by Abhishek Tiwari (2013A7PS810G). Please do not go by the commits/pushes made to the repository to judge contribution as we were not aware of this evaluation mechanism and apologise for the same. Incase you need you verify these claims, we have the sent mails with time stamps and attached codes to verify the same. Thank You.</li>
+      The Rest of the code (EXCLUDING JUnit Tests, INCLUDING everything else)has been written by Abhishek Tiwari (2013A7PS810G). Please do not go by the commits/pushes made to the repository to judge contribution as we were not aware of this evaluation mechanism and apologise for the same. Incase you need to verify these claims, we have the sent mails with time stamps and attached codes to verify the same. Thank You.</li>
 </ul>
