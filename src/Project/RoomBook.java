@@ -22,6 +22,19 @@ public class RoomBook extends Book
 	private Request newrequest = new Request();
 	private static ArrayList<Request> RequestsMade = new ArrayList<Request>();	
 	@Override
+	public String generateUID()
+	{
+		String[] letters={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+		String[] nos={"0","1","2","3","4","5","6","7","8","9"};
+		int len1 = letters.length;
+		int len2 = nos.length;
+		int rand1=(int)(Math.random()*len1);
+		int rand2=(int)(Math.random()*len2);
+		int rand3=(int)(Math.random()*len1);
+		int rand4=(int)(Math.random()*len2);
+		return letters[rand1]+nos[rand2]+letters[rand3]+nos[rand4];		
+	}
+	@Override
 	public void generateForm()
 	{
 		Scanner inp = new Scanner(System.in);
