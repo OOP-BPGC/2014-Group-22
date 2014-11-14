@@ -16,6 +16,7 @@ public class TestRoomBook extends TestCase {
 	public TestRoomBook(String str) {
 		super(str);
 		// Initialization of attributes for testing purposes
+		book = new RoomBook();
 		reqs = book.getRequestsMade();
 		fakereq = new Request();
 		fakereq.setAttendanceCount(50);
@@ -23,13 +24,17 @@ public class TestRoomBook extends TestCase {
 		fakereq.setBookingStatus("Approved");
 		fakereq.setDuration("02:04");
 		fakereq.setReason("Testing reasons");
-		fakereq.setRequestUID("Something");
+		fakereq.setRequestUID("b2c3");
 		fakereq.setRoom("A749");
 		fakereq.setStartingTime("17:56");
-		reqs.add(fakereq);
+	//	reqs.add(fakereq);
+	//	book.updateRoomRequestDB(reqs);
 	}
 	
+	@SuppressWarnings("static-access")
 	public void testUpdateRoomRequestDB() {
+	//	book.updateRoomRequestDB(reqs);
+		reqs.add(fakereq);
 		book.updateRoomRequestDB(reqs);
 		reqs = book.getRequestsMade();
 		int n = reqs.size();
@@ -38,30 +43,26 @@ public class TestRoomBook extends TestCase {
 		assertEquals("02:04", req.getDuration());
 		assertEquals("Approved", req.getBookingStatus());
 		assertEquals("Testing reasons", req.getReason());
-		assertEquals("Something", req.getRequestUID());
+		assertEquals("b2c3", req.getRequestUID());
 		assertEquals("A749", req.getRoom());
 		assertEquals("17:56", req.getStartingTime());
+		book.cancelRequest("b2c3");
 	}
 
-	/**
-	 * TODO;
-	 * Need to modify for NullPointerException error
-	 */
-/*	public void testCancelRequest() {
+	@SuppressWarnings("static-access")
+	public void testCancelRequest() {
 		reqs.add(fakereq);
 		book.updateRoomRequestDB(reqs);
-		try {
-			book.cancelRequest("Something");
-		} catch(NullPointerException e) {
-			e.printStackTrace();
-		}
+		book.cancelRequest("b2c3");
+		// The next line is useful only when the RequestRoomDB file is empty.
+		book.cancelRequest("b2c3");
 		reqs = book.getRequestsMade();
 		int n = reqs.size();
-		for (int i = 0; i < n; i++) {
-			assertNotSame(fakereq, reqs.get(i));
-		}
+		for (int i = 0; i < n; i++)
+			assertFalse(fakereq.getRoom().equals(reqs.get(i).getRoom()));
 	}
-*/	private ArrayList<Request> reqs;
+
+	private ArrayList<Request> reqs;
 	private RoomBook book;
 	private Request fakereq;
 }
