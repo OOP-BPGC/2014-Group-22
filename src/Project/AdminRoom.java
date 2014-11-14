@@ -1,14 +1,11 @@
 package Project;
 //to addrooms, display rooms
-import Project.RoomDB;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
-import Project.RoomDB;
-import Project.Room;
 //DB management
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -19,7 +16,9 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
-
+/*
+ *@author AbhishekTiwari
+ */
 public class AdminRoom
 {
 	private static ArrayList<String> responseAndUID = new ArrayList<String>();
@@ -37,21 +36,32 @@ public class AdminRoom
 		{
 			System.out.println("ADMIN MENU");
 			System.out.println("-----------------------------");
-			System.out.println("1.Add Room.\n2.Modify Room Details.\n3.Evaluate Requests.\n4.Display Rooms.\nEnter choice: ");
+			System.out.println("1.Add Room.\n2.Modify Room Details.\n3.Evaluate Requests.\n4.Display Rooms.");
+			System.out.println("5.Previous Menu.\n6.Exit\nEnter choice: ");
 			choice=inp.nextInt();
+			int prevMenu =0;
 			switch(choice)
 			{
 				case 1: RoomDB.addRoom();
 					break;
-				case 2: break;
+				case 2: System.out.println("UNDER CONSTRUCTION :)");
+					break;
 				case 3: AdminRoom.evaluateRequests();
 					break;
 				case 4: RoomDB.displayRooms();
 					break;
+				case 5: prevMenu=1;
+					break;
+				case 6: System.exit(0);
+					break;
 				default: System.out.println("Wrong Choice. Please Try Again.");
 			}
-			System.out.println("Show Admin Menu again?(y/n)");
-			AdminMenu=inp.next().charAt(0);
+			if(prevMenu==0){
+				System.out.println("Show Admin Menu again?(y/n)");
+				AdminMenu=inp.next().charAt(0);
+			}
+			else
+				AdminMenu='n';
 		}
 	}
 	private static void evaluateRequests()
@@ -65,10 +75,11 @@ public class AdminRoom
 		ArrayList<String> startingTimes= null;
 		ArrayList<String> durations= null;
 		ArrayList<Request> requestsPending = new ArrayList<Request>();
-		int decision=0;
+		int decision=-1;
 		char confirm ='y';
 		String response="";
 		int r =0;
+		boolean fatalConflict = false;
 
 		//First read in responses from admin on requests he didnt clear in any previous sessions
 		//this is to later avoid a case where we end up with the entries "UID1 Pending" and "UID1 Approved"
@@ -85,14 +96,15 @@ public class AdminRoom
 	
 			//After Displaying a request for a particular room, display all current bookings for that room
 			//so that the admin can prevent clashes.
-			System.out.println("Current Bookings for this Room are displayed if there is possibilty of clash.");
+			System.out.println("\nThe Room Requested already has the following Bookings.");
+			System.out.println("NOTE TO ADMIN: IF THERE IS A CLASH PLEASE DO NOT APPROVE THE BOOKING!");
 			System.out.println("--------------------------------------------------------------------------------");
 			for(Room aroom : RoomsInDB)
 			{
 				//1.Room number in request == room in DB
 				//2.Status of requested room == Booked
 				//3.Booking Dates arraylist of that room -> Contains the Booking date given in Request
-				//THEN do the following 
+				//THEN do the following
 				if(aroom.getRoomNumber().equals(areq.getRoom()) && aroom.getStatus().equals("Booked") && aroom.getBookingDate().contains(areq.getBookingDate()))
 				{
 					//for possible clashing room, get the following details and print them
@@ -108,6 +120,12 @@ public class AdminRoom
 						System.out.println("Starting Time\t\t:\t"+startingTimes.get(j));
 						System.out.println("Duration\t\t:\t"+durations.get(j));
 					}
+					int index = bookingDates.indexOf(areq.getBookingDate());
+					fatalConflict = startingTimes.get(index).equals(areq.getStartingTime());
+					if(fatalConflict){
+						System.out.println("THIS BOOKING HAS A FATAL CONFLICT.");
+						System.out.println("On the requested day and time there is already a booking.");
+					}
 				}
 			}
 			
@@ -118,8 +136,14 @@ public class AdminRoom
 				decision=inp.nextInt();
 				if(decision==1)
 				{
-					response="Approved";//set it in program as user may make spelling mistake while 					//typing 'approved' or 'denied'
-					System.out.println("You have selected to APPROVE the booking request.");
+					if(fatalConflict){
+						System.out.println("Fatal Conflict, Cannot approve request. Please Deny the request.");
+						continue;
+					}
+					else{
+						response="Approved";//set it in program as user may make spelling mistake while 						//typing 'approved' or 'denied'
+						System.out.println("You have selected to APPROVE the booking request.");
+					}
 				}
 				else if(decision==2)
 				{
@@ -198,6 +222,8 @@ public class AdminRoom
 			//note here we are not recovering first and then overwriting (as we do in RoomDB and RoomBook)
 			//because in any scenario the readFromResponseUIDDB() is called first and then only this write fn is called!
 			//see lines 63-66
+			//see lines 102 in RoomBook 
+			//the Above two use cases only will lead to fn call to this method
 			oos.writeObject(responseAndUID);			
 		}catch(IOException e)
 		{
@@ -244,27 +270,10 @@ public class AdminRoom
 		readFromResponseUIDDB();
 		return responseAndUID;
 	}
+	public static void updateResponseUIDDB(ArrayList<String> responses)
+	{	
+		responseAndUID.addAll(responses);
+		writeToResponseUIDDB();
+	}
 
 }
-/*	
-		PrintWriter out = null;
-		try{
-			out = new PrintWriter(new FileWriter("RequestRoomDB",true));
-			//'true' flag in above tells FileWriter to append rather than clear.
-			out.println("Login.getID()here");
-			out.println(requestUID);
-			out.println(room);
-			out.println(reason);
-			out.println(bookingDate);
-			out.println(startingTime);
-			out.println(duration);
-			out.println(attendanceCount);
-//			out.println("*");
-		}catch(IOException e1){
-				System.out.println("Caught IOException while writing booking request to DB.");
-		}finally{
-			if(out!=null)
-				out.close();
-		}	
-*/
-

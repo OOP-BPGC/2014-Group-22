@@ -1,8 +1,8 @@
 package Project;
 import java.util.Scanner;
-import Project.RoomBook;
-import Project.AdminRoom;
-
+/*
+ *@author AbhishekTiwari
+ */
 public class Driver
 {
 	public static void main(String[] args)
@@ -16,7 +16,7 @@ public class Driver
 		{
 			System.out.println("MAIN MENU");
 			System.out.println("-----------------------------");
-			System.out.println("1.Class Room Booking.\n2.Cab Booking.");
+			System.out.println("1.Class Room Booking.\n2.Cab Booking.\n3.Exit");
 			inp = in.nextInt();
 			switch(inp)
 			{
@@ -28,13 +28,15 @@ public class Driver
 					{
 						System.out.println("ROOM BOOKING MENU");
 						System.out.println("-----------------------------");
-						System.out.println("1.Request Room.\n2.Check Request Status.\n3.Cancel Request.\n4.Admin Login.\n5.Previous Menu.\nEnter Choice:\n");						
+						System.out.println("1.Request Room.\n2.Check Request Status.\n3.Cancel Request.");
+						System.out.println("4.Admin Login.\n5.Previous Menu.\n6.Exit.\nEnter Choice:\n");	
 						choice2=in.nextInt();
+						int prevMenu = 0;
 						switch(choice2)
 						{
 						case 1: 
-							//if(Login.checkLogin())
-								bookaroom.generateForm();						
+							//if(Login.authenticateUser())
+								bookaroom.generateForm();
 							break;
 						case 2:	
 							System.out.println("\nEnter your request UID :\n");	
@@ -46,15 +48,22 @@ public class Driver
 							UID=in.next();
 							bookaroom.cancelRequest(UID);
 							break;
-						case 4: //somehow run AdminStuff From Here!
+						case 4: //somehow run AdminSession From Here!
 							//if(Login.isAdmin())
 								AdminRoom.runAdminSession();
 							break;
-						case 5: break;
+						case 5: prevMenu = 1;	
+							break;
+						case 6: System.exit(0);
+							break;
 						default : System.out.println("Wrong choice, choose again.");
 						}	
-						System.out.println("Display Room Booking Menu again?(y/n)");
+						if(prevMenu==0){
+							System.out.println("Display Room Booking Menu again?(y/n)");
 						menu2=in.next().charAt(0);
+						}
+						else
+							menu2='n';
 					}
 					break;				
 				case 2 :
@@ -69,6 +78,7 @@ public class Driver
 						System.out.println("4.Book a Cab based on Destination.");
 						System.out.println("5.Admin Login.");
 						System.out.println("6.Main Menu.");
+						System.out.println("7.Exit.");
 						choice3=in.nextInt();
 						switch(choice3)
 						{
@@ -84,6 +94,8 @@ public class Driver
 							case 6 : 
 								flag2=true;
 								break;
+							case 7 : System.exit(0);
+								break;
 							default : System.out.println("Wrong choice, choose again.");
 						}	
 						if(flag2)
@@ -91,6 +103,8 @@ public class Driver
 						System.out.println("Display Cab Booking Menu again?(y/n)");
 						menu3=in.next().charAt(0);
 					}
+					break;
+				case 3: System.exit(0);
 					break;
 				default :System.out.println("Wrong choice, choose again");
 			}

@@ -1,8 +1,5 @@
 package Project;
 //import Project.User;
-import Project.Book;
-import Project.Room;
-import Project.RoomDB;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -16,24 +13,13 @@ import java.io.ObjectInputStream;
 //Exceptions
 import java.io.IOException;
 import java.io.FileNotFoundException;
-
+/*
+ *@author AbhishekTiwari
+ */
 public class RoomBook extends Book
 {	
 	private Request newrequest = new Request();
 	private static ArrayList<Request> RequestsMade = new ArrayList<Request>();	
-	@Override
-	public String generateUID()
-	{
-		String[] letters={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-		String[] nos={"0","1","2","3","4","5","6","7","8","9"};
-		int len1 = letters.length;
-		int len2 = nos.length;
-		int rand1=(int)(Math.random()*len1);
-		int rand2=(int)(Math.random()*len2);
-		int rand3=(int)(Math.random()*len1);
-		int rand4=(int)(Math.random()*len2);
-		return letters[rand1]+nos[rand2]+letters[rand3]+nos[rand4];		
-	}
 	@Override
 	public void generateForm()
 	{
@@ -109,7 +95,15 @@ public class RoomBook extends Book
 			roomch=inp.next().charAt(0);
 		}
 		if(roomBookedFlag==1)
+		{
+			//this will write to RoomRequestDB from where the AdminRoom class method will read for 'Evaluate Requests'
 			writeRequestToDB();
+			//also we must make an entry in ResponseUIDDB from where the RoomBook class reads for the functionality 'Check Status'
+			ArrayList<String> responses = new ArrayList<String>();
+			responses = AdminRoom.getResponseAndUID();
+			responses.add(newrequest.getRequestUID()+"-"+"Pending");
+			AdminRoom.updateResponseUIDDB(responses);
+		}
 	}	
 	@Override
 	public void displayStatus(String UID)

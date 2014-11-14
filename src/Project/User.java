@@ -1,28 +1,48 @@
 package Project;
-
-public class User {
-	
-	private static String name;
-	private static String id;
-	
-	public static void setId(String id)
-	{
-		User.id = id; 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.Scanner;
+public class User
+{
+	private String name;
+	private String ID;
+	public void setname(String nm){
+		name = nm;
 	}
-	
-	public static void setName(String name)
-	{	
-		User.name = name;
+	public boolean setID(String id_inp){
+		boolean result;
+		if((result=checkID(id_inp))){
+			ID=id_inp;
+			System.out.println("Valid ID. Accepted.");
+		}
+		else
+			System.out.println("ID not set for "+name+". Invalid ID given. Try Again.");
+		return result;
 	}
-	
-	public static String getId()
-	{
-		return User.id;
+	private boolean checkID(String id){
+		Pattern pat = Pattern.compile("^20[0-9]{2}[abAB][0-9](ps|PS)[0-9]{0,4}[Gg]$");
+		Matcher match = pat.matcher(id);
+		return match.find();
 	}
-	
-	public static String getName()
-	{
-		return User.name;
+	public boolean setDetails(){	
+		Scanner inp = new Scanner(System.in);
+		System.out.println("Enter name:\n");
+		setname(inp.nextLine());
+		System.out.println("Enter ID:\n");
+		return setID(inp.nextLine());
 	}
-
+	public String getname(){
+		return name;
+	}
+	public String getID(){
+		return ID;
+	}
 }
+/*	ONLY FOR TESTING PURPOSES
+class UserTester{
+	public static void main(String[] args){
+		User student1 = new User();
+		student1.setname(args[0]);
+		student1.setID(args[1]); 
+	}
+}*/

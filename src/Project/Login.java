@@ -46,7 +46,7 @@ public class Login {
      * This is the main method which will be called from Driver.java to get
      * user details.
      */
-    public static void authenticateUser()
+    public static boolean authenticateUser()
     {
         // TODO: Implement password hiding in console. To be done after project
     	// runs successfully in console.
@@ -70,6 +70,7 @@ public class Login {
         }
         
         name = extractName();
+        return true;
     }    
     
     
@@ -112,10 +113,25 @@ public class Login {
     		
     	}
     }
+    	
+    	public static boolean isAdmin()
+    	{
+    		while(true)
+    		{
+    			System.out.println("\nEnter admin password");
+    			Scanner in=new Scanner(System.in);
+    			if(in.nextLine().equals("ADMIN"))
+    			{
+    				return true;
+    			}
+    			System.out.println("\nIncorrect password");
+    		}	
+    	}
+    }
 
 /* Debug method. Do not remove this.
     public static void main(String[] args)
     {
     	System.out.println(connect("f2013694", "Qwerty1234-"));
     }*/
-}
+
