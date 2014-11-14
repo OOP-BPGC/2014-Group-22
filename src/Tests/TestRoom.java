@@ -6,7 +6,7 @@ import junit.framework.*;
 /**
  * This class contains test modules for Room class.
  * Download Room/java from src/Project/ directory to run these tests.
- * @author varsheeth
+ * @author f2013049
  *
  */
 
@@ -15,23 +15,19 @@ public class TestRoom extends TestCase
 	public TestRoom(String str)
 	{
 		super(str);
-	}
-	
-	private static Room room = new Room();
-	
-	public static void oneTimeSetUp()
-	{
-		room.setRoomNumber("A604");
+		room.setRoomNumber("A749");
 		room.setProjectorStatus(false);
 		room.setStatus("booked");
 		room.setBookingTime("12:04", "17.06");
 		room.setBookingDate("10/15/2016");
 		room.setCapacity(50);
-    }
+	}
+	
+	private static Room room = new Room();
 	
 	public void testGetRoomNumber()
 	{
-		assertEquals("A604", room.getRoomNumber());
+		assertEquals("A749", room.getRoomNumber());
 	}
 	public void testGetProjectorStatus()
 	{
@@ -47,15 +43,15 @@ public class TestRoom extends TestCase
 	}
 	public void testGetStartingTime()
 	{
-		assertEquals("12:04", room.getStartingTime());
+		assertEquals("12:04", (room.getStartingTime()).get(0));
 	}
 	public void testGetDuration()
 	{
-		assertEquals("17.06", room.getDuration());
+		assertEquals("17.06", (room.getDuration()).get(0));
 	}
 	public void testGetBookingDate()
 	{
-		assertEquals("10/15/2016", room.getBookingDate());
+		assertEquals("10/15/2016", (room.getBookingDate()).get(0));
 	}
 	
 	
