@@ -47,41 +47,64 @@ public class Room implements Serializable
 	{	status=stat;
 	}
 
-	public boolean setBookingDate(String dt)
+	public boolean setBookingDate(int day, int month, int year)
 	{
-		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}$");
-		Matcher match = pat.matcher(dt);
-		if(match.find())
-			bookingDate.add(dt);
-		else
+		int flag=0;
+		if(year>=2014)
 		{
-			System.out.println("Failed to set Booking Date. Please enter date in the format 7/9/2014.");
-			return false;
+			if(month==2)
+			{	
+				if(day>=1&&day<=28)
+					flag=1;
+			}
+			else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12)	
+			{
+				if(day>=1&&day<=31)
+					flag=1;
+			}
+			else if(month==4||month==6||month==8||month==9||month==11)
+			{
+				if(day>=1&&day<=30)
+					flag=1;
+			}
 		}
-		
-		return true;
+		if(flag==1)
+		{
+			bookingDate.add(day+"/"+month+"/"+year);
+			return true;
+		}
+		return false;
 	}
-	public boolean setBookingTime(String begin, String dtn)
-	{	
-		Pattern pat = Pattern.compile("^\\d{1,2}([:])\\d{1,2}$");
-		Matcher match = pat.matcher(begin);
-		if(match.find())
-			startingTime.add(begin);
-		else
-		{
-			System.out.println("Failed to set beginning time of booking. Please enter time in hh:mm format.");
-			return false;
+	public void setBookingDate(String bd)
+	{
+		bookingDate.add(bd);
+	}
+	public boolean setStartingTime(int hour, int minutes)
+	{
+		if(hour>=0&&hour<=24&&minutes>=0&&minutes<=60)
+		{	
+			startingTime.add(hour+":"+minutes);
+			return true;	
 		}
-		pat=Pattern.compile("\\d|\\d([.])\\d");
-		match=pat.matcher(dtn);
-		if(match.find())
-			duration.add(dtn);
-		else
+		return false;
+	}
+	public void setStartingTime(String st)
+	{
+		startingTime.add(st);
+	}
+	
+	public boolean setDuration(double hours)
+	{
+		if(hours>0&&hours<=15)
 		{
-			System.out.println("Failed to set 'duration; of Booking. Please enter no of hours for booking. Example : 1 for 1 hour or 1.5 for 1 and a 1/2 hours.");
-			return false;
+			duration.add(hours+"");
+			return true;
 		}
-		return true;
+		return false;
+	}
+	public void setDuration(String dt)
+	{
+		duration.add(dt);
 	}
 	public String getRoomNumber()
 	{	return roomNumber;
@@ -106,24 +129,20 @@ public class Room implements Serializable
 	}
 	public void displayRoom()
 	{
-		System.out.println("Room Number:\t"+roomNumber+"\nProjector Status:\t"+projectorStatus+"\nRoom Status:\t"+status+"\nRoom Capacity:\t"+capacity);
+		System.out.println("\n**********************************************************************************");
+		System.out.println("Room Number:\t\t\t\t"+roomNumber+"\nProjector Status:\t\t\t"+projectorStatus+"\nRoom Status:\t\t\t\t"+status+"\nRoom Capacity:\t\t\t\t"+capacity);
 		if(status.equals("Booked"))
 		{
+			System.out.println("\nEXISTING BOOKINGS FOR "+roomNumber);
 			int noOfBookings = bookingDate.size();
 			for(int j=0; j<noOfBookings; j++)
 			{
-				System.out.println("Booking no. :"+j);
-				System.out.println("Booking Date :\t"+bookingDate.get(j));
-				System.out.println("Rooms is booked from:\t"+startingTime.get(j)+"\nFor the duration of:\t"+duration.get(j)+" hours.");
+				System.out.println("\nBooking no. :\t\t\t\t"+(j+1));
+				System.out.println("----------------------------------------------------");
+				System.out.println("Booking Date :\t\t\t\t"+bookingDate.get(j));
+				System.out.println("Rooms is booked from:\t\t\t"+startingTime.get(j)+"\nFor the duration of:\t\t\t"+duration.get(j)+" hours.");
 			}
 		}
-		System.out.println("-----------------------------");
-	}
-	public static void main(String[] args)
-	{
-		Room C306 = new Room();
-		C306.setRoomNumber("C306");
-		C306.setBookingTime("1:45","1.5");
-		C306.setBookingDate("5/11/14");		
+		
 	}
 }

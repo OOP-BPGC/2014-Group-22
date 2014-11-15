@@ -43,9 +43,14 @@ public class Request implements Serializable
 	 *String to hold booking status : Approved, Denied;
 	 */
 	private String bookingStatus;
+	/*
+	 *Flag to store whether or not the request has already been evaluated.
+	 */
+	private boolean evaluated;
 	public Request()
 	{
 		setBookingStatus("Pending");
+		setEvaluated(false);
 	}
 	public void setReason(String reason)
 	{
@@ -59,6 +64,53 @@ public class Request implements Serializable
 	{	
 		this.room=room;
 	}
+	public boolean setBookingDate(int day, int month, int year)
+	{
+		int flag=0;
+		if(year>=2014)
+		{
+			if(month==2)
+			{	
+				if(day>=1&&day<=28)
+					flag=1;
+			}
+			else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12)	
+			{
+				if(day>=1&&day<=31)
+					flag=1;
+			}
+			else if(month==4||month==6||month==8||month==9||month==11)
+			{
+				if(day>=1&&day<=30)
+					flag=1;
+			}
+		}
+		if(flag==1)
+		{
+			bookingDate=(day+"/"+month+"/"+year);
+			return true;
+		}
+		return false;
+	}
+	public boolean setStartingTime(int hour, int minutes)
+	{
+		if(hour>=8&&hour<=23&&minutes>=0&&minutes<=60)
+		{	
+			startingTime=(hour+":"+minutes);
+			return true;	
+		}
+		return false;
+	}
+	public boolean setDuration(double hours)
+	{
+		if(hours>0&&hours<=15)
+		{
+			duration=(hours+"");
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean setBookingDate(String dt)
 	{
 		Pattern pat = Pattern.compile("^\\d{1,2}([/])\\d{1,2}([/])\\d{4}$");
@@ -148,6 +200,12 @@ public class Request implements Serializable
 				   "\nBooking Date    :	"+bookingDate+
 				   "\nStarting Time   :	"+startingTime+
 				   "\nDuration(Hours) :	"+duration);
+	}
+	public void setEvaluated(boolean set)
+	{	evaluated=set;
+	}
+	public boolean getEvaluated()
+	{	return evaluated;
 	}
 	/*
 	public void setID()

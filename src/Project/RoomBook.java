@@ -23,106 +23,220 @@ public class RoomBook extends Book
 	@Override
 	public void generateForm()
 	{
-		Scanner inp = new Scanner(System.in);
-		String line="";
-		int roomBookedFlag=0;
-		//setID();
-		//user details have been taken.
-		String room="";
-		//char variable to run room choosing menu
-		char roomch = 'y';
+		System.out.println("\n############################################################################");
+		System.out.println("\nROOM LIST WITH THEIR BOOKINGS");
+		RoomDB.displayRooms();
+		System.out.println("\n____________________________________________________________________________________________");
+		System.out.println("\nPlease scroll through the list of available rooms and choose a room which meets your");
+		System.out.println("requirements. The bookings are also listed to help you avoid conflicting choices...");
+		System.out.println("\n____________________________________________________________________________________________");
 
+		int confirmRoom = 2;
+		Scanner inp = new Scanner(System.in);
+		String room = null;
+		String bookingDate = null;
+		String startingTime = null;
+		String line = null;
+		int attendance=0;
+		int day=0;
+		int month=0;
+		int year=0;
+		int hour=0;
+		int minutes=0;
+		double duration=0;
+		int roomBooked=0;
+
+		System.out.println("#################################");
+		System.out.println("FILL IN THE FOLLOWING FIELDS");
+		System.out.println("#################################");
+		//take booking day input
+		do{
+		System.out.println("Room is to be booked for which day?");
+		System.out.println("Enter day (1-31) and press enter");
+		System.out.println("then enter month (1-12) and press enter");
+		System.out.println("then enter year (>2014) and press enter");
+		day=inp.nextInt();
+		month=inp.nextInt();
+		year=inp.nextInt();
+		}while(!newrequest.setBookingDate(day,month,year));
+
+		System.out.println("\n\n");
+		//take starting time of booking
+		do{
+		System.out.println("Starting time of booking?");
+		System.out.println("Enter time in 24 hour format,");
+		System.out.println("Enter hours (8-23) press enter,");
+		System.out.println("then enter minutes (0-60) and press enter.");
+		hour=inp.nextInt();		
+		minutes=inp.nextInt();
+		}while(!newrequest.setStartingTime(hour,minutes));
+		
+		System.out.println("\n\n");
+		//take 'duration' of booking input
+		do{
+		System.out.println("Room is to be booked for how long?");
+		System.out.println("Enter value in hours eg : 1.5, 2.5, 3 etc.");
+		duration=inp.nextDouble();
+		}while(!newrequest.setDuration(duration));
+		
+		System.out.println("\n\n");	
+		//take attendance count			
+		System.out.println("Room is to be booked for how many persons?");
+		attendance=inp.nextInt();
+		newrequest.setAttendanceCount(attendance);
+
+		System.out.println("\n\n");
 		//take reason for booking	
+		inp.nextLine();
 		System.out.println("Enter Reason for requesting room. Use only 1 Line.");	
 		line=inp.nextLine();
 		newrequest.setReason(line);
+		inp.nextLine();
 
-		//take booking day input
-		System.out.println("Please enter the following Booking Details to resolve clashes with other bookings, if any...");
-		System.out.println("Room is to be booked for which day? (Enter date in format as 7/1/2014 or 12/11/2014 only)");
-		line=inp.nextLine();
-		newrequest.setBookingDate(line);
-
-		//take starting time of booking
-		System.out.println("Starting time of booking? (Enter time in 24 hour format as hh:mm only)");
-		newrequest.setStartingTime(inp.next());
-
-		//take 'duration' of booking input
-		System.out.println("Room is to be booked for how long (enter digit 'n' for 'n' hours or 'm.5' for m and a half hours)?");
-		newrequest.setDuration(inp.next());
-
-		//take attendance count			
-		System.out.println("Room is to be booked for how many persons? (Enter digit 'n' for 'n' persons)");
-		newrequest.setAttendanceCount(inp.nextInt());
-
-		//display rooms from DB for choosing
-		char confirmBooking='y';
-		while(roomch=='y'||roomch=='Y')
+		while(confirmRoom==2)
 		{
-			roomBookedFlag=0;
-			System.out.println("ROOMS\n----------------------------");
-			RoomDB.displayRooms();
-			System.out.println("\n\nChoose a room");
-			room=inp.next();				
-			if(roomChoiceCheck(room)==-1)
-				System.out.println("Sorry!! The room you chose does not exist.\nMake sure you enter the exact room name, for example: for 'A605' do not enter 'a605'.");
-			else if(roomChoiceCheck(room)==0)
-				System.out.println("Sorry!! The room chosen is not available.");
-			else if(roomChoiceCheck(room)==1)
+			System.out.println("Enter choice of room:");
+			System.out.println("(Do not change capital letters to small))");
+			room=inp.next();
+			int result =roomChoiceCheck(room,day,month,year,hour,minutes,duration,attendance);
+			if(result==-1)
+			{
+				System.out.println("#################################");
+				System.out.println(room+" does not exist.");
+			}
+			else if(result==2)
+			{
+				System.out.println("#################################");
+				System.out.println("The capacity of "+room+" is less than Expected Attendance given.");
+			}
+			else if(result==3)
+			{
+				System.out.println("#################################");
+				System.out.println("The room "+room+" is already booked for the chosen time slot.");
+				System.out.println("Please choose a different room.");
+			}
+			else if(result==4)
+			{
+				System.out.println("#################################");
+				System.out.println("Your requested time slot is conflicting with an existing booking of "+room);
+				System.out.println("Please choose a different room.");
+			}
+			else if(result==1)
 			{
 				newrequest.setRoom(room);
-				System.out.println("\n\n"+room+" has been marked for booking for you.");
-				System.out.println("\nPlease keep in mind that in case there are multiple bookings for the same room\nand at the same time slot then the admin will approve the first posted booking\nrequest with valid reason and the others shall be denied.");
 				newrequest.setRequestUID(generateUID());
-				System.out.println("Your request UID is\t"+newrequest.getRequestUID()+"\nYou can use it to review request status or cancel booking Request.");
-				//Ask user to confirm Booking
-				System.out.println("Confirm that you want to make this request. Enter 'y' or 'n'.");
-				confirmBooking=inp.next().charAt(0);
-				if(confirmBooking=='y'||confirmBooking=='Y')
-				{
-					roomBookedFlag=1;//confirm	
-					break;
-				}
+				newrequest.setBookingStatus("Pending");
+				System.out.println("---------------------------------------------------------------------------");
+				System.out.println("\n------------Request Posted. UID is :"+newrequest.getRequestUID()+"-----------------------------------");
+
+			}
+			System.out.println("1.Confirm Room.");
+			System.out.println("2.Choose a different Room.");
+			System.out.println("3.Discard booking.");
+			System.out.println("Enter Choice:");	
+			confirmRoom=inp.nextInt();			
+			if(confirmRoom==1)
+			{	
+				if(result==1)
+				{	roomBooked=1;	
+					break;}
 				else
-				{
-					//discard booking
-					System.out.println("Your request has been discarded.");
-					System.out.println("EXECUTING BREAK;");
+				{	System.out.println("In this case booking cannot be confirmed. Discarding Request...");
 					break;
 				}
 			}
-			System.out.println("Choose a different Room?(y/n)");
-			roomch=inp.next().charAt(0);
+			else if(confirmRoom==2)
+				continue;
+			else if(confirmRoom==3)
+				break;
 		}
-		if(roomBookedFlag==1)
-		{
-			//this will write to RoomRequestDB from where the AdminRoom class method will read for 'Evaluate Requests'
+		if(roomBooked==1)
+		//this will write to RoomRequestDB from where the AdminRoom class method will read for 'Evaluate Requests'
 			writeRequestToDB();
-			//also we must make an entry in ResponseUIDDB from where the RoomBook class reads for the functionality 'Check Status'
-			ArrayList<String> responses = new ArrayList<String>();
-			responses = AdminRoom.getResponseAndUID();
-			responses.add(newrequest.getRequestUID()+"-"+"Pending");
-			AdminRoom.updateResponseUIDDB(responses);
+	}
+	/*	@return
+	 *	-1 : Room does not exist.
+	 *	 1 : Room is available 'for' the requested time slot without conflicting with previous and next bookings.
+	 *	 2 : Room capacity < expected Attendance
+	 *	 3 : Requested room is already booked at exactly the same time slot and day.
+	 *	 4 : Requested time slot is in conflict with an existing booking.
+	 */
+	public static int roomChoiceCheck(String room, int day,int month,int year, int hour,int minutes, double duration,int attendance)
+	{
+		ArrayList<Room> roomList = new ArrayList<Room>();
+		roomList=RoomDB.getRoomList();
+		String date = day+"/"+month+"/"+year;
+		String time = hour+":"+minutes;
+		for(Room aroom : roomList)
+		{
+			if(aroom.getRoomNumber().equals(room))
+			{
+				if(aroom.getCapacity()<attendance)
+					return 2;
+				else if(aroom.getStatus().equals("Available"))
+					return 1;	
+				else if(aroom.getStatus().equals("Booked"))
+				{
+					if(aroom.getBookingDate().contains(date))
+					{
+						ArrayList<String> bookingDates = aroom.getBookingDate();
+						ArrayList<String> startingTimes = aroom.getStartingTime();	
+						ArrayList<String> durations = aroom.getDuration();
+						int size = bookingDates.size();
+					//if there are multiple bookings on the same day they'll be in seperate objects of the ArrayLists
+						for(int j=0; j<size; j++)
+						{
+							if(bookingDates.get(j).equals(date))
+							{
+								String timeOfBooking = startingTimes.get(j);
+								String[] booked = timeOfBooking.split(":",0);
+								String[] requested = time.split(":",0);
+								//timing details of existing booking 
+								int hourBooked = Integer.parseInt(booked[0]);
+								int minutesBooked = Integer.parseInt(booked[1]);
+								double durationBooked = Double.parseDouble(durations.get(j));
+								if(hour==hourBooked&&minutes==minutesBooked)
+									return 3;
+								else if(hour<hourBooked&&(hour+duration)<=hourBooked)
+									return 1;
+								else if(hour>hourBooked && hourBooked+durationBooked<=hour)
+									return 1;
+								else
+									return 4;
+							}
+						}
+					}
+					else
+						return 1;//Because room is booked but not for the day requested by user.
+				}
+			}
 		}
-	}	
+		return -1;
+	}
 	@Override
 	public void displayStatus(String UID)
-	{
-		ArrayList<String> adminResponses = AdminRoom.getResponseAndUID();
-		String[] temp = new String[2];
-		int found =0;
-		for(String line : adminResponses)
+	{	
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		int index =-1;
+		ArrayList<Request> requestsInDB = new ArrayList<Request>();
+		//read from RequestRoomDB
+		requestsInDB = (ArrayList<Request>)getRequestsMade();
+		if(requestsInDB.size()>0)
 		{
-			temp = line.split("-",0);
-			if(temp[0].equals(UID))
+			//search for request with supplied UID
+			for(Request areq : requestsInDB)
 			{
-				System.out.println("Your request status is\t\t:\t"+temp[1]);
-				found=1;
-				break;
+				if(areq.getRequestUID().equals(UID))
+				{
+					System.out.println("Your Request Status is :\t\t"+areq.getBookingStatus());
+					break;
+				}
 			}
+
 		}
-		if(found==0)
-			System.out.println("No request found in Database that matches supplied UID");			
+		else
+			System.out.println("No request found matching the supplied UID.");
 	}
 	@Override
 	public void cancelRequest(String UID)
@@ -140,6 +254,7 @@ public class RoomBook extends Book
 			{
 				System.out.println("Found Request in DB. Removing request...");
 				index=requestsInDB.indexOf(areq);
+				//also modify
 				break;
 			}
 		}
@@ -148,46 +263,6 @@ public class RoomBook extends Book
 		else
 			System.out.println("No request found matching the supplied UID.");
 		updateRoomRequestDB(requestsInDB);
-	}
-	private int roomChoiceCheck(String room)
-	{
-		ArrayList<Room> roomList = new ArrayList<Room>();
-		roomList=RoomDB.getRoomList();
-		String roomName = "";
-		for(Room aroom : roomList)
-		{
-			roomName=aroom.getRoomNumber();
-			if(roomName.equals(room))
-			{
-				if(aroom.getStatus().equals("Booked"))
-				{
-					ArrayList<String> bookingDates = aroom.getBookingDate();
-					int bookingIndex = 0;
-					ArrayList<String> startingTimes = aroom.getStartingTime();
-					//now check if room is booked for the same day and date!
-					for(String aday : bookingDates)
-					{
-						if(aday.equals(newrequest.getBookingDate()))
-						{
-							for(String time : startingTimes)
-							{
-								if(time.equals(newrequest.getStartingTime()))
-								{
-				
-								  System.out.println(room+" is already booked for the same Day and Time.");
-									return 0;
-								}
-							}
-						}
-					}
-					//room requested IS Booked but not for the same day and time!
-					return 1;
-				}
-				else if((aroom.getStatus()).equals("Available"))
-					return 1;				
-			}
-		}
-		return -1;//no such room found		
 	}
 	private void writeRequestToDB()
 	{

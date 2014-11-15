@@ -37,7 +37,7 @@ public class AdminRoom
 			System.out.println("ADMIN MENU");
 			System.out.println("-----------------------------");
 			System.out.println("1.Add Room.\n2.Modify Room Details.\n3.Evaluate Requests.\n4.Display Rooms.");
-			System.out.println("5.Previous Menu.\n6.Exit\nEnter choice: ");
+			System.out.println("5.Previous Menu.\n6.Clear Request DB.\n7.Exit\nEnter choice: ");
 			choice=inp.nextInt();
 			int prevMenu =0;
 			switch(choice)
@@ -51,8 +51,20 @@ public class AdminRoom
 				case 4: RoomDB.displayRooms();
 					break;
 				case 5: prevMenu=1;
-					break;
-				case 6: System.exit(0);
+					break;	
+				case 6: char confirm ='n';
+					System.out.println("\n\nAre you sure you eant to delete all evaluated requests?(y/n)");
+					System.out.println("-----------------------------------------------------------------");
+					System.out.println("After clearing DB, only pending requests will be left in database,");
+					System.out.println("as a result users who made requests that were approved or denied,");
+					System.out.println("will not be able to check the status. This function is designed to");
+					System.out.println("be used after the bookings are themselves over.");
+					System.out.println("-----------------------------------------------------------------");
+					confirm=inp.next().charAt(0);
+					if(confirm=='y'||confirm=='Y')
+						AdminRoom.clearRequestDB();
+					break;				
+				case 7: System.exit(0);
 					break;
 				default: System.out.println("Wrong Choice. Please Try Again.");
 			}
@@ -71,64 +83,29 @@ public class AdminRoom
 		ArrayList<Request> RequestsInDB = RoomBook.getRequestsMade();
 		//read from RoomDB
 		ArrayList<Room> RoomsInDB = RoomDB.getRoomList();
-		ArrayList<String> bookingDates= null; 
-		ArrayList<String> startingTimes= null;
-		ArrayList<String> durations= null;
-		ArrayList<Request> requestsPending = new ArrayList<Request>();
 		int decision=-1;
 		char confirm ='y';
 		String response="";
 		int r =0;
-		boolean fatalConflict = false;
-
-		//First read in responses from admin on requests he didnt clear in any previous sessions
-		//this is to later avoid a case where we end up with the entries "UID1 Pending" and "UID1 Approved"
-		//In above case "UID1 Pending" must be replaced by "UID1 Approved" or "UID1 Denied" as decided by admin
-		readFromResponseUIDDB();
-
 		//for each request in DB do the following
 		for(Request areq : RequestsInDB)
 		{
-			System.out.println("\nRequest No.\t:\t\t"+(++r));
-			System.out.println("-------------------------------------");
-			//display request
-			areq.displayRequest();
-	
-			//After Displaying a request for a particular room, display all current bookings for that room
-			//so that the admin can prevent clashes.
-			System.out.println("\nThe Room Requested already has the following Bookings.");
-			System.out.println("NOTE TO ADMIN: IF THERE IS A CLASH PLEASE DO NOT APPROVE THE BOOKING!");
-			System.out.println("--------------------------------------------------------------------------------");
-			for(Room aroom : RoomsInDB)
+			if(areq.getEvaluated())
+				continue;
+			//display request if valid
+			if(resolveConflicts(areq))
 			{
-				//1.Room number in request == room in DB
-				//2.Status of requested room == Booked
-				//3.Booking Dates arraylist of that room -> Contains the Booking date given in Request
-				//THEN do the following
-				if(aroom.getRoomNumber().equals(areq.getRoom()) && aroom.getStatus().equals("Booked") && aroom.getBookingDate().contains(areq.getBookingDate()))
-				{
-					//for possible clashing room, get the following details and print them
-					bookingDates=aroom.getBookingDate();
-					startingTimes=aroom.getStartingTime();
-					durations=aroom.getDuration();
-					int noOfBookings = bookingDates.size();
-					//print them
-					for(int j=0; j<noOfBookings; j++)
-					{
-						System.out.println("Booking no.\t\t:\t"+(j));
-						System.out.println("Booking Date\t\t:\t"+bookingDates.get(j));
-						System.out.println("Starting Time\t\t:\t"+startingTimes.get(j));
-						System.out.println("Duration\t\t:\t"+durations.get(j));
-					}
-					int index = bookingDates.indexOf(areq.getBookingDate());
-					fatalConflict = startingTimes.get(index).equals(areq.getStartingTime());
-					if(fatalConflict){
-						System.out.println("THIS BOOKING HAS A FATAL CONFLICT.");
-						System.out.println("On the requested day and time there is already a booking.");
-					}
-				}
+				System.out.println("\nRequest No.\t:\t\t"+(++r));
+				System.out.println("\n\n-------------------------------------");
+				areq.displayRequest();
 			}
-			
+			else
+			{
+				//dont display request as its invalid.
+				areq.setEvaluated(true);
+				areq.setBookingStatus("Denied by sofware due to conflicts with existing bookings.");
+				RoomBook.updateRoomRequestDB(RequestsInDB);				
+			}
 			//ask admin to pass judement on the Room booking Request also implement Confirmation
 			while(true)
 			{
@@ -136,14 +113,8 @@ public class AdminRoom
 				decision=inp.nextInt();
 				if(decision==1)
 				{
-					if(fatalConflict){
-						System.out.println("Fatal Conflict, Cannot approve request. Please Deny the request.");
-						continue;
-					}
-					else{
-						response="Approved";//set it in program as user may make spelling mistake while 						//typing 'approved' or 'denied'
-						System.out.println("You have selected to APPROVE the booking request.");
-					}
+					response="Approved";//set it in program as user may make spelling mistake while 					//typing 'approved' or 'denied'
+					System.out.println("You have selected to APPROVE the booking request.");
 				}
 				else if(decision==2)
 				{
@@ -167,113 +138,69 @@ public class AdminRoom
 				else
 					continue;
 			}
-			//Admin has passed judgement, update responseUID list
-			//But first check if the ResponseUIDDB already has an entry for this request (will happen if it were left..
-			//...as pending by the admin in some previous session) in that case remove it and add new entry.
-			int index=-1;
-			String[] temp = new String[2];
-			for(String rplusUID : responseAndUID)
-			{
-				temp = rplusUID.split("-",0); 
-				if(temp[0].equals(areq.getRequestUID()))
-				{
-					index = responseAndUID.indexOf(rplusUID);
-					break;
-				}
-			}
-			if(index>=0)
-				responseAndUID.remove(index);
-			responseAndUID.add(areq.getRequestUID()+"-"+response);
-			//update ResponseUIDDB
-			writeToResponseUIDDB();
-			
-			//If respons is "Approved" then update DB to reflect confirmation, so that if any further requests clash 
-			//with this one the admin will come to know via the clash prevention mechanism implemented above
+			//do the following based on admins decision.
 			if(response.equals("Approved"))
 			{
+				areq.setEvaluated(true);
+				areq.setBookingStatus("Approved");
 				for(Room aroom : RoomsInDB)
 				{
 					if(aroom.getRoomNumber().equals(areq.getRoom()))
 					{
 						aroom.setStatus("Booked");
 						aroom.setBookingDate(areq.getBookingDate());
-						aroom.setBookingTime(areq.getStartingTime(),areq.getDuration());
+						aroom.setStartingTime(areq.getStartingTime());
+						aroom.setDuration(areq.getDuration());
 					}
 				}
+				System.out.println("Writing to RoomDB with updated room information...");
+				RoomDB.updateDB(RoomsInDB);
+				RoomBook.updateRoomRequestDB(RequestsInDB);				
+				System.out.println("Records Updated.");		
 			}
-			System.out.println("Writing to RoomDB with updated room information...");
-			RoomDB.updateDB(RoomsInDB);
-			System.out.println("Records Updated.");		
-			//incase the admin chooses to evaluate later, keep that request in database, delete the others
-			if(response.equals("Pending"))
-				requestsPending.add(areq);
-		}
-		//update requests DB AFTER all requests are Evaluated to keep only pending requests and DELETE the others.
-		RoomBook.updateRoomRequestDB(requestsPending);
-	}
-	
-	private static void writeToResponseUIDDB()
-	{
-		FileOutputStream fos = null;
-		ObjectOutputStream oos = null;
-		try{
-			fos = new FileOutputStream("ResponseUIDDB");
-			oos = new ObjectOutputStream(fos);
-			//note here we are not recovering first and then overwriting (as we do in RoomDB and RoomBook)
-			//because in any scenario the readFromResponseUIDDB() is called first and then only this write fn is called!
-			//see lines 63-66
-			//see lines 102 in RoomBook 
-			//the Above two use cases only will lead to fn call to this method
-			oos.writeObject(responseAndUID);			
-		}catch(IOException e)
-		{
-			System.out.println("Caught IOException while writing response and UID to file. Error 31");
-		}finally{	
-			try{
-				if(fos!=null)
-					fos.close();
-			}catch(IOException e)
+			else if(response.equals("Denied"))
 			{
-				System.out.println("Caught IOException while writing response and UID to file. Error 32");
+				areq.setEvaluated(true);
+				areq.setBookingStatus("Denied");
+				RoomBook.updateRoomRequestDB(RequestsInDB);				
+			}
+			else if(response.equals("Pending"))
+			{
+				areq.setEvaluated(false);
+				areq.setBookingStatus("Pending");
+				RoomBook.updateRoomRequestDB(RequestsInDB);				
 			}
 		}
 	}
-	private static void readFromResponseUIDDB()
+	public static boolean resolveConflicts(Request areq)
 	{
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		File fileCheck = new File("ResponseUIDDB");
-		if(fileCheck.exists())
+		//update RequestsInDB to nullify requests that were not conflicting at time of booking but
+		//are now conflicting because the admin approved some request
+		String[] dateTemp = areq.getBookingDate().split("/",0);
+		int day= Integer.parseInt(dateTemp[0]);//day
+		int month= Integer.parseInt(dateTemp[1]);//month
+		int year= Integer.parseInt(dateTemp[2]);//year
+		String[] timeTemp = areq.getStartingTime().split(":",0);
+		
+		int hours= Integer.parseInt(timeTemp[0]);//hours
+		int minutes= Integer.parseInt(timeTemp[1]);//minutes
+		double duration = Double.parseDouble(areq.getDuration());
+		int attendance = areq.getAttendanceCount();
+		int result = RoomBook.roomChoiceCheck(areq.getRoom(),day,month,year,hours,minutes,duration,attendance);
+		if(result==1)	
+			return true;
+		else
+			return false;
+	}
+	private static void clearRequestDB()
+	{
+		ArrayList<Request> allRequests = RoomBook.getRequestsMade();
+		ArrayList<Request> pendingRequests = new ArrayList<Request>();
+		for(Request areq : allRequests)
 		{
-			try{
-				fis = new FileInputStream("ResponseUIDDB");
-				ois = new ObjectInputStream(fis);
-				responseAndUID=(ArrayList<String>)ois.readObject();
-			}catch(FileNotFoundException e){
-				System.out.println("Caught FileNotFoundException while reading from ResponseUIDDB. Error 33");
-			}catch(ClassNotFoundException e){
-				System.out.println("Caught ClassNotFoundException while reading from ResponseUIDDB. Error 34");
-			}catch(IOException e){
-				System.out.println("Caught IOException while reading from ResponseUIDDB. Error 35");
-			}finally{
-				try{
-					if(fis!=null)
-						fis.close();
-				}catch(IOException e)
-				{	System.out.println("Caught IOEx while closing fileinputstream for reading from ResponseUIDDB. Error 36");
-				}
-			}
+			if(areq.getBookingStatus().equals("Pending"))
+				pendingRequests.add(areq);
 		}
+		RoomBook.updateRoomRequestDB(pendingRequests);
 	}
-	public static ArrayList<String> getResponseAndUID()
-	{
-		readFromResponseUIDDB();
-		return responseAndUID;
-	}
-	public static void updateResponseUIDDB(ArrayList<String> responses)
-	{	
-		responseAndUID.addAll(responses);
-		writeToResponseUIDDB();
-	}
-
 }
