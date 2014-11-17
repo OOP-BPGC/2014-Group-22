@@ -18,33 +18,10 @@ public class Login {
 	public static String name;
     private static String bodyHtml = "null";
     
-    
-    /**
-     * This method extracts the user's name from the HTML obtained from
-     * authenticating to Moodle.
-     * 
-     * @return Name of the user
-     */
-    public static String extractName()
-    {
-        String name = "John Doe";
-        int endIndex = bodyHtml.indexOf(" .</a> ");
-        int startIndex = bodyHtml.indexOf("You are logged in as");
-        for(int i = startIndex; i < endIndex; i++)
-        {
-            if(bodyHtml.charAt(i) == '>')
-            {
-                name = bodyHtml.substring(i+1, endIndex);
-                break;
-            }
-        }
-        return name;
-    }
-    
-    
     /**
      * This is the main method which will be called from Driver.java to get
      * user details.
+     * @return true if authentication successful, false otherwise
      */
     public static boolean authenticateUser()
     {
@@ -71,14 +48,35 @@ public class Login {
         
         name = extractName();
         return true;
-    }    
+    }
     
+    /**
+     * This method extracts the user's name from the HTML obtained from
+     * authenticating to Moodle.
+     * 
+     * @return Name of the user
+     */
+    public static String extractName()
+    {
+        String name = "John Doe";
+        int endIndex = bodyHtml.indexOf(" .</a> ");
+        int startIndex = bodyHtml.indexOf("You are logged in as");
+        for(int i = startIndex; i < endIndex; i++)
+        {
+            if(bodyHtml.charAt(i) == '>')
+            {
+                name = bodyHtml.substring(i+1, endIndex);
+                break;
+            }
+        }
+        return name;
+    }
     
     /**
      * Core method which connects to Moodle server and authenticates
      * the user's credentials.
-     * @param id
-     * @param pwd
+     * @param id The moodle username
+     * @param password Moodle password
      * @return True if login successful else False.
      */
     
