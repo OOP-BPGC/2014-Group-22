@@ -4,6 +4,12 @@ package Project;
  */
 abstract class Book
 {
+	protected String UID;
+	
+	public String getUID()
+	{
+		return this.UID;
+	}
 	public String generateUID()
 	{
 		String[] letters={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
@@ -18,6 +24,8 @@ abstract class Book
 	}
 	public abstract void generateForm();
 	public abstract void displayStatus(String UID);
+	
+	// TODO: Decide on this method
 	public abstract void cancelRequest(String UID);
 }
 
