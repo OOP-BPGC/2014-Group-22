@@ -1,11 +1,11 @@
 package Project;
+
 import Project.Room;
 import java.util.Scanner;
 import java.util.ArrayList;
 //for writing objects
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.ObjectOutputStream;
 //for reading objects
 import java.io.FileInputStream;
@@ -25,7 +25,7 @@ public class RoomDB
 		char addRoom = 'y';
 		char projector = 'n';
 		Scanner inp = new Scanner(System.in);
-		//Clear RoomList first to avoid repition of objects while adding multiple rooms in the same login session
+		//Clear RoomList first to avoid repetition of objects while adding multiple rooms in the same login session
 		if(RoomList.size()!=0)
 			RoomList.clear();				
 		while(addRoom=='y'||addRoom=='Y')
