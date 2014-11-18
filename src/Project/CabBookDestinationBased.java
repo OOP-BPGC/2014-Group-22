@@ -62,7 +62,6 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				}
 			}
 			
-			// TODO: Implement a check to avoid same initial and final destination
 			invalidDestination = true;
 			while(invalidDestination) // Check whether the entered destination is present in
 				// the destination array.
@@ -70,9 +69,15 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				System.out.println("Enter the final destination: ");
 				this.finalDestination = sc.nextLine();
 				
+				if(finalDestination.equalsIgnoreCase(initialDestination))
+				{
+					System.out.println("Final destination cannot be the same as initial destination!");
+					continue;
+				}
+				
 				for(String dest: destinations) // Verify entered destination
 				{
-					if(dest.equals(finalDestination))
+					if(dest.equalsIgnoreCase(finalDestination))
 					{
 						invalidDestination = false;
 						break;
@@ -91,7 +96,7 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				this.initialDate = sc.nextLine();
 				if(Book.isValidDateFormat(initialDate))
 				{
-					if(Book.compareDate(initialDate) == -1)
+					if(Book.compareDate(initialDate, null) == -1)
 					{
 						System.out.println("Invalid date!");
 					}
@@ -114,7 +119,7 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				this.finalDate = sc.nextLine();
 				if(Book.isValidDateFormat(finalDate))
 				{
-					if(Book.compareDate(finalDate) == -1)
+					if(Book.compareDate(finalDate, initialDate) == -1) // finalDate < initialDate 
 					{
 						System.out.println("Invalid date!");
 					}
@@ -136,7 +141,8 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				this.initialTime = sc.nextLine();
 				if(Book.isValidTimeFormat(initialTime))
 				{
-					if(Book.compareTime(initialTime))
+					if(Book.compareDate(initialDate, null) == 1 || 
+							(Book.compareDate(initialDate, null) == 0 && Book.compareTime(initialTime, null)))
 					{
 						invalidTime = false;
 					}
@@ -159,7 +165,9 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				this.finalTime = sc.nextLine();
 				if(Book.isValidTimeFormat(finalTime))
 				{
-					if(Book.compareTime(finalTime))
+					// System.out.println(initialDate + " " + finalDate + " " + Book.compareDate(finalDate, initialDate)); // Debug statement
+					if(Book.compareDate(finalDate, initialDate) == 1 || 
+							(Book.compareDate(finalDate, initialDate) == 0 && Book.compareTime(finalTime, initialTime)))
 					{
 						invalidTime = false;
 					}

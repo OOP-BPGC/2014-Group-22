@@ -43,7 +43,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 				this.initialDate = sc.nextLine();
 				if(Book.isValidDateFormat(initialDate))
 				{
-					if(Book.compareDate(initialDate) == -1)
+					if(Book.compareDate(initialDate, null) == -1)
 					{
 						System.out.println("Invalid date!");
 					}
@@ -68,7 +68,8 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 				this.initialTime = sc.nextLine();
 				if(Book.isValidTimeFormat(initialTime))
 				{
-					if(Book.compareTime(initialTime))
+					if(Book.compareDate(initialDate, null) == 1 || 
+							(Book.compareDate(initialDate, null) == 0 && Book.compareTime(initialTime, null)))
 					{
 						invalidTime = false;
 					}
