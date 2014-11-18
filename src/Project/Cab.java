@@ -7,8 +7,8 @@ public class Cab {
 	/*
 	 *Cab number is the unique attribute of each cab.
 	 */
-	private String cabNumber;
-	private String cabType;
+	// private String cabNumber;
+	// private String cabType;
 	private String licensePlate;
 	private int capacity;
 	private String driver;
@@ -56,20 +56,9 @@ public class Cab {
 	{
 		driver = name;
 	}
-	public boolean setDriverPhone(String ph)
+	public void setDriverPhone(String ph)
 	{
-		Pattern pat = Pattern.compile("^\\d{10}$");
-		Matcher match = pat.matcher(ph);
-		if(match.find(0))
-		{
-			driverPhone = ph;
-			return true;
-		}
-		else
-		{
-			// System.out.println("Failed to set Phone Number. Enter a valid 10 digit phone number.");
-			return false;
-		}
+		driverPhone = ph; // Implement regex in calling method 		
 	}	
 	public void setCapacity(int n)
 	{

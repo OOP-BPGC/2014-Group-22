@@ -34,7 +34,7 @@ public class CabDB {
 	static ArrayList<CabBookDestinationBased> CabListDest = new ArrayList<CabBookDestinationBased>();
 	static ArrayList<CabBookDistanceBased> CabListDist = new ArrayList<CabBookDistanceBased>();
 	static ArrayList<CabBookTimeBased> CabListTime = new ArrayList<CabBookTimeBased>();
-	private static ArrayList<Cab> cabFleet  = new ArrayList<Cab>();
+	static ArrayList<Cab> cabFleet  = new ArrayList<Cab>();
 	
 	/**
 	 * Given the bookingType, writes the respective ArrayList to corresponding database
@@ -58,6 +58,9 @@ public class CabDB {
 			
 			switch(bookingType)
 			{
+				case "CabFleet":
+					oos.writeObject(cabFleet);
+					break;
 				case "Destination":
 					oos.writeObject(CabListDest);
 					break;
