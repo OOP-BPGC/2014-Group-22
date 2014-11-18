@@ -23,7 +23,7 @@ public class Driver
 				case 1 : 			
 					int choice2;
 					char menu2='y';
-					boolean flag=false;
+					// boolean flag=false;
 					while(menu2=='y')
 					{
 						System.out.println("ROOM BOOKING MENU");
@@ -85,12 +85,21 @@ public class Driver
 							case 1: 
 								break;
 							case 2:
+								CabBookDistanceBased cabDist = new CabBookDistanceBased();
+								cabDist.generateForm();
 								break;
 							case 3:
+								CabBookTimeBased cabTime = new CabBookTimeBased();
+								cabTime.generateForm();
 								break;
 							case 4:
+								CabBookDestinationBased cabDest = new CabBookDestinationBased();
+								cabDest.generateForm();
 								break;
-							case 5: break;
+							case 5:
+								// TODO: Implement admin authorization
+								AdminCab.generateForm();
+								break;
 							case 6 : 
 								flag2=true;
 								break;
@@ -111,5 +120,6 @@ public class Driver
 			System.out.println("Go Back to Main Menu?(y/n)");
 			menu1=in.next().charAt(0);
 		}
+		in.close();
 	}
 }

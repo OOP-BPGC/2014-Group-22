@@ -1,8 +1,5 @@
 package Project;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Cab {
 	/*
 	 *Cab number is the unique attribute of each cab.
@@ -35,18 +32,17 @@ public class Cab {
 		return this.booked;
 	}
 	
-	public void setCabNumber(String cbn)
+	/*public void setCabNumber(String cbn)
 	{
 		cabNumber=cbn;
 	}
-	public void setBooked(int b)
-	{
-		booked = b;
-	}
-
 	public void setCabType(String cbt)
 	{
 		cabType=cbt;
+	}*/
+	public void setBooked(int b)
+	{
+		booked = b;
 	}
 	public void setLicensePlate(String lcsp)
 	{
@@ -64,14 +60,14 @@ public class Cab {
 	{
 		capacity = n;
 	}
-	public String getCabNumber()
+	/*public String getCabNumber()
 	{
 		return cabNumber;
 	}
 	public String getCabType()
 	{
 		return cabType;
-	}
+	}*/
 	public String getDriver()
 	{
 		return driver;

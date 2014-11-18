@@ -45,6 +45,7 @@ public class AdminCab {
 		}
 		newCab.setDriverPhone(driverPhone);
 		addCabToFleet(newCab);
+		sc.close();
 	}
 	
 	/**

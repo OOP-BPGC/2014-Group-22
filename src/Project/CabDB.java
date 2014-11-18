@@ -7,11 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -200,7 +196,7 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			if(compareDate(CabListDest.get(i).getFinalDate()) == -1) // Booking expired
+			if(Book.compareDate(CabListDest.get(i).getFinalDate()) == -1) // Booking expired
 			{
 				Cab cab = CabListDest.remove(i).cab;
 				for(int j = 0; j < cabFleet.size(); j++)
@@ -219,7 +215,7 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			if(compareDate(CabListDist.get(i).getFinalDate()) == -1) // Booking expired
+			if(Book.compareDate(CabListDist.get(i).getFinalDate()) == -1) // Booking expired
 			{
 				Cab cab = CabListDist.remove(i).cab;
 				for(int j = 0; j < cabFleet.size(); j++)
@@ -236,7 +232,7 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			if(compareDate(CabListTime.get(i).getFinalDate()) == -1) // Booking expired
+			if(Book.compareDate(CabListTime.get(i).getFinalDate()) == -1) // Booking expired
 			{
 				Cab cab = CabListTime.remove(i).cab;
 				for(int j = 0; j < cabFleet.size(); j++)
@@ -290,7 +286,7 @@ public class CabDB {
 		}
 		for(int i = 0; i < CabListDest.size(); i++) // Search Destination.db
 		{
-			if(!(compareDate(CabListDest.get(i).getInitialDate()) == 1 &&
+			if(!(Book.compareDate(CabListDest.get(i).getInitialDate()) == 1 &&
 					CabListDest.get(i).cab.getCapacity() >= reqdCapacity))
 			{
 				availableCabs.put(new String(CabListDest.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -298,7 +294,7 @@ public class CabDB {
 		}
 		for(int i = 0; i < CabListDist.size(); i++) // Search Distance.db
 		{
-			if(!(compareDate(CabListDist.get(i).getInitialDate()) == 1 &&
+			if(!(Book.compareDate(CabListDist.get(i).getInitialDate()) == 1 &&
 					CabListDist.get(i).cab.getCapacity() >= reqdCapacity))
 			{
 				availableCabs.put(new String(CabListDist.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -306,7 +302,7 @@ public class CabDB {
 		}
 		for(int i = 0; i < CabListTime.size(); i++) // Search Time.db
 		{
-			if(!(compareDate(CabListTime.get(i).getInitialDate()) == 1 &&
+			if(!(Book.compareDate(CabListTime.get(i).getInitialDate()) == 1 &&
 					CabListTime.get(i).cab.getCapacity() >= reqdCapacity))
 			{
 				availableCabs.put(new String(CabListTime.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -345,49 +341,6 @@ public class CabDB {
 		}
 		
 		return null; // Sanity check. Not needed really
-	}
-	
-	// TODO: Shift this method somewhere else if possible
-	/**
-	 * Method to compare a given date with the current date
-	 * @param String d1
-	 * @return 1 if date > currentDate, -1 if date < currentDate, 0 otherwise
-	 */
-	public static int compareDate(String d1)
-	{
-		Date date1 = null, date2 = null;
-		try{
-			
-			Calendar javaCalendar = null;
-			String currentDate = "";
-			javaCalendar = Calendar.getInstance();
-			currentDate = javaCalendar.get(Calendar.DATE) + "/" + (javaCalendar.get(Calendar.MONTH) + 1) + "/" + javaCalendar.get(Calendar.YEAR);
-			 
-    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    		date1 = sdf.parse(d1);
-        	date2 = sdf.parse(currentDate);
- 
-        	// System.out.println(sdf.format(date1));
-        	// System.out.println(sdf.format(date2));
- 
-    	} catch(ParseException ex) {
-    		ex.printStackTrace();
-    	}
-		
-		if(date1.after(date2)){
-    		// System.out.println("Date1 is after Date2");
-    		return 1;
-    	}
-
-    	else if(date1.before(date2)){
-    		// System.out.println("Date1 is before Date2");
-    		return -1;
-    	}
-
-    	// if(date1.equals(date2)){
-    		// System.out.println("Date1 is equal Date2");
-    	return 0;
-    	// }
 	}
 	
 	/**

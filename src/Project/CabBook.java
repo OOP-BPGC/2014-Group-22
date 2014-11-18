@@ -20,6 +20,7 @@ public abstract class CabBook extends Book {
 	
 	public CabBook()
 	{
+		super();
 		cab = null;
 		bookedBy = Login.id;
 	}

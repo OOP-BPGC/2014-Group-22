@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 public class CabBookDestinationBased extends CabBook implements Serializable {
 	
+	private static final long serialVersionUID = 1L; // Done to avoid warnings
 	private String initialDestination;
 	private String finalDestination;
 	private String[] destinations = {"BITS", "Verna", "Zuari", "Panjim", 
@@ -44,7 +45,7 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 			while(invalidDestination) // Check whether the entered destination is present in
 										// the destination array.
 			{
-				System.out.println("Enter the departure destination: ");
+				System.out.println("\nEnter the initial destination: ");
 				this.initialDestination = sc.nextLine();
 				
 				for(String dest: destinations) // Verify entered destination
@@ -61,11 +62,12 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 				}
 			}
 			
+			// TODO: Implement a check to avoid same initial and final destination
 			invalidDestination = true;
 			while(invalidDestination) // Check whether the entered destination is present in
 				// the destination array.
 			{
-				System.out.println("Enter the departure destination: ");
+				System.out.println("Enter the final destination: ");
 				this.finalDestination = sc.nextLine();
 				
 				for(String dest: destinations) // Verify entered destination
@@ -87,44 +89,86 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 			{
 				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
 				this.initialDate = sc.nextLine();
-				// TODO: Method to validate date
-				if(invalidDate)
+				if(Book.isValidDateFormat(initialDate))
 				{
-					System.out.println("Invalid Date format!");
+					if(Book.compareDate(initialDate) == -1)
+					{
+						System.out.println("Invalid date!");
+					}
+					else
+					{
+						invalidDate = false;
+					}
+				}
+				else
+				{
+					System.out.println("Invalid date format!");
 				}
 			}
 			
+			// TODO: Check if finalDate >= initialDate. Copy to all other classes.
 			invalidDate = true;
 			while(invalidDate) // Checks whether input Date is valid
 			{
 				System.out.println("Enter the arrival Date (in format dd/mm/yyyy : ");
 				this.finalDate = sc.nextLine();
-				// TODO: Method to validate date
-				if(invalidDate)
+				if(Book.isValidDateFormat(finalDate))
 				{
-					System.out.println("Invalid Date format!");
+					if(Book.compareDate(finalDate) == -1)
+					{
+						System.out.println("Invalid date!");
+					}
+					else
+					{
+						invalidDate = false;
+					}
+				}
+				else
+				{
+					System.out.println("Invalid date format!");
 				}
 			}
 			
 			boolean invalidTime = true;
 			while(invalidTime) // Checks whether input time is valid
 			{
-				System.out.println("Enter the departure time (in format hh:mm:ss : ");
+				System.out.println("Enter the departure time (in format hh:mm : ");
 				this.initialTime = sc.nextLine();
-				// TODO: Method to validate time
-				if(invalidTime)
+				if(Book.isValidTimeFormat(initialTime))
+				{
+					if(Book.compareTime(initialTime))
+					{
+						invalidTime = false;
+					}
+					else
+					{
+						System.out.println("Invalid time!");
+					}
+				}
+				else
 				{
 					System.out.println("Invalid time format!");
 				}
 			}
 			
+			// TODO: Check if finalTime >= initialTime if finalDate == initialDate. Copy to all other classes.
 			invalidTime = true;
 			while(invalidTime) // Checks whether input time is valid
 			{
-				System.out.println("Enter the arrival time (in format hh:mm:ss : ");
+				System.out.println("Enter the arrival time (in format hh:mm : ");
 				this.finalTime = sc.nextLine();
-				// TODO: Method to validate time
-				if(invalidTime)
+				if(Book.isValidTimeFormat(finalTime))
+				{
+					if(Book.compareTime(finalTime))
+					{
+						invalidTime = false;
+					}
+					else
+					{
+						System.out.println("Invalid time!");
+					}
+				}
+				else
 				{
 					System.out.println("Invalid time format!");
 				}
@@ -134,19 +178,20 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 			int requiredCapacity = sc.nextInt();
 			
 			CabDB.freeCabs();
-			
 			boolean cabBookStatus = bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
 			
 			if(cabBookStatus) // Only register the booking if free cab available
 			{
 				System.out.println("Booking successful. Add another booking? (y/n): ");
-				bookAnotherCab = (sc.nextLine() == "y")? true: false;
 			}
 			else
 			{
 				System.out.println("No cab free for the given time!");
 			}
-		}	
+			System.out.println("Book again? (y/n): ");
+			bookAnotherCab = (sc.nextLine() == "y")? true: false;
+		}
+		sc.close();
 	}
 	
 	/**

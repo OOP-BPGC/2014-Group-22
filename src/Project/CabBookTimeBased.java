@@ -11,6 +11,8 @@ import java.util.Scanner;
  */
 public class CabBookTimeBased extends CabBook implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	public CabBookTimeBased()
 	{
 		super();
@@ -33,22 +35,42 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 			{
 				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
 				this.initialDate = sc.nextLine();
-				// TODO: Method to validate date
-				if(invalidDate)
+				if(Book.isValidDateFormat(initialDate))
 				{
-					System.out.println("Invalid Date format!");
+					if(Book.compareDate(initialDate) == -1)
+					{
+						System.out.println("Invalid date!");
+					}
+					else
+					{
+						invalidDate = false;
+					}
+				}
+				else
+				{
+					System.out.println("Invalid date format!");
 				}
 			}
 			
 			invalidDate = true;
 			while(invalidDate) // Checks whether input Date is valid
 			{
-				System.out.println("Enter the arrival Date (in format dd/mm/yyyy : ");
+				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
 				this.finalDate = sc.nextLine();
-				// TODO: Method to validate date
-				if(invalidDate)
+				if(Book.isValidDateFormat(finalDate))
 				{
-					System.out.println("Invalid Date format!");
+					if(Book.compareDate(finalDate) == -1)
+					{
+						System.out.println("Invalid date!");
+					}
+					else
+					{
+						invalidDate = false;
+					}
+				}
+				else
+				{
+					System.out.println("Invalid date format!");
 				}
 			}
 			
@@ -57,8 +79,18 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 			{
 				System.out.println("Enter the departure time (in format hh:mm:ss : ");
 				this.initialTime = sc.nextLine();
-				// TODO: Method to validate time
-				if(invalidTime)
+				if(Book.isValidTimeFormat(initialTime))
+				{
+					if(Book.compareTime(initialTime))
+					{
+						invalidTime = false;
+					}
+					else
+					{
+						System.out.println("Invalid time!");
+					}
+				}
+				else
 				{
 					System.out.println("Invalid time format!");
 				}
@@ -69,8 +101,18 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 			{
 				System.out.println("Enter the arrival time (in format hh:mm:ss : ");
 				this.finalTime = sc.nextLine();
-				// TODO: Method to validate time
-				if(invalidTime)
+				if(Book.isValidTimeFormat(finalTime))
+				{
+					if(Book.compareTime(finalTime))
+					{
+						invalidTime = false;
+					}
+					else
+					{
+						System.out.println("Invalid time!");
+					}
+				}
+				else
 				{
 					System.out.println("Invalid time format!");
 				}
@@ -92,7 +134,8 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 			{
 				System.out.println("No cab free for the given time!");
 			}
-		}	
+		}
+		sc.close();
 	}
 	
 	/**

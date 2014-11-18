@@ -11,6 +11,7 @@ import java.util.Scanner;
  */
 public class CabBookDistanceBased extends CabBook implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private int distance;
 	
 	public CabBookDistanceBased()
@@ -40,30 +41,50 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			{
 				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
 				this.initialDate = sc.nextLine();
-				// TODO: Method to validate date
-				if(invalidDate)
+				if(Book.isValidDateFormat(initialDate))
 				{
-					System.out.println("Invalid Date format!");
+					if(Book.compareDate(initialDate) == -1)
+					{
+						System.out.println("Invalid date!");
+					}
+					else
+					{
+						invalidDate = false;
+					}
+				}
+				else
+				{
+					System.out.println("Invalid date format!");
 				}
 			}
 			
-			// TODO: Final date = Initial date + 1 (for simplicity)
-			// this.finalDate =
+			// Final date = Initial date + 1 (for simplicity)
+			this.finalDate = this.initialDate.substring(0, 1) + String.valueOf(Integer.parseInt(this.initialDate.substring(1, 2))+1) + initialDate.substring(2);
 			
 			boolean invalidTime = true;
 			while(invalidTime) // Checks whether input time is valid
 			{
-				System.out.println("Enter the arrival time (in format hh:mm:ss : ");
+				System.out.println("Enter the departure time (in format hh:mm:ss : ");
 				this.initialTime = sc.nextLine();
-				// TODO: Method to validate time
-				if(invalidTime)
+				if(Book.isValidTimeFormat(initialTime))
+				{
+					if(Book.compareTime(initialTime))
+					{
+						invalidTime = false;
+					}
+					else
+					{
+						System.out.println("Invalid time!");
+					}
+				}
+				else
 				{
 					System.out.println("Invalid time format!");
 				}
 			}
 			
-			// TODO: Final time = Initial time (for simplicity)
-			// this.initialTime = 
+			// Final time = Initial time (for simplicity)
+			this.initialTime = this.finalTime; 
 			
 			System.out.println("Enter the number of people: ");
 			int requiredCapacity = sc.nextInt();
@@ -81,7 +102,8 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			{
 				System.out.println("No cab free for the given time!");
 			}
-		}	
+		}
+		sc.close();
 	}
 	
 	/**
@@ -105,10 +127,10 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 		return true;
 	}
 	
-	// TODO:
+	// TODO: Make this more sophisticated
 	public int calcFare()
 	{
-		return 1;
+		return 50*this.distance;
 	}
 	
 	// TODO: This method has already been implemented in CabDB. Only here for syntactic reasons
