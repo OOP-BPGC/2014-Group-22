@@ -196,7 +196,7 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			if(Book.compareDate(CabListDest.get(i).getFinalDate()) == -1) // Booking expired
+			if(Book.compareDate(CabListDest.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListDest.remove(i).cab;
 				for(int j = 0; j < cabFleet.size(); j++)
@@ -215,7 +215,7 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			if(Book.compareDate(CabListDist.get(i).getFinalDate()) == -1) // Booking expired
+			if(Book.compareDate(CabListDist.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListDist.remove(i).cab;
 				for(int j = 0; j < cabFleet.size(); j++)
@@ -232,7 +232,7 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			if(Book.compareDate(CabListTime.get(i).getFinalDate()) == -1) // Booking expired
+			if(Book.compareDate(CabListTime.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListTime.remove(i).cab;
 				for(int j = 0; j < cabFleet.size(); j++)
@@ -286,7 +286,7 @@ public class CabDB {
 		}
 		for(int i = 0; i < CabListDest.size(); i++) // Search Destination.db
 		{
-			if(!(Book.compareDate(CabListDest.get(i).getInitialDate()) == 1 &&
+			if(!(Book.compareDate(CabListDest.get(i).getInitialDate(), null) == 1 &&
 					CabListDest.get(i).cab.getCapacity() >= reqdCapacity))
 			{
 				availableCabs.put(new String(CabListDest.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -294,7 +294,7 @@ public class CabDB {
 		}
 		for(int i = 0; i < CabListDist.size(); i++) // Search Distance.db
 		{
-			if(!(Book.compareDate(CabListDist.get(i).getInitialDate()) == 1 &&
+			if(!(Book.compareDate(CabListDist.get(i).getInitialDate(), null) == 1 &&
 					CabListDist.get(i).cab.getCapacity() >= reqdCapacity))
 			{
 				availableCabs.put(new String(CabListDist.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -302,7 +302,7 @@ public class CabDB {
 		}
 		for(int i = 0; i < CabListTime.size(); i++) // Search Time.db
 		{
-			if(!(Book.compareDate(CabListTime.get(i).getInitialDate()) == 1 &&
+			if(!(Book.compareDate(CabListTime.get(i).getInitialDate(), null) == 1 &&
 					CabListTime.get(i).cab.getCapacity() >= reqdCapacity))
 			{
 				availableCabs.put(new String(CabListTime.get(i).cab.getLicensePlate()), new Integer(-1));

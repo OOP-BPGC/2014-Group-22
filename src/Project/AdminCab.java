@@ -22,6 +22,7 @@ public class AdminCab {
 		int capacity = sc.nextInt(); // TODO: Implement type checking here
 		newCab.setCapacity(capacity);
 		
+		sc.nextLine();
 		System.out.println("Enter driver name: ");
 		String driverName = sc.nextLine();
 		newCab.setDriver(driverName);

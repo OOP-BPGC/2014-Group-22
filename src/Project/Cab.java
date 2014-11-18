@@ -4,7 +4,6 @@ public class Cab {
 	/*
 	 *Cab number is the unique attribute of each cab.
 	 */
-	// private String cabNumber;
 	// private String cabType;
 	private String licensePlate;
 	private int capacity;
@@ -32,10 +31,7 @@ public class Cab {
 		return this.booked;
 	}
 	
-	/*public void setCabNumber(String cbn)
-	{
-		cabNumber=cbn;
-	}
+	/*
 	public void setCabType(String cbt)
 	{
 		cabType=cbt;
@@ -60,10 +56,7 @@ public class Cab {
 	{
 		capacity = n;
 	}
-	/*public String getCabNumber()
-	{
-		return cabNumber;
-	}
+	/*
 	public String getCabType()
 	{
 		return cabType;

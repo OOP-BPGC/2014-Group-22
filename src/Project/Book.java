@@ -55,16 +55,32 @@ abstract class Book
 		return false;
 	}
 	
-	public static boolean compareTime(String t)
+	/**
+	 * 
+	 * @param t1
+	 * @param t2
+	 * @return true if t1 > t2, false otherwise
+	 */
+	public static boolean compareTime(String t1, String t2)
 	{
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-		Date currentTime = new Date();
-		String currentTimeStr = dateFormat.format(currentTime);
-		// System.out.println(currentTimeStr);
-		int currentHour = Integer.parseInt(currentTimeStr.substring(0, currentTimeStr.indexOf(":")));
-		int currentMinute = Integer.parseInt(currentTimeStr.substring(currentTimeStr.indexOf(":")+1));
-		int givenHour = Integer.parseInt(t.substring(0, t.indexOf(":")));
-		int givenMinute = Integer.parseInt(t.substring(t.indexOf(":")+1));
+		int currentHour, currentMinute;
+		if(t2 == null)
+		{
+			Date currentTime = new Date();
+			String currentTimeStr = dateFormat.format(currentTime);
+			// System.out.println(currentTimeStr);
+			currentHour = Integer.parseInt(currentTimeStr.substring(0, currentTimeStr.indexOf(":")));
+			currentMinute = Integer.parseInt(currentTimeStr.substring(currentTimeStr.indexOf(":")+1));
+		}
+		else
+		{
+			currentHour = Integer.parseInt(t2.substring(0, t2.indexOf(":")));
+			currentMinute = Integer.parseInt(t2.substring(t2.indexOf(":")+1));
+		}
+		int givenHour = Integer.parseInt(t1.substring(0, t1.indexOf(":")));
+		int givenMinute = Integer.parseInt(t1.substring(t1.indexOf(":")+1));
+
 		if(givenHour >= givenHour)
 		{
 			if(givenHour > currentHour)
@@ -86,13 +102,12 @@ abstract class Book
 			return false;
 	}
 	
-	// TODO: Shift this method somewhere else if possible
-		/**
-		 * Method to compare a given date with the current date
-		 * @param String d1
-		 * @return 1 if date > currentDate, -1 if date < currentDate, 0 otherwise
-		 */
-	public static int compareDate(String d1)
+	/**
+	 * 
+	 * @param String d1
+	 * @return 1 if d1 > d2, -1 if d1 < d2, 0 otherwise
+	 */
+	public static int compareDate(String d1, String d2)
 	{
 		Date date1 = null, date2 = null;
 		try{
@@ -104,7 +119,10 @@ abstract class Book
 			 
 	   		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   		date1 = sdf.parse(d1);
-	       	date2 = sdf.parse(currentDate);
+	   		if(d2 == null)
+	   			date2 = sdf.parse(currentDate);
+	   		else
+	   			date2 = sdf.parse(d2);
 	
 	       	// System.out.println(sdf.format(date1));
 	       	// System.out.println(sdf.format(date2));
