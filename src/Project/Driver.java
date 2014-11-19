@@ -35,8 +35,8 @@ public class Driver
 						switch(choice2)
 						{
 						case 1: 
-							//if(Login.authenticateUser())
-								bookaroom.generateForm();
+							Login.authenticateUser();
+							bookaroom.generateForm();
 							break;
 						case 2:	
 							System.out.println("\nEnter your request UID :\n");	
@@ -77,6 +77,7 @@ public class Driver
 						System.out.println("3.Book a Cab based on Time.");
 						System.out.println("4.Book a Cab based on Destination.");
 						System.out.println("5.Admin Login.");
+						System.out.println("5.Cancel booking.");
 						System.out.println("6.Main Menu.");
 						System.out.println("7.Exit.");
 						choice3=in.nextInt();
@@ -85,19 +86,22 @@ public class Driver
 							case 1: 
 								break;
 							case 2:
+								Login.authenticateUser();
 								CabBookDistanceBased cabDist = new CabBookDistanceBased();
 								cabDist.generateForm();
 								break;
 							case 3:
+								Login.authenticateUser();
 								CabBookTimeBased cabTime = new CabBookTimeBased();
 								cabTime.generateForm();
 								break;
 							case 4:
+								Login.authenticateUser();
 								CabBookDestinationBased cabDest = new CabBookDestinationBased();
 								cabDest.generateForm();
 								break;
 							case 5:
-								// TODO: Implement admin authorization
+								Login.isAdmin();
 								AdminCab.generateForm();
 								break;
 							case 6 : 
@@ -120,6 +124,5 @@ public class Driver
 			System.out.println("Go Back to Main Menu?(y/n)");
 			menu1=in.next().charAt(0);
 		}
-		in.close();
 	}
 }
