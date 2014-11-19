@@ -32,6 +32,7 @@ public class Login {
         String password = "null";
         
         System.out.println("Enter your Moodle login credentials:");
+        Scanner sc = new Scanner(System.in);
         while(!connect(id, password))
         {
             if(!id.equals("null"))
@@ -39,13 +40,11 @@ public class Login {
                 System.out.println("Authentication failed! Try again!");
             }
             
-            Scanner sc = new Scanner(System.in);
             System.out.println("Enter id: ");
             id = sc.nextLine();
             System.out.println("Enter password: ");
             password = sc.nextLine();
         }
-        
         name = extractName();
         return true;
     }
@@ -112,24 +111,23 @@ public class Login {
     	}
     }
     	
-    	public static boolean isAdmin()
-    	{
-    		while(true)
-    		{
-    			System.out.println("\nEnter admin password");
-    			Scanner in=new Scanner(System.in);
-    			if(in.nextLine().equals("ADMIN"))
-    			{
-    				return true;
-    			}
-    			System.out.println("\nIncorrect password");
-    		}	
-    	}
-    }
+	public static boolean isAdmin()
+	{
+		Scanner in = new Scanner(System.in);
+		while(true)
+		{
+			System.out.println("\nEnter admin password");
+			if(in.nextLine().equals("ADMIN"))
+			{
+				return true;
+			}
+			System.out.println("\nIncorrect password");
+		}
+	}
 
 /* Debug method. Do not remove this.
     public static void main(String[] args)
     {
     	System.out.println(connect("f2013694", "Qwerty1234-"));
     }*/
-
+}
