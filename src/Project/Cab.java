@@ -1,6 +1,8 @@
 package Project;
 
-public class Cab {
+import java.io.Serializable;
+
+public class Cab implements Serializable {
 	/*
 	 *Cab number is the unique attribute of each cab.
 	 */

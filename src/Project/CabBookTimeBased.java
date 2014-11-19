@@ -26,9 +26,9 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 	public void generateForm()
 	{
 		Scanner sc = new Scanner(System.in);
-		boolean bookAnotherCab = true;
+		String bookAnotherCab = "y";
 		
-		while(bookAnotherCab)
+		while(bookAnotherCab.equalsIgnoreCase("y"))
 		{
 			boolean invalidDate = true;
 			while(invalidDate) // Checks whether input Date is valid
@@ -129,15 +129,20 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 			
 			if(cabBookStatus) // Only register the booking if free cab available
 			{
-				System.out.println("Booking successful. Add another booking? (y/n): ");
-				bookAnotherCab = (sc.nextLine() == "y")? true: false;
+				generateUID();
+				System.out.println("Booking successful. Your request id is " + getUID());
 			}
 			else
 			{
 				System.out.println("No cab free for the given time!");
 			}
+			System.out.println("Book again? (y/n): ");
+			bookAnotherCab = "z";
+			while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
+			{
+				bookAnotherCab = sc.nextLine();
+			}
 		}
-		sc.close();
 	}
 	
 	/**

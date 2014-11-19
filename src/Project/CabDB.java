@@ -30,7 +30,7 @@ public class CabDB {
 	static ArrayList<CabBookDestinationBased> CabListDest = new ArrayList<CabBookDestinationBased>();
 	static ArrayList<CabBookDistanceBased> CabListDist = new ArrayList<CabBookDistanceBased>();
 	static ArrayList<CabBookTimeBased> CabListTime = new ArrayList<CabBookTimeBased>();
-	static ArrayList<Cab> cabFleet  = new ArrayList<Cab>();
+	static ArrayList<Cab> CabFleet  = new ArrayList<Cab>();
 	
 	/**
 	 * Given the bookingType, writes the respective ArrayList to corresponding database
@@ -44,8 +44,8 @@ public class CabDB {
 		File fileCheck = new File(bookingType + ".db");
 
 		//this check ensures system doesn't crash with FNF exception when writing to DB for the first Time	
-		if(fileCheck.exists())
-			readFromDB(bookingType);
+		// if(fileCheck.exists())
+			// readFromDB(bookingType);
 
 		try{
 			
@@ -55,7 +55,7 @@ public class CabDB {
 			switch(bookingType)
 			{
 				case "CabFleet":
-					oos.writeObject(cabFleet);
+					oos.writeObject(CabFleet);
 					break;
 				case "Destination":
 					oos.writeObject(CabListDest);
@@ -102,22 +102,22 @@ public class CabDB {
 			switch(bookingType)
 			{
 				case "CabFleet":
-					cabFleet = null; // Empty the ArrayList before reading
-					cabFleet = (ArrayList<Cab>)ois.readObject();
+					CabFleet.clear(); // Empty the ArrayList before reading
+					CabFleet = (ArrayList<Cab>)ois.readObject();
 					break;
 					
 				case "Destination":
-					CabListDest = null;
+					CabListDest.clear();
 					CabListDest = (ArrayList<CabBookDestinationBased>)ois.readObject();
 					break;
 				
 				case "Distance":
-					CabListDist = null;
+					CabListDist.clear();
 					CabListDist = (ArrayList<CabBookDistanceBased>)ois.readObject();
 					break;
 					
 				case "Time":
-					CabListTime = null;
+					CabListTime.clear();
 					CabListTime = (ArrayList<CabBookTimeBased>)ois.readObject();
 					break;
 				default:
@@ -143,7 +143,7 @@ public class CabDB {
 	}
 	
 	/**
-	 * Populate all ArrayLists afte reading from all the four databases
+	 * Populate all ArrayLists after reading from all the four databases
 	 */
 	public static void readAllFromDB()
 	{
@@ -192,25 +192,27 @@ public class CabDB {
 	{
 		readAllFromDB();
 		
+		System.out.println("CabDB.freeCabs > CabListDest.size() = " + CabListDest.size()); // Debug statement
 		for(int i = 0; i < CabListDest.size(); i++)
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
+			System.out.println(CabListDest.get(i).getFinalDate()); // Debug statement
 			if(Book.compareDate(CabListDest.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListDest.remove(i).cab;
-				for(int j = 0; j < cabFleet.size(); j++)
+				for(int j = 0; j < CabFleet.size(); j++)
 				{
-					if(cabFleet.get(j).getLicensePlate() == cab.getLicensePlate())
+					if(CabFleet.get(j).getLicensePlate() == cab.getLicensePlate())
 					{
-						cabFleet.get(j).decrementBooked();
+						CabFleet.get(j).decrementBooked();
 					}
 				}
 			}
 		}
 		
 		// Same as above for distance and time based
-		
+		System.out.println("CabDB.freeCabs > CabListDist.size() = " + CabListDist.size()); // Debug statement
 		for(int i = 0; i < CabListDist.size(); i++)
 		{
 			// Checks whether final date is less than current date
@@ -218,16 +220,17 @@ public class CabDB {
 			if(Book.compareDate(CabListDist.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListDist.remove(i).cab;
-				for(int j = 0; j < cabFleet.size(); j++)
+				for(int j = 0; j < CabFleet.size(); j++)
 				{
-					if(cabFleet.get(j).getLicensePlate() == cab.getLicensePlate())
+					if(CabFleet.get(j).getLicensePlate() == cab.getLicensePlate())
 					{
-						cabFleet.get(j).decrementBooked();
+						CabFleet.get(j).decrementBooked();
 					}
 				}
 			}
 		}
 		
+		System.out.println("CabDB.freeCabs > CabListTime.size() = " + CabListTime.size()); // Debug statement
 		for(int i = 0; i < CabListTime.size(); i++)
 		{
 			// Checks whether final date is less than current date
@@ -235,11 +238,11 @@ public class CabDB {
 			if(Book.compareDate(CabListTime.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListTime.remove(i).cab;
-				for(int j = 0; j < cabFleet.size(); j++)
+				for(int j = 0; j < CabFleet.size(); j++)
 				{
-					if(cabFleet.get(j).getLicensePlate() == cab.getLicensePlate())
+					if(CabFleet.get(j).getLicensePlate() == cab.getLicensePlate())
 					{
-						cabFleet.get(j).decrementBooked();
+						CabFleet.get(j).decrementBooked();
 					}
 				}
 			}
@@ -249,6 +252,7 @@ public class CabDB {
 		writeAllToDB();
 	}
 	
+	// TODO: Verify the logic once
 	/**
 	 * Queries all databases and finds an un-booked cab
 	 * @param bookingType
@@ -262,12 +266,13 @@ public class CabDB {
 		readAllFromDB();
 		
 		// This loop searches for a cab with 0 current bookings from CabFleet.db
-		for(int i = 0; i < cabFleet.size(); i++)
+		System.out.println("CabDB.findCab > CabFleet.size() = " + CabFleet.size()); // Debug statement
+		for(int i = 0; i < CabFleet.size(); i++)
 		{
-			if(cabFleet.get(i).getBooked() == 0 && cabFleet.get(i).getCapacity() >= reqdCapacity)
+			if(CabFleet.get(i).getBooked() == 0 && CabFleet.get(i).getCapacity() >= reqdCapacity)
 			{
-				cabFleet.get(i).incrementBooked();
-				return cabFleet.get(i);
+				CabFleet.get(i).incrementBooked();
+				return CabFleet.get(i);
 			}
 		}
 		
@@ -280,9 +285,9 @@ public class CabDB {
 		
 		HashMap availableCabs = new HashMap();
 		
-		for(int i = 0; i < cabFleet.size(); i++) // Initialize hash map
+		for(int i = 0; i < CabFleet.size(); i++) // Initialize hash map
 		{
-			availableCabs.put(new String(cabFleet.get(i).getLicensePlate()), new Integer(1));
+			availableCabs.put(new String(CabFleet.get(i).getLicensePlate()), new Integer(1));
 		}
 		for(int i = 0; i < CabListDest.size(); i++) // Search Destination.db
 		{
@@ -331,51 +336,15 @@ public class CabDB {
 			return null;
 		}
 		
-		for(int i = 0; i < cabFleet.size(); i++)
+		for(int i = 0; i < CabFleet.size(); i++)
 		{
-			if(cabFleet.get(i).getLicensePlate().equalsIgnoreCase(lpn))
+			if(CabFleet.get(i).getLicensePlate().equalsIgnoreCase(lpn))
 			{
-				cabFleet.get(i).incrementBooked();
-				return cabFleet.get(i);
+				CabFleet.get(i).incrementBooked();
+				return CabFleet.get(i);
 			}
 		}
 		
 		return null; // Sanity check. Not needed really
-	}
-	
-	/**
-	 * Queries the databases for the given UID and removes the corresponding booking
-	 * @param UID
-	 */
-	public void cancelRequest(String UID)
-	{
-		readAllFromDB();
-		
-		for(int i = 0; i < CabListDest.size(); i++)
-		{
-			if(CabListDest.get(i).getUID().equals(UID))
-			{
-				CabListDest.remove(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabListDist.size(); i++)
-		{
-			if(CabListDist.get(i).getUID().equals(UID))
-			{
-				CabListDist.remove(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabListTime.size(); i++)
-		{
-			if(CabListTime.get(i).getUID().equals(UID))
-			{
-				CabListTime.remove(i);
-				return;
-			}
-		}
-		
-		writeAllToDB(); // Write changes to DB
 	}
 }

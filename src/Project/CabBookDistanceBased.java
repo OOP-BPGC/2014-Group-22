@@ -27,13 +27,14 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 	public void generateForm()
 	{
 		Scanner sc = new Scanner(System.in);
-		boolean bookAnotherCab = true;
+		String bookAnotherCab = "y";
 		
-		while(bookAnotherCab)
+		while(bookAnotherCab.equals("y"))
 		{
 			
 			System.out.println("Enter the distance for which the cab is required: ");
 			// TODO: Implement type checking
+			sc.nextLine();
 			this.distance = sc.nextInt();
 			
 			boolean invalidDate = true;
@@ -96,15 +97,20 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			
 			if(cabBookStatus) // Only register the booking if free cab available
 			{
-				System.out.println("Booking successful. Add another booking? (y/n): ");
-				bookAnotherCab = (sc.nextLine() == "y")? true: false;
+				generateUID();
+				System.out.println("Booking successful. Your request id is " + getUID());
 			}
 			else
 			{
 				System.out.println("No cab free for the given time!");
 			}
+			System.out.println("Book again? (y/n): ");
+			bookAnotherCab = "z";
+			while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
+			{
+				bookAnotherCab = sc.nextLine();
+			}
 		}
-		sc.close();
 	}
 	
 	/**

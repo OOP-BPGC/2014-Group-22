@@ -31,9 +31,9 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 	public void generateForm()
 	{
 		Scanner sc = new Scanner(System.in);
-		boolean bookAnotherCab = true;
+		String bookAnotherCab = "y";
 		
-		while(bookAnotherCab)
+		while(bookAnotherCab.equals("y"))
 		{
 			System.out.println("Currently available destinations are - ");
 			for(String dest: destinations)
@@ -186,20 +186,25 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 			int requiredCapacity = sc.nextInt();
 			
 			CabDB.freeCabs();
+			
 			boolean cabBookStatus = bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
 			
 			if(cabBookStatus) // Only register the booking if free cab available
 			{
-				System.out.println("Booking successful. Add another booking? (y/n): ");
+				generateUID();
+				System.out.println("Booking successful. Your request id is " + getUID());
 			}
 			else
 			{
 				System.out.println("No cab free for the given time!");
 			}
 			System.out.println("Book again? (y/n): ");
-			bookAnotherCab = (sc.nextLine() == "y")? true: false;
+			bookAnotherCab = "z";
+			while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
+			{
+				bookAnotherCab = sc.nextLine();
+			}
 		}
-		sc.close();
 	}
 	
 	/**
