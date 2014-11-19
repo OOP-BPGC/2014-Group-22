@@ -46,7 +46,6 @@ public class AdminCab {
 		}
 		newCab.setDriverPhone(driverPhone);
 		addCabToFleet(newCab);
-		sc.close();
 	}
 	
 	/**
@@ -56,8 +55,7 @@ public class AdminCab {
 	public static void addCabToFleet(Cab cab)
 	{
 		CabDB.readFromDB("CabFleet");
-		CabDB.cabFleet.add(cab);
+		CabDB.CabFleet.add(cab);
 		CabDB.writeToDB("CabFleet");
 	}
-
 }

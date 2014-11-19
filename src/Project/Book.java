@@ -34,7 +34,7 @@ abstract class Book
 	public abstract void generateForm();
 	public abstract void displayStatus(String UID);
 	
-	// TODO: Decide on this method
+	// TODO: Tell Abhishek to incorporate this into his part
 	public abstract void cancelRequest(String UID);
 	
 	public static boolean isValidTimeFormat(String t)
