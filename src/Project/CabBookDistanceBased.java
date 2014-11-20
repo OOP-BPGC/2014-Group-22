@@ -37,16 +37,18 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			sc.nextLine();
 			this.distance = sc.nextInt();
 			
+			// CHECK DATE VALIDITY
+			
 			boolean invalidDate = true;
 			while(invalidDate) // Checks whether input Date is valid
 			{
 				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
 				this.initialDate = sc.nextLine();
-				if(Book.isValidDateFormat(initialDate))
+				if(Book.isValidDateFormat(this.initialDate))
 				{
-					if(Book.compareDate(initialDate, null) == -1)
+					if(Book.compareDate(this.initialDate, null) == -1) // if initialDate before current date
 					{
-						System.out.println("Invalid date!");
+						System.out.println("The date given is in the past! We do not YET support travelling through time. Check again later.");
 					}
 					else
 					{
@@ -55,7 +57,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 				}
 				else
 				{
-					System.out.println("Invalid date format!");
+					System.out.println("Invalid date format! Use 'dd/mm/yyyy'");
 				}
 			}
 			
@@ -65,12 +67,12 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			boolean invalidTime = true;
 			while(invalidTime) // Checks whether input time is valid
 			{
-				System.out.println("Enter the departure time (in format hh:mm:ss : ");
+				System.out.println("Enter the departure time (in format hh:mm) : ");
 				this.initialTime = sc.nextLine();
-				if(Book.isValidTimeFormat(initialTime))
+				if(Book.isValidTimeFormat(this.initialTime))
 				{
-					if(Book.compareDate(initialDate, null) == 1 || 
-							(Book.compareDate(initialDate, null) == 0 && Book.compareTime(initialTime, null)))
+					if(Book.compareDate(this.initialDate, null) == 1 || 
+							Book.compareTime(this.initialTime, null))
 					{
 						invalidTime = false;
 					}

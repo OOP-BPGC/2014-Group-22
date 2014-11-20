@@ -30,16 +30,19 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 		
 		while(bookAnotherCab.equalsIgnoreCase("y"))
 		{
+			
+			// CHECK DATE VALIDITY
+			
 			boolean invalidDate = true;
-			while(invalidDate) // Checks whether input Date is valid
+			while(invalidDate)
 			{
-				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
+				System.out.println("Enter the departure Date (in format dd/mm/yyyy) : ");
 				this.initialDate = sc.nextLine();
-				if(Book.isValidDateFormat(initialDate))
+				if(Book.isValidDateFormat(this.initialDate))
 				{
-					if(Book.compareDate(initialDate, null) == -1)
+					if(Book.compareDate(this.initialDate, null) == -1)
 					{
-						System.out.println("Invalid date!");
+						System.out.println("The date given is in the past! We do not YET support travelling through time. Check again later.");
 					}
 					else
 					{
@@ -48,20 +51,20 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 				}
 				else
 				{
-					System.out.println("Invalid date format!");
+					System.out.println("Invalid date format! Use 'dd/mm/yyyy'");
 				}
 			}
 			
 			invalidDate = true;
 			while(invalidDate) // Checks whether input Date is valid
 			{
-				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
+				System.out.println("Enter the arrival date (in format dd/mm/yyyy) : ");
 				this.finalDate = sc.nextLine();
-				if(Book.isValidDateFormat(finalDate))
+				if(Book.isValidDateFormat(this.finalDate))
 				{
-					if(Book.compareDate(finalDate, initialDate) == -1)
+					if(Book.compareDate(this.finalDate, this.initialDate) == -1) // finalDate comes before initialDate
 					{
-						System.out.println("Invalid date!");
+						System.out.println("The date given is in the past! We do not YET support travelling through time. Check again later.");
 					}
 					else
 					{
@@ -70,19 +73,21 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 				}
 				else
 				{
-					System.out.println("Invalid date format!");
+					System.out.println("Invalid date format! Use 'dd/mm/yyyy'");
 				}
 			}
+			
+			// CHECK TIME VALIDITY
 			
 			boolean invalidTime = true;;
 			while(invalidTime) // Checks whether input time is valid
 			{
-				System.out.println("Enter the departure time (in format hh:mm:ss : ");
+				System.out.println("Enter the departure time (in format hh:mm) : ");
 				this.initialTime = sc.nextLine();
-				if(Book.isValidTimeFormat(initialTime))
+				if(Book.isValidTimeFormat(this.initialTime))
 				{
-					if(Book.compareDate(initialDate, null) == 1 || 
-							(Book.compareDate(initialDate, null) == 0 && Book.compareTime(initialTime, null)))
+					if(Book.compareDate(this.initialDate, null) == 1 || 
+							Book.compareTime(this.initialTime, null))
 					{
 						invalidTime = false;
 					}
@@ -100,12 +105,12 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 			invalidTime = true;
 			while(invalidTime) // Checks whether input time is valid
 			{
-				System.out.println("Enter the arrival time (in format hh:mm:ss : ");
+				System.out.println("Enter the arrival time (in format hh:mm) : ");
 				this.finalTime = sc.nextLine();
-				if(Book.isValidTimeFormat(finalTime))
+				if(Book.isValidTimeFormat(this.finalTime))
 				{
-					if(Book.compareDate(finalDate, initialDate) == 1 || 
-							(Book.compareDate(finalDate, initialDate) == 0 && Book.compareTime(finalTime, initialTime)))
+					if(Book.compareDate(this.finalDate, this.initialDate) == 1 || 
+							Book.compareTime(this.finalTime, this.initialTime))
 					{
 						invalidTime = false;
 					}
