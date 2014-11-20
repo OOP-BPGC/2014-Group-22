@@ -39,53 +39,14 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			
 			// CHECK DATE VALIDITY
 			
-			boolean invalidDate = true;
-			while(invalidDate) // Checks whether input Date is valid
-			{
-				System.out.println("Enter the departure Date (in format dd/mm/yyyy : ");
-				this.initialDate = sc.nextLine();
-				if(Book.isValidDateFormat(this.initialDate))
-				{
-					if(Book.compareDate(this.initialDate, null) == -1) // if initialDate before current date
-					{
-						System.out.println("The date given is in the past! We do not YET support travelling through time. Check again later.");
-					}
-					else
-					{
-						invalidDate = false;
-					}
-				}
-				else
-				{
-					System.out.println("Invalid date format! Use 'dd/mm/yyyy'");
-				}
-			}
+			this.inputInitialDate();
 			
 			// Final date = Initial date + 1 (for simplicity)
 			this.finalDate = this.initialDate.substring(0, 1) + String.valueOf(Integer.parseInt(this.initialDate.substring(1, 2))+1) + initialDate.substring(2);
 			
-			boolean invalidTime = true;
-			while(invalidTime) // Checks whether input time is valid
-			{
-				System.out.println("Enter the departure time (in format hh:mm) : ");
-				this.initialTime = sc.nextLine();
-				if(Book.isValidTimeFormat(this.initialTime))
-				{
-					if(Book.compareDate(this.initialDate, null) == 1 || 
-							Book.compareTime(this.initialTime, null))
-					{
-						invalidTime = false;
-					}
-					else
-					{
-						System.out.println("Invalid time!");
-					}
-				}
-				else
-				{
-					System.out.println("Invalid time format!");
-				}
-			}
+			// CHECK TIME VALIDITY
+			
+			this.inputInitialTime();
 			
 			// Final time = Initial time (for simplicity)
 			this.initialTime = this.finalTime; 
@@ -95,7 +56,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			
 			CabDB.freeCabs();
 			
-			boolean cabBookStatus = bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
+			boolean cabBookStatus = this.bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
 			
 			if(cabBookStatus) // Only register the booking if free cab available
 			{
@@ -140,11 +101,5 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 	public int calcFare()
 	{
 		return 50*this.distance;
-	}
-	
-	// TODO: This method has already been implemented in CabDB. Only here for syntactic reasons
-	public void cancelRequest(String UID)
-	{
-		
 	}
 }

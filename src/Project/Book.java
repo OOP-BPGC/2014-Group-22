@@ -78,7 +78,7 @@ abstract class Book
    			time2 = formatter.parseDateTime(t2);
 
    		int result = DateTimeComparator.getInstance().compare(time1, time2); 
-   		System.out.println(time1.toString() + time2.toString() + " => " + result);
+   		// System.out.println(time1.toString() + time2.toString() + " => " + result); // Debug statement
 		
    		if(result == 1)
    			return true;
@@ -106,7 +106,7 @@ abstract class Book
    			date2 = formatter.parseDateTime(d2);
 
    		int result = DateTimeComparator.getInstance().compare(date1, date2); 
-   		System.out.println(date1.toString() + date2.toString() + " => " + result);
+   		// System.out.println(date1.toString() + date2.toString() + " => " + result); // Debug statement
 		return result;
 	}
 }
