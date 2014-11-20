@@ -1,12 +1,13 @@
 package Project;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /*
  *@author AbhishekTiwari
@@ -63,43 +64,25 @@ abstract class Book
 	 */
 	public static boolean compareTime(String t1, String t2)
 	{
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-		int currentHour, currentMinute;
-		if(t2 == null)
-		{
-			Date currentTime = new Date();
-			String currentTimeStr = dateFormat.format(currentTime);
-			// System.out.println(currentTimeStr);
-			currentHour = Integer.parseInt(currentTimeStr.substring(0, currentTimeStr.indexOf(":")));
-			currentMinute = Integer.parseInt(currentTimeStr.substring(currentTimeStr.indexOf(":")+1));
-		}
-		else
-		{
-			currentHour = Integer.parseInt(t2.substring(0, t2.indexOf(":")));
-			currentMinute = Integer.parseInt(t2.substring(t2.indexOf(":")+1));
-		}
-		int givenHour = Integer.parseInt(t1.substring(0, t1.indexOf(":")));
-		int givenMinute = Integer.parseInt(t1.substring(t1.indexOf(":")+1));
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:ss");
+		DateTime time1 = formatter.parseDateTime(t1), time2;
+			
+   		if(t2 == null)
+   		{
+   			Calendar javaCalendar = null;
+			javaCalendar = Calendar.getInstance();
+			String currentDateStr = javaCalendar.get(Calendar.HOUR) + ":" + (javaCalendar.get(Calendar.MINUTE));
+			time2 = formatter.parseDateTime(currentDateStr);
+   		}
+   		else
+   			time2 = formatter.parseDateTime(t2);
 
-		if(givenHour >= givenHour)
-		{
-			if(givenHour > currentHour)
-				return true;
-			else
-			{
-				if(givenMinute >= currentMinute)
-				{
-					if(givenMinute > currentMinute)
-						return true;
-					else
-						return false;
-				}
-				else
-					return false;
-			}
-		}
-		else
-			return false;
+   		int result = DateTimeComparator.getInstance().compare(time1, time2); 
+   		System.out.println(time1.toString() + time2.toString() + " => " + result);
+		
+   		if(result == 1)
+   			return true;
+   		return false;
 	}
 	
 	/**
@@ -109,40 +92,22 @@ abstract class Book
 	 */
 	public static int compareDate(String d1, String d2)
 	{
-		Date date1 = null, date2 = null;
-		try{
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+		DateTime date1 = formatter.parseDateTime(d1), date2;
 			
-			Calendar javaCalendar = null;
-			String currentDate = "";
-			javaCalendar = Calendar.getInstance();
-			currentDate = javaCalendar.get(Calendar.DATE) + "/" + (javaCalendar.get(Calendar.MONTH) + 1) + "/" + javaCalendar.get(Calendar.YEAR);
-			 
-	   		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	   		date1 = sdf.parse(d1);
-	   		if(d2 == null)
-	   			date2 = sdf.parse(currentDate);
-	   		else
-	   			date2 = sdf.parse(d2);
-	
-	       	// System.out.println(sdf.format(date1));
-	       	// System.out.println(sdf.format(date2));
-	
-	   	} catch(ParseException ex) {
-	   		ex.printStackTrace();
-	   	}
-		
-		if(date1.after(date2)){
-	   		// System.out.println("Date1 is after Date2");
-	   		return 1;
-	   	}
-	    	else if(date1.before(date2)){
-    		// System.out.println("Date1 is before Date2");
-    		return -1;
-    	}
-	    	// if(date1.equals(date2)){
-    		// System.out.println("Date1 is equal Date2");
-    	return 0;
-	    	// }
+   		if(d2 == null)
+   		{
+   			Calendar javaCalendar = null;
+   			javaCalendar = Calendar.getInstance();
+   			String currentDateStr = javaCalendar.get(Calendar.DATE) + "/" + (javaCalendar.get(Calendar.MONTH) + 1) + "/" + javaCalendar.get(Calendar.YEAR);
+   			date2 = formatter.parseDateTime(currentDateStr);
+   		}
+   		else
+   			date2 = formatter.parseDateTime(d2);
+
+   		int result = DateTimeComparator.getInstance().compare(date1, date2); 
+   		System.out.println(date1.toString() + date2.toString() + " => " + result);
+		return result;
 	}
 }
 
