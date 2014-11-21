@@ -12,10 +12,25 @@ public class AdminCab {
 	public static void generateForm()
 	{
 		Cab newCab = new Cab();
-		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter cab license plate number: ");
-		String licensePlateNumber = sc.nextLine(); // TODO: Maybe implement regex for this too?
+		
+		String licensePlateNumber = "";
+		boolean invalidLicensePlateNo = true;
+		while(invalidLicensePlateNo)
+		{
+			System.out.println("Enter cab license plate number: ");
+			licensePlateNumber = sc.nextLine(); // TODO: Maybe implement regex for this too?
+			Pattern pat = Pattern.compile("^([A-Za-z][A-Za-z])([0-9][0-9])([A-Za-z][A-Za-z])[0-9][0-9][0-9][0-9]$");
+			Matcher match = pat.matcher(licensePlateNumber);
+			if(match.find(0))
+			{
+				invalidLicensePlateNo = false;
+			}
+			else
+			{
+				System.out.println("Failed to set license plate number. Invalid format!");
+			}
+		}
 		newCab.setLicensePlate(licensePlateNumber);
 		
 		System.out.println("Enter cab capacity: ");

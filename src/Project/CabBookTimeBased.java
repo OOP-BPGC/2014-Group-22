@@ -92,4 +92,9 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 	{
 		return 1;
 	}
+	
+	public void cancelRequest(String UID)
+	{
+		// Nothing here
+	}
 }

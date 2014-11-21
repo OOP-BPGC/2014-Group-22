@@ -143,14 +143,14 @@ public class CabDB {
 	public static void freeCabs()
 	{
 		readAllFromDB();
-		System.out.println("Cabs in cab fleet = " + CabDB.CabListFleet.size());
+		//System.out.println("Cabs in cab fleet = " + CabDB.CabListFleet.size());
 		
 		System.out.println("CabDB.freeCabs > CabListDest.size() = " + CabListDest.size()); // Debug statement
 		for(int i = 0; i < CabListDest.size(); i++)
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			System.out.println(CabListDest.get(i).getFinalDate()); // Debug statement
+			//System.out.println(CabListDest.get(i).getFinalDate()); // Debug statement
 			if(Book.compareDate(CabListDest.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListDest.remove(i).cab;
@@ -170,8 +170,8 @@ public class CabDB {
 		{
 			// Checks whether final date is less than current date
 			// Not considered time
-			System.out.println("lolol");
-			System.out.println("Date = " + CabListDist.get(i).getFinalDate());
+			//System.out.println("lolol");
+			//System.out.println("Date = " + CabListDist.get(i).getFinalDate());
 			if(Book.compareDate(CabListDist.get(i).getFinalDate(), null) == -1) // Booking expired
 			{
 				Cab cab = CabListDist.remove(i).cab;
@@ -185,7 +185,7 @@ public class CabDB {
 			}
 		}
 		
-		System.out.println("CabDB.freeCabs > CabListTime.size() = " + CabListTime.size()); // Debug statement
+		//System.out.println("CabDB.freeCabs > CabListTime.size() = " + CabListTime.size()); // Debug statement
 		for(int i = 0; i < CabListTime.size(); i++)
 		{
 			// Checks whether final date is less than current date
@@ -299,7 +299,6 @@ public class CabDB {
 		/* increment the 'booked' variable of the cab  */
 		if(lpn == null)
 		{
-			System.out.println("No free cab found!");
 			return null;
 		}
 		
@@ -313,5 +312,40 @@ public class CabDB {
 		}
 		
 		return null; // Sanity check. Not needed really
+	}
+	
+	/**
+	 * Queries the databases for the given UID and removes the corresponding booking
+	 * @param UID
+	 */
+	public static void cancelRequest(String UID)
+	{
+		CabDB.readAllFromDB();
+		
+		for(int i = 0; i < CabDB.CabListDest.size(); i++)
+		{
+			if(CabDB.CabListDest.get(i).getUID().equals(UID))
+			{
+				CabDB.CabListDest.remove(i);
+				return;
+			}
+		}
+		for(int i = 0; i < CabDB.CabListDist.size(); i++)
+		{
+			if(CabDB.CabListDist.get(i).getUID().equals(UID))
+			{
+				CabDB.CabListDist.remove(i);
+				return;
+			}
+		}
+		for(int i = 0; i < CabDB.CabListTime.size(); i++)
+		{
+			if(CabDB.CabListTime.get(i).getUID().equals(UID))
+			{
+				CabDB.CabListTime.remove(i);
+				return;
+			}
+		}
+		CabDB.writeAllToDB(); // Write changes to DB
 	}
 }

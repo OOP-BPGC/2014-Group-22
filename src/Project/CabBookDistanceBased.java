@@ -32,7 +32,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 		while(bookAnotherCab.equals("y"))
 		{
 			
-			System.out.println("Enter the distance for which the cab is required: ");
+			System.out.println("Enter the distance (in kms) for which the cab is required: ");
 			// TODO: Implement type checking
 			this.distance = sc.nextInt();
 			
@@ -91,7 +91,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 		{
 			return false;
 		}
-		
+		System.out.println("trolololol -------" + this.finalDate);
 		CabDB.CabListDist.add(this);
 		CabDB.writeToDB(bookingType);
 		return true;
@@ -101,5 +101,10 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 	public int calcFare()
 	{
 		return 50*this.distance;
+	}
+	
+	public void cancelRequest(String UID)
+	{
+		// Nothing here
 	}
 }

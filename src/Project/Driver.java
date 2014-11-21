@@ -78,9 +78,9 @@ public class Driver
 						System.out.println("3.Book a Cab based on Time.");
 						System.out.println("4.Book a Cab based on Destination.");
 						System.out.println("5.Admin Login.");
-						System.out.println("5.Cancel booking.");
-						System.out.println("6.Main Menu.");
-						System.out.println("7.Exit.");
+						System.out.println("6.Cancel booking.");
+						System.out.println("7.Main Menu.");
+						System.out.println("8.Exit.");
 						choice3=in.nextInt();
 						switch(choice3)
 						{
@@ -105,7 +105,10 @@ public class Driver
 								Login.isAdmin();
 								AdminCab.generateForm();
 								break;
-							case 6 : 
+							case 6 :
+								System.out.println("Enter request ID: ");
+								String uid;
+								uid = in.nextLine();
 								flag2=true;
 								break;
 							case 7 : System.exit(0);

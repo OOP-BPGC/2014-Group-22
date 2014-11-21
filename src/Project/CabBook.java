@@ -228,41 +228,6 @@ public abstract class CabBook extends Book {
 		}
 	}
 	
-	/**
-	 * Queries the databases for the given UID and removes the corresponding booking
-	 * @param UID
-	 */
-	public void cancelRequest(String UID)
-	{
-		CabDB.readAllFromDB();
-		
-		for(int i = 0; i < CabDB.CabListDest.size(); i++)
-		{
-			if(CabDB.CabListDest.get(i).getUID().equals(UID))
-			{
-				CabDB.CabListDest.remove(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabDB.CabListDist.size(); i++)
-		{
-			if(CabDB.CabListDist.get(i).getUID().equals(UID))
-			{
-				CabDB.CabListDist.remove(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabDB.CabListTime.size(); i++)
-		{
-			if(CabDB.CabListTime.get(i).getUID().equals(UID))
-			{
-				CabDB.CabListTime.remove(i);
-				return;
-			}
-		}
-		CabDB.writeAllToDB(); // Write changes to DB
-	}
-
 	// TODO: Decide whether we need this method
 	public void displayStatus(String Uid)
 	{

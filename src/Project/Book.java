@@ -36,6 +36,7 @@ abstract class Book
 	public abstract void generateForm();
 	public abstract void displayStatus(String UID);
 	
+	// TODO: Shifted cancelRequest to CabDB
 	public abstract void cancelRequest(String UID);
 	
 	public static boolean isValidTimeFormat(String t)
