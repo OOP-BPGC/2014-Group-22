@@ -21,7 +21,8 @@ public class testRoomDB extends TestCase {
 		room.setRoomNumber("A749");
 		room.setProjectorStatus(false);
 		room.setStatus("booked");
-		room.setBookingTime("12:04", "17.06");
+		room.setStartingTime("12:04");
+		room.setDuration("05:02");
 		room.setBookingDate("10/15/2016");
 		room.setCapacity(50);
 		roomList.add(room);
@@ -37,7 +38,7 @@ public class testRoomDB extends TestCase {
 		assertEquals("booked", newRoom.getStatus());
 		assertEquals(50, newRoom.getCapacity());
 		assertEquals("12:04", (newRoom.getStartingTime()).get(0));
-		assertEquals("17.06", (newRoom.getDuration()).get(0));
+		assertEquals("05:02", (newRoom.getDuration()).get(0));
 		assertEquals("10/15/2016", (newRoom.getBookingDate()).get(0));
 	}
 	

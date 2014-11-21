@@ -1,52 +1,37 @@
 package Tests;
 
+import Project.Cab;
 import junit.framework.TestCase;
-import Project.*;
 
-/**
- * The cab classes have not been developed so these tests will not run
- * for now.
- * @author nisarg
- *
- */
-
-public class TestCab extends TestCase{
-	
-	public TestCab(String str)
-	{
-		super(str);
-	}
-	
-	private Cab cab = new Cab();
-	
-	public void testCabCabNumber()
-	{
-		cab.setCabNumber("RJ25SB7676");
-		assertEquals("RJ25SB7676", cab.getCabNumber());
-	}
-	
-	public void testCabStatus()
-	{
-		cab.setStatus("booked");
-		assertEquals("booked", cab.getStatus());
-	}
-	
-	public void testCabBookingTime()
-	{
-		cab.setBookingTime("12:04", "17.06");
-		assertEquals("12:04", cab.getBookingTime());
-	}
-	
-	public void testCabBookingDate()
-	{
-		cab.setBookingDate("10/15/2016");
-		assertEquals("10/15/2016", cab.getBookingDate());
-	}
-	
-	public void testCabCapacity()
-	{
+public class TestCab extends TestCase {
+	public TestCab() {
+		cab = new Cab();
+		cab.setBooked(1);
 		cab.setCapacity(5);
+		cab.setDriver("Ramesh");
+		cab.setDriverPhone("7976794395");
+		cab.setLicensePlate("GA09PD4454");
+	}
+	
+	private Cab cab;
+	
+	public void testGetBooked() {
+		assertEquals(1, cab.getBooked());
+	}
+	
+	public void testGetCapacity() {
 		assertEquals(5, cab.getCapacity());
 	}
-
+	
+	public void testGetDriver() {
+		assertEquals("Ramesh", cab.getDriver());
+	}
+	
+	public void testGetDriverPhone() {
+		assertEquals("7976794395", cab.getDriverPhone());
+	}
+	
+	public void testGetLicencePlate() {
+		assertEquals("GA09PD4454", cab.getLicensePlate());
+	}
 }

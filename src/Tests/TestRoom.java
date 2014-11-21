@@ -18,7 +18,8 @@ public class TestRoom extends TestCase
 		room.setRoomNumber("A749");
 		room.setProjectorStatus(false);
 		room.setStatus("booked");
-		room.setBookingTime("12:04", "17.06");
+		room.setStartingTime("12:04");
+		room.setDuration("04:56");
 		room.setBookingDate("10/15/2016");
 		room.setCapacity(50);
 	}
@@ -47,7 +48,7 @@ public class TestRoom extends TestCase
 	}
 	public void testGetDuration()
 	{
-		assertEquals("17.06", (room.getDuration()).get(0));
+		assertEquals("04:56", (room.getDuration()).get(0));
 	}
 	public void testGetBookingDate()
 	{
