@@ -1,4 +1,5 @@
 package Project;
+
 import java.util.Scanner;
 /*
  *@author AbhishekTiwari
@@ -48,9 +49,9 @@ public class Driver
 							UID=in.next();
 							bookaroom.cancelRequest(UID);
 							break;
-						case 4: //somehow run AdminSession From Here!
-							//if(Login.isAdmin())
-								AdminRoom.runAdminSession();
+						case 4:
+							Login.isAdmin();
+							AdminRoom.runAdminSession();
 							break;
 						case 5: prevMenu = 1;	
 							break;

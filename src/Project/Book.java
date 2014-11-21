@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -35,7 +36,6 @@ abstract class Book
 	public abstract void generateForm();
 	public abstract void displayStatus(String UID);
 	
-	// TODO: Tell Abhishek to incorporate this into his part
 	public abstract void cancelRequest(String UID);
 	
 	public static boolean isValidTimeFormat(String t)
@@ -43,7 +43,16 @@ abstract class Book
 		Pattern pat = Pattern.compile("^\\d{1,2}([:])\\d{1,2}$");
 		Matcher match = pat.matcher(t);
 		if(match.find())
+		{
+			try {
+				DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:ss");
+				DateTime time1 = formatter.parseDateTime(t);
+			}catch(IllegalFieldValueException e) {
+				// System.out.println("Invalid time format");
+				return false;
+			}
 			return true;
+		}
 		return false;
 	}
 	
@@ -92,8 +101,13 @@ abstract class Book
 	 */
 	public static int compareDate(String d1, String d2)
 	{
+		if(d1 == null)
+		{
+			System.out.println("NULL!!!!");
+		}
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 		DateTime date1 = formatter.parseDateTime(d1), date2;
+		// int dow = date1.getDayOfWeek();
 			
    		if(d2 == null)
    		{
@@ -110,4 +124,3 @@ abstract class Book
 		return result;
 	}
 }
-

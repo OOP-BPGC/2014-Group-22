@@ -135,7 +135,7 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 	public boolean bookCab(String bookingtype, int reqdCapacity)
 	{
 		this.cab = new Cab();
-		this.cab = CabDB.findCab(bookingType, reqdCapacity);
+		this.cab = CabDB.findCab(bookingType, reqdCapacity, this.initialDate, this.finalDate);
 		
 		if(this.cab == null)
 		{

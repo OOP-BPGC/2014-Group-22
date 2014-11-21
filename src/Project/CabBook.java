@@ -162,6 +162,7 @@ public abstract class CabBook extends Book {
 				System.out.println("Invalid date format! Use 'dd/mm/yyyy'");
 			}
 		}
+		System.out.println("Date set = " + this.finalDate);
 	}
 	
 	/**

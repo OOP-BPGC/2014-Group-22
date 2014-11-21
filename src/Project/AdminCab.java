@@ -55,7 +55,7 @@ public class AdminCab {
 	public static void addCabToFleet(Cab cab)
 	{
 		CabDB.readFromDB("CabFleet");
-		CabDB.CabFleet.add(cab);
+		CabDB.CabListFleet.add(cab);
 		CabDB.writeToDB("CabFleet");
 	}
 }

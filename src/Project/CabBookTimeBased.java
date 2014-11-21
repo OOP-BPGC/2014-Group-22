@@ -75,7 +75,7 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 	public boolean bookCab(String bookingtype, int reqdCapacity)
 	{
 		this.cab = new Cab();
-		cab = CabDB.findCab(bookingType, reqdCapacity);
+		cab = CabDB.findCab(bookingType, reqdCapacity, this.initialDate, this.finalDate);
 		
 		if(cab == null)
 		{

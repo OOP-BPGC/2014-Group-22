@@ -34,9 +34,9 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 			
 			System.out.println("Enter the distance for which the cab is required: ");
 			// TODO: Implement type checking
-			sc.nextLine();
 			this.distance = sc.nextInt();
 			
+			// System.out.println("Passed check");
 			// CHECK DATE VALIDITY
 			
 			this.inputInitialDate();
@@ -85,7 +85,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 	public boolean bookCab(String bookingtype, int reqdCapacity)
 	{
 		this.cab = new Cab();
-		cab = CabDB.findCab(bookingType, reqdCapacity);
+		cab = CabDB.findCab(bookingType, reqdCapacity, this.initialDate, this.finalDate);
 		
 		if(cab == null)
 		{

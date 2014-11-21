@@ -3,10 +3,7 @@ package Project;
 import java.io.Serializable;
 
 public class Cab implements Serializable {
-	/*
-	 *Cab number is the unique attribute of each cab.
-	 */
-	// private String cabType;
+	
 	private String licensePlate;
 	private int capacity;
 	private String driver;
@@ -32,12 +29,6 @@ public class Cab implements Serializable {
 	{
 		return this.booked;
 	}
-	
-	/*
-	public void setCabType(String cbt)
-	{
-		cabType=cbt;
-	}*/
 	public void setBooked(int b)
 	{
 		booked = b;
@@ -58,11 +49,6 @@ public class Cab implements Serializable {
 	{
 		capacity = n;
 	}
-	/*
-	public String getCabType()
-	{
-		return cabType;
-	}*/
 	public String getDriver()
 	{
 		return driver;
@@ -78,5 +64,9 @@ public class Cab implements Serializable {
 	public String getLicensePlate()
 	{
 		return licensePlate;
+	}
+	public String toString()
+	{
+		return("Cab license plate no. " + this.licensePlate + ", capacity = " + this.capacity);
 	}
 }
