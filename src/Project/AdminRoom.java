@@ -1,4 +1,4 @@
-package src;
+package Project;
 //to addrooms, display rooms
 import java.util.Scanner;
 import java.util.ArrayList;

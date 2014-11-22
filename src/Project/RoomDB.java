@@ -1,4 +1,5 @@
-package src;
+package Project;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 //for writing objects
