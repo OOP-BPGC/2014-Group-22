@@ -114,5 +114,7 @@ public class Room implements Serializable
 		startingTime.remove(index);
 		duration.remove(index);
 		uid.remove(index);
+		if(bookingDate.size()==0)
+			status="Available";
 	}
 }
