@@ -1,14 +1,14 @@
 -----------------------------------------------------------------------------------------
-Name 			Student ID 	  Roles 	  Role-based 	  Overall
-							  Contribution(%) Contribution(%)
+Name 			Student ID 	  Roles 	  	Role-based 	  Overall
+							  	Contribution(%) Contribution(%)
 -----------------------------------------------------------------------------------------
-Varsheeth Talluri	2013A7PS045G	
-Nisarg Shah		2013A7PS694G
-Shubham Jain		2013A7PS007G
-Shubham Jain		2013A7PS049G
-Abhishek Tiwari		2013A7PS810G
-Arnab Bhattacharya	2013A7PS070G
-Ahmad Jauhar		2012A3PS100G
+Varsheeth Talluri	2013A7PS045G	UML, Proj Req, CRC     	100%		   15%
+Nisarg Shah		2013A7PS694G	Proj. Req, Coding 	100%		   25%
+Shubham Jain		2013A7PS007G	Unit Tests, Proj Req 	100%		   10%
+Shubham Jain		2013A7PS049G	Unit Tests, Proj Req	100%		   10%
+Abhishek Tiwari		2013A7PS810G	Coding, UseCases  	100%		   30%
+Arnab Bhattacharya	2013A7PS070G	Proj Req, Use Cases	50%		   8%
+Ahmad Jauhar		2012A3PS100G						   2%
 -----------------------------------------------------------------------
 
 
@@ -43,8 +43,11 @@ Execution Instructions
 ---------------------------------
 1.	Place "jsoup-*.jar" in the lib folder.
 2.	Place "joda-time-*.jar" (here '*' represents any version of the jar) must be placed in the lib folder.
+	NOTE: for your convenience, the above are already placed in lib.
 3.	Open terminal and change directory to where the shell scripy is ie. Submission 4/code
 4. 	Run setup.sh 
+NOTE	To login enter MOODLE id, password;
+	To use Admin login just ente password "ADMIN"
 
 Dependencies
 ---------------------------------
