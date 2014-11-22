@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------------------
-Name 			Student ID 	  Roles 	  Role-based 	Overall
+Name 			Student ID 	  Roles 	  Role-based 	  Overall
 							  Contribution(%) Contribution(%)
 -----------------------------------------------------------------------------------------
 Varsheeth Talluri	2013A7PS045G	
@@ -43,13 +43,13 @@ Execution Instructions
 ---------------------------------
 1.	Place "jsoup-*.jar" in the lib folder.
 2.	Place "joda-time-*.jar" (here '*' represents any version of the jar) must be placed in the lib folder.
-3. 	Run startup.sh 
+3. 	Run setup.sh 
 
 Dependencies
 ---------------------------------
-This program makes use of the following special libraries. If you do not have these libraries installed in your system. The links to the installation are provided along with the libraries:
+This program makes use of the following special libraries. If you do not have these libraries installed in your system, the links to the installation are provided along with the libraries:
 
-1.	JSoup Library-"http://jsoup.org/download". Here '*' represents any version of the jar.
+1.	JSoup Library-"http://jsoup.org/download".
 
 2.	Joda-Time Library-"http://joda-time.sourceforge.net/installation.html".
 	
