@@ -1,6 +1,6 @@
-package src;
-import java.util.Scanner;
+package Project;
 
+import java.util.Scanner;
 
 /**
  * This class implements distance based cab booking system.
@@ -63,6 +63,7 @@ public class CabBookDistanceBased extends CabBook {
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
 			System.out.println("Booking successful. Your request id is " + this.getUID()); // generateUID called in the constructor
+			System.out.println("The fare for your ride is : " + CabBook.calcDistanceFare(this.distance, requiredCapacity) + "Rs");
 		}
 		else
 		{

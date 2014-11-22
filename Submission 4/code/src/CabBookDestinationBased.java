@@ -1,6 +1,6 @@
-package src;
-import java.util.Scanner;
+package Project;
 
+import java.util.Scanner;
 
 /**
  * This class implements destination based cab booking system.
@@ -11,11 +11,9 @@ import java.util.Scanner;
 
 public class CabBookDestinationBased extends CabBook {
 	
-	private String initialDestination;
+	private String initialDestination = "BITS";
 	private String finalDestination;
-	private String[] destinations = {"BITS", "Verna", "Zuari", "Panjim", 
-									"Vasco"};
-	
+
 	public String getInitialDestination() {
 		return initialDestination;
 	}
@@ -23,7 +21,6 @@ public class CabBookDestinationBased extends CabBook {
 	public void setInitialDestination(String initialDestination) {
 		this.initialDestination = initialDestination;
 	}
-
 	public String getFinalDestination() {
 		return finalDestination;
 	}
@@ -31,7 +28,7 @@ public class CabBookDestinationBased extends CabBook {
 	public void setFinalDestination(String finalDestination) {
 		this.finalDestination = finalDestination;
 	}
-	
+
 	public CabBookDestinationBased()
 	{
 		super();
@@ -49,7 +46,7 @@ public class CabBookDestinationBased extends CabBook {
 		System.out.println("Currently available destinations are - ");
 		for(String dest: destinations)
 		{
-			System.out.print(dest + " ");
+			System.out.print(dest);
 		}
 
 		// CHECK DESTINATION VALIDITY
@@ -58,12 +55,12 @@ public class CabBookDestinationBased extends CabBook {
 		while(invalidDestination) // Check whether the entered destination is present in
 									// the destination array.
 		{
-			System.out.println("\nEnter the initial destination: ");
-			this.initialDestination = sc.nextLine();
+			System.out.println("\nEnter the final destination: ");
+			this.finalDestination = sc.nextLine();
 			
 			for(String dest: destinations) // Verify entered destination
 			{
-				if(dest.equals(initialDestination))
+				if(dest.equals(finalDestination))
 				{
 					invalidDestination = false;
 					break;
@@ -72,33 +69,6 @@ public class CabBookDestinationBased extends CabBook {
 			if(invalidDestination)
 			{
 				System.out.println("Destination not present in database! Please enter a valid destination");
-			}
-		}
-		
-		invalidDestination = true;
-		while(invalidDestination) // Check whether the entered destination is present in
-			// the destination array.
-		{
-			System.out.println("Enter the final destination: ");
-			this.finalDestination = sc.nextLine();
-			
-			if(finalDestination.equalsIgnoreCase(initialDestination))
-			{
-				System.out.println("Final destination cannot be the same as initial destination!");
-				continue;
-			}
-			
-			for(String dest: destinations) // Verify entered destination
-			{
-				if(dest.equalsIgnoreCase(finalDestination))
-				{
-					invalidDestination = false;
-					break;
-				}
-			}
-			if(invalidDestination)
-			{
-				System.out.println("Destination not present in database!");
 			}
 		}
 		
@@ -122,6 +92,14 @@ public class CabBookDestinationBased extends CabBook {
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
 			System.out.println("Booking successful. Your request id is " + this.getUID());
+			for(int i=0;i<destinations.length;i++)
+			{
+				if ( destinations[i].equals(this.finalDestination))
+				{
+					System.out.println("The fare for your ride is : " + destFare[i] + "Rs");
+					break;
+				}
+			}
 		}
 		else
 		{
