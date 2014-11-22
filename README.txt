@@ -34,3 +34,18 @@ the end of Stage-2
 Tests added later
 -----------------------------------------------------
 
+Installation Instructions
+---------------------------------
+1. 
+
+
+Execution Instructions
+---------------------------------
+1.
+
+Dependencies
+---------------------------------
+This program makes use of the following special libraries. If you do not have these libraries installed in your system. The links to the installation are provided alongwith the libraries:
+1.JSoup Library-"http://jsoup.org/download".
+2.Joda-Time Library-"http://joda-time.sourceforge.net/installation.html".
+3.JUnit Library.
