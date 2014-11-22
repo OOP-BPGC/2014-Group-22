@@ -13,6 +13,9 @@ public class CabBookDestinationBased extends CabBook {
 	
 	private String initialDestination = "BITS";
 	private String finalDestination;
+	static String[] destinations = {"Madgaon", "Vasco", "Goa Airport", "Panjim", "Baga", "Colva",
+		"Bogmalo", "Caculo Mall", "Vagator", "Palolem"};
+	static int[] destFare = {400, 200, 100, 600, 900, 400, 150, 650, 1000, 1200};
 
 	public String getInitialDestination() {
 		return initialDestination;
@@ -92,14 +95,7 @@ public class CabBookDestinationBased extends CabBook {
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
 			System.out.println("Booking successful. Your request id is " + this.getUID());
-			for(int i=0;i<destinations.length;i++)
-			{
-				if ( destinations[i].equals(this.finalDestination))
-				{
-					System.out.println("The fare for your ride is : " + destFare[i] + "Rs");
-					break;
-				}
-			}
+			System.out.println("The fare for your ride is : Rs." + calcFare(requiredCapacity));
 		}
 		else
 		{
@@ -129,10 +125,16 @@ public class CabBookDestinationBased extends CabBook {
 		return true;
 	}
 	
-	// TODO:
-	public int calcFare()
+	public long calcFare(int reqdCapacity)
 	{
-		return 1;
+		for(int i=0; i < destinations.length; i++)
+		{
+			if (destinations[i].equals(this.finalDestination))
+			{
+				return destFare[i]*reqdCapacity;
+			}
+		}
+		return 1L; // Sanity check to avoid errors. The flow of control does not reach this point.
 	}
 	
 	public void cancelRequest(String UID)
