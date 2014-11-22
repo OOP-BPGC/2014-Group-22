@@ -86,7 +86,7 @@ public class CabBookDistanceBased extends CabBook {
 		{
 			return false;
 		}
-		//System.out.println("trolololol -------" + this.finalDate);
+
 		CabDB.CabListDist.add(this);
 		CabDB.writeToDB(bookingType);
 		return true;

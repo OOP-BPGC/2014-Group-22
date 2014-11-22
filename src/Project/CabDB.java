@@ -214,7 +214,7 @@ public class CabDB {
 					while(in.hasNextLine())
 					{
 						counter++;
-						System.out.println("counter = " + counter);
+						// System.out.println("counter = " + counter);
 						Cab cab = new Cab();
 						int booked = Integer.parseInt(in.nextLine());
 						cab.setBooked(booked);
@@ -532,7 +532,7 @@ public class CabDB {
 			{
 				CabDB.CabListTime.remove(i);
 				CabDB.writeToDB("Time");
-				System.out.println("Cancellation successful!");
+				System.out.println("Cancellation successful! Have a nice day :)");
 				return;
 			}
 		}

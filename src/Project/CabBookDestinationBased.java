@@ -58,7 +58,7 @@ public class CabBookDestinationBased extends CabBook {
 		while(invalidDestination) // Check whether the entered destination is present in
 									// the destination array.
 		{
-			System.out.println("\nEnter the final destination: ");
+			System.out.println("\nEnter the destination where you want to go: ");
 			this.finalDestination = sc.nextLine();
 			
 			for(String dest: destinations) // Verify entered destination
