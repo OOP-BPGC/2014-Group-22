@@ -34,17 +34,12 @@ the end of Stage-2
 Tests added later
 -----------------------------------------------------
 
-Installation Instructions
----------------------------------
-1. 
-
-
 Execution Instructions
 ---------------------------------
 1.	Place "jsoup-*.jar" in the lib folder.
 2.	Place "joda-time-*.jar" (here '*' represents any version of the jar) must be placed in the lib folder.
 	NOTE: for your convenience, the above are already placed in lib.
-3.	Open terminal and change directory to where the shell scripy is ie. Submission 4/code
+3.	Open terminal and change directory to where the shell script is ie. Submission 4/code/
 4. 	Run setup.sh 
 NOTE	To login enter MOODLE id, password;
 	To use Admin login just ente password "ADMIN"
