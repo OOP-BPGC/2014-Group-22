@@ -23,9 +23,6 @@ public abstract class CabBook extends Book {
 	protected Cab cab;
 	protected String bookingType;
 	protected String bookedBy; // Stores the id of user who booked it
-	protected static String[] destinations={"Madgaon","Vasco","Goa Airport","Panjim","Baga","Colva",
-											"Bogmalo","Caculo Mall","Vagator","Palolem"};
-	protected static int[] destFare={400,200,100,600,900,400,150,650,1000,1200};
 	
 	public CabBook()
 	{
@@ -92,7 +89,7 @@ public abstract class CabBook extends Book {
 		return this.finalDate;
 	}
 	
-	public abstract int calcFare();
+	public abstract long calcFare(int reqdCapacity);
 	
 	/**
 	 * This method is a part of segregation of common aspects of generateForm method
@@ -229,37 +226,15 @@ public abstract class CabBook extends Book {
 		}
 	}
 	
-	// TODO: Decide whether we need this method
-	public void displayStatus(String Uid)
+	// displayStatus() not needed for now
+	public void displayStatus(String UID)
 	{
-		CabDB.readAllFromDB();
 		
-		for(int i = 0; i < CabDB.CabListDest.size(); i++)
-		{
-			if(CabDB.CabListDest.get(i).getUID().equals(Uid))
-			{
-				CabDB.CabListDest.get(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabDB.CabListDist.size(); i++)
-		{
-			if(CabDB.CabListDist.get(i).getUID().equals(Uid))
-			{
-				CabDB.CabListDist.get(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabDB.CabListTime.size(); i++)
-		{
-			if(CabDB.CabListTime.get(i).getUID().equals(Uid))
-			{
-				CabDB.CabListTime.get(i);
-				return;
-			}
-		}
 	}
 	
+	/**
+	 * Shows tariffs for each type of booking
+	 */
 	public static void getFares()
 	{
 		System.out.println("###################################################################");
@@ -268,9 +243,9 @@ public abstract class CabBook extends Book {
 		System.out.println("The fares for fixed destinations are as follows : ");
 		System.out.println();
 
-		for(int i=0;i<destFare.length;i++)
+		for(int i = 0; i < CabBookDestinationBased.destFare.length; i++)
 		{
-			System.out.println(destinations[i] + "\nFare : " + destFare[i] + "Rs");
+			System.out.println(CabBookDestinationBased.destinations[i] + "\nFare : Rs." + CabBookDestinationBased.destFare[i]);
 			System.out.println();
 		}
 		System.out.println();
@@ -307,54 +282,6 @@ public abstract class CabBook extends Book {
 		System.out.println("Price for 1 hr   ------------------------------  200Rs ");
 		System.out.println();
 		System.out.println("###################################################################");
-	}
-	
-	public static int calcDistanceFare(int distance,int requiredCapacity)
-	{
-		if(requiredCapacity <= 5)
-		{
-			return distance*15;
-		}
-		else if(requiredCapacity > 5 && requiredCapacity<=10)
-		{
-			return distance*20;
-		}
-		else if(requiredCapacity > 10 && requiredCapacity <= 20)
-		{
-			return distance*25;
-		}
-		else if(requiredCapacity > 20 && requiredCapacity <= 40)
-		{
-			return distance*35;
-		}
-		else
-		{
-			return distance*(((requiredCapacity-1)/20)*5+30);
-		}
-	}
-	
-	public static int calcTimeFare(int timeDiff,int requiredCapacity)
-	{
-		if(requiredCapacity <= 4)
-		{
-			return timeDiff*120;
-		}
-		else if(requiredCapacity > 4 && requiredCapacity<=10)
-		{
-			return timeDiff*140;
-		}
-		else if(requiredCapacity > 10 && requiredCapacity <= 20)
-		{
-			return timeDiff*160;
-		}
-		else if(requiredCapacity > 20 && requiredCapacity <= 40)
-		{
-			return timeDiff*200;
-		}
-		else
-		{
-			return timeDiff*(((requiredCapacity-1)/20)*20+180);
-		}
 	}
 }
 

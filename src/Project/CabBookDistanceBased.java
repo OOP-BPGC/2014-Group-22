@@ -63,7 +63,7 @@ public class CabBookDistanceBased extends CabBook {
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
 			System.out.println("Booking successful. Your request id is " + this.getUID()); // generateUID called in the constructor
-			System.out.println("The fare for your ride is : " + CabBook.calcDistanceFare(this.distance, requiredCapacity) + "Rs");
+			System.out.println("The fare for your ride is : Rs." + this.calcFare(requiredCapacity));
 		}
 		else
 		{
@@ -93,9 +93,28 @@ public class CabBookDistanceBased extends CabBook {
 	}
 	
 	// TODO: Make this more sophisticated
-	public int calcFare()
+	public long calcFare(int requiredCapacity)
 	{
-		return 50*this.distance;
+		if(requiredCapacity <= 5)
+		{
+			return this.distance*15;
+		}
+		else if(requiredCapacity > 5 && requiredCapacity<=10)
+		{
+			return this.distance*20;
+		}
+		else if(requiredCapacity > 10 && requiredCapacity <= 20)
+		{
+			return this.distance*25;
+		}
+		else if(requiredCapacity > 20 && requiredCapacity <= 40)
+		{
+			return this.distance*35;
+		}
+		else
+		{
+			return this.distance*(((requiredCapacity-1)/20)*5+30);
+		}
 	}
 	
 	public void cancelRequest(String UID)

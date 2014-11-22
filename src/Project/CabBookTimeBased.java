@@ -2,6 +2,10 @@ package Project;
 
 import java.util.Scanner;
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.format.DateTimeFormat;
+
 /**
  * This class implements time based cab booking system.
  * User details are written into objects of this class and are serialized
@@ -44,8 +48,7 @@ public class CabBookTimeBased extends CabBook {
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
 			System.out.println("Booking successful. Your request id is " + this.getUID());
-	//		Not able to calculate timeDiff. If this is done, you can uncomment below comment.
-	//		System.out.println("The fare for your ride is : " + CabBook.calcTimeFare(this.timeDiff, requiredCapacity) + "Rs");
+			System.out.println("The fare for your ride is : Rs." + this.calcFare(requiredCapacity));
 		}
 		else
 		{
@@ -75,9 +78,33 @@ public class CabBookTimeBased extends CabBook {
 	}
 	
 	// TODO:
-	public int calcFare()
+	public long calcFare(int requiredCapacity)
 	{
-		return 1;
+		DateTime dt1 = DateTime.parse(this.initialDate + "T" + this.initialTime, DateTimeFormat.forPattern("dd/MM/yyyy'T'HH:mm"));
+		DateTime dt2 = DateTime.parse(this.finalDate + "T" + this.finalTime, DateTimeFormat.forPattern("dd/MM/yyyy'T'HH:mm"));
+		Duration duration = new Duration(dt2, dt1);
+		long timeDiff = duration.getStandardHours();
+		
+		if(requiredCapacity <= 4)
+		{
+			return timeDiff*120;
+		}
+		else if(requiredCapacity > 4 && requiredCapacity<=10)
+		{
+			return timeDiff*140;
+		}
+		else if(requiredCapacity > 10 && requiredCapacity <= 20)
+		{
+			return timeDiff*160;
+		}
+		else if(requiredCapacity > 20 && requiredCapacity <= 40)
+		{
+			return timeDiff*200;
+		}
+		else
+		{
+			return timeDiff*(((requiredCapacity-1)/20)*20+180);
+		}
 	}
 	
 	public void cancelRequest(String UID)

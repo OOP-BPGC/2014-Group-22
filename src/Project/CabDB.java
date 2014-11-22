@@ -393,6 +393,12 @@ public class CabDB {
 		// See whether any un-booked cab is there in DB
 		readAllFromDB();
 		
+		/*if(CabListFleet.size() == 0)
+		{
+			System.out.println("No cab present in cab database. Maybe you need to add some to your inventory?");
+			return null;
+		}*/
+		
 		// This loop searches for a cab with 0 current bookings from CabFleet.db
 		// System.out.println("CabDB.findCab > CabFleet.size() = " + CabListFleet.size()); // Debug statement
 		for(int i = 0; i < CabListFleet.size(); i++)
