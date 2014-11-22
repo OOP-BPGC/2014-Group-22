@@ -1,5 +1,4 @@
 package Project;
-//import Project.User;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -23,13 +22,13 @@ public class RoomBook extends Book
 	@Override
 	public void generateForm()
 	{
-		System.out.println("\n############################################################################");
+		System.out.println("\n##############################");
 		System.out.println("\nROOM LIST WITH THEIR BOOKINGS");
 		RoomDB.displayRooms();
-		System.out.println("\n____________________________________________________________________________________________");
-		System.out.println("\nPlease scroll through the list of available rooms and choose a room which meets your");
+		System.out.println("\n######################################################################################");
+		System.out.println("Please scroll through the list of available rooms and choose a room which meets your");
 		System.out.println("requirements. The bookings are also listed to help you avoid conflicting choices...");
-		System.out.println("\n____________________________________________________________________________________________");
+		System.out.println("######################################################################################");
 
 		int confirmRoom = 2;
 		Scanner inp = new Scanner(System.in);
@@ -46,55 +45,52 @@ public class RoomBook extends Book
 		double duration=0;
 		int roomBooked=0;
 
-		System.out.println("#################################");
+		System.out.println("\n\n#################################");
 		System.out.println("FILL IN THE FOLLOWING FIELDS");
 		System.out.println("#################################");
 		//take booking day input
 		do{
-		System.out.println("Room is to be booked for which day?");
-		System.out.println("Enter day (1-31) and press enter");
-		System.out.println("then enter month (1-12) and press enter");
+		System.out.println("\n------------------------------Room is to be booked for which day?");
+		System.out.println("Enter a digit for day and press enter");
+		System.out.println("then enter a digit for month (1-12) and press enter");
 		System.out.println("then enter year (>2014) and press enter");
 		day=inp.nextInt();
 		month=inp.nextInt();
 		year=inp.nextInt();
 		}while(!newrequest.setBookingDate(day,month,year));
 
-		System.out.println("\n\n");
 		//take starting time of booking
 		do{
-		System.out.println("Starting time of booking?");
+		System.out.println("\n------------------------------Starting time of booking?");
 		System.out.println("Enter time in 24 hour format,");
-		System.out.println("Enter hours (8-23) press enter,");
+		System.out.println("Enter digit hours press enter,");
 		System.out.println("then enter minutes (0-60) and press enter.");
 		hour=inp.nextInt();		
 		minutes=inp.nextInt();
 		}while(!newrequest.setStartingTime(hour,minutes));
 		
-		System.out.println("\n\n");
 		//take 'duration' of booking input
 		do{
-		System.out.println("Room is to be booked for how long?");
+		System.out.println("\n------------------------------Room is to be booked for how long?");
 		System.out.println("Enter value in hours eg : 1.5, 2.5, 3 etc.");
 		duration=inp.nextDouble();
 		}while(!newrequest.setDuration(duration));
 		
-		System.out.println("\n\n");	
 		//take attendance count			
-		System.out.println("Room is to be booked for how many persons?");
+		System.out.println("--------------------------------Room is to be booked for how many persons?");
 		attendance=inp.nextInt();
 		newrequest.setAttendanceCount(attendance);
 
-		System.out.println("\n\n");
 		//take reason for booking	
 		inp.nextLine();
-		System.out.println("Enter Reason for requesting room. Use only 1 Line.");	
+		System.out.println("\n------------------------------Enter Reason for requesting room. Use only 1 Line.");	
 		line=inp.nextLine();
 		newrequest.setReason(line);
 		inp.nextLine();
 
 		while(confirmRoom==2)
 		{
+			System.out.println("----------------------------------------------");
 			System.out.println("Enter choice of room:");
 			System.out.println("(Do not change capital letters to small))");
 			room=inp.next();
@@ -161,12 +157,12 @@ public class RoomBook extends Book
 	 *	 3 : Requested room is already booked at exactly the same time slot and day.
 	 *	 4 : Requested time slot is in conflict with an existing booking.
 	 */
-	public static int roomChoiceCheck(String room, int day,int month,int year, int hour,int minutes, double duration,int attendance)
+	public static int roomChoiceCheck(String room, int day,int month,int year, int hourRT1,int minRT1, double duration,int attendance)
 	{
 		ArrayList<Room> roomList = new ArrayList<Room>();
 		roomList=RoomDB.getRoomList();
 		String date = day+"/"+month+"/"+year;
-		String time = hour+":"+minutes;
+		String time = hourRT1+":"+minRT1;
 		for(Room aroom : roomList)
 		{
 			if(aroom.getRoomNumber().equals(room))
@@ -190,19 +186,61 @@ public class RoomBook extends Book
 							{
 								String timeOfBooking = startingTimes.get(j);
 								String[] booked = timeOfBooking.split(":",0);
-								String[] requested = time.split(":",0);
-								//timing details of existing booking 
-								int hourBooked = Integer.parseInt(booked[0]);
-								int minutesBooked = Integer.parseInt(booked[1]);
+								//T1
+								int hourT1 = Integer.parseInt(booked[0]);
+								int minT1 = Integer.parseInt(booked[1]);
 								double durationBooked = Double.parseDouble(durations.get(j));
-								if(hour==hourBooked&&minutes==minutesBooked)
-									return 3;
-								else if(hour<hourBooked&&(hour+duration)<=hourBooked)
-									return 1;
-								else if(hour>hourBooked && hourBooked+durationBooked<=hour)
-									return 1;
+								//T2
+								int hourT2=0, minT2=0;
+								if(Math.floor(durationBooked)==durationBooked)
+								{
+									hourT2=hourT1+(int)durationBooked;
+									minT2=minT1;
+								}
 								else
-									return 4;
+								{
+									if(minT1+30>60)
+									{
+										minT2=minT1+30-60;
+										hourT2=1+hourT1+(int)durationBooked;
+									}	
+									else
+									{
+										hourT2=hourT1+(int)durationBooked;
+										minT2=minT1+30;
+									}
+								}
+								//RT2
+								int hourRT2=0, minRT2=0;
+								if(Math.floor(duration)==duration)
+								{
+									hourRT2=(int)duration+hourRT1;
+									minRT2=minRT1;
+								}
+								else
+								{
+									if(minRT1+30>60)
+									{
+										minRT2=minRT1+30-60;
+										hourRT2=1+hourRT1+(int)duration;
+									}
+									else
+									{
+										hourRT2=hourRT1+(int)duration;
+										minRT2=minRT1+30;
+									}
+								}/*
+								System.out.println("##############");
+								System.out.println(hourT1+":"+minT1+"-"+hourT2+":"+minT2);
+								System.out.println(hourRT1+":"+minRT1+"-"+hourRT2+":"+minRT2);
+								System.out.println("##############");*/
+								if(hourRT1==hourT1&&minRT1==minT1)
+									return 3;
+								else if((hourRT2<hourT1)||(hourRT2==hourT1&&minRT2<=minT1))
+									return 1;
+								else if((hourRT1>hourT2)||(hourRT1==hourT2&&minRT2>=minT2))
+									return 1;
+								else return 4;
 							}
 						}
 					}
@@ -218,6 +256,7 @@ public class RoomBook extends Book
 	{	
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
+		int found=0;
 		int index =-1;
 		ArrayList<Request> requestsInDB = new ArrayList<Request>();
 		//read from RequestRoomDB
@@ -230,12 +269,15 @@ public class RoomBook extends Book
 				if(areq.getRequestUID().equals(UID))
 				{
 					System.out.println("Your Request Status is :\t\t"+areq.getBookingStatus());
+					found=1;
 					break;
 				}
 			}
 
 		}
 		else
+			System.out.println("\n\n--------There are no requests in the database.");
+		if(found==0)
 			System.out.println("No request found matching the supplied UID.");
 	}
 	@Override
@@ -247,14 +289,42 @@ public class RoomBook extends Book
 		ArrayList<Request> requestsInDB = new ArrayList<Request>();
 		//read from RequestRoomDB
 		requestsInDB = (ArrayList<Request>)getRequestsMade();
+		//read from RoomDB
+		ArrayList<Room> recoveredRoomList = RoomDB.getRoomList();
 		//search for request with supplied UID
+		int remove=0;
+		char confirm='n';
+		Scanner inp = new Scanner(System.in);
 		for(Request areq : requestsInDB)
 		{
 			if(areq.getRequestUID().equals(UID))
 			{
 				System.out.println("Found Request in DB. Removing request...");
 				index=requestsInDB.indexOf(areq);
-				//also modify
+				//also modify Rooms in DataBase to nullify booking IF its an approved Request
+				if(areq.getBookingStatus().equals("Approved"))
+				{
+					System.out.println("\n\n###########################################################################");
+					System.out.println("Your request has been approved and "+areq.getRoom()+" has been booked for you.");
+					System.out.println("Are you sure you want to cancel your request and hence cancel the Booking?(y/n)");
+					System.out.println("###############################################################################");
+					confirm=inp.next().charAt(0);
+					if(confirm=='y'||confirm=='Y')
+					{
+						for(Room aroom : recoveredRoomList)
+						{
+							if(aroom.getRoomNumber().equals(areq.getRoom()))
+							{
+								ArrayList<String> ids = aroom.getUID();
+								int index2 = ids.indexOf(areq.getRequestUID());
+								aroom.removeBooking(index2);
+								remove=1;
+							}
+						}
+					}
+					else
+						System.out.println("\n\nAborting...");
+				}
 				break;
 			}
 		}
@@ -263,13 +333,14 @@ public class RoomBook extends Book
 		else
 			System.out.println("No request found matching the supplied UID.");
 		updateRoomRequestDB(requestsInDB);
+		if(remove==1)
+			RoomDB.updateDB(recoveredRoomList);
 	}
 	private void writeRequestToDB()
 	{
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		File fileCheck = new File("RequestRoomDB");
-		System.out.println("RequestRoomDB exists?\t"+fileCheck.exists());	
 		//this check ensures system doesnt crash with FNF exception when writing to DB for the first Time	
 		if(fileCheck.exists())
 			readRequestFromDB();
@@ -300,7 +371,9 @@ public class RoomBook extends Book
 			ois = new ObjectInputStream(fis);
 			RequestsMade=(ArrayList<Request>)ois.readObject();
 		}catch(FileNotFoundException e){
-			System.out.println("Caught FileNotFoundException while reading from RequestRoomDB. Error 23");
+			System.out.println("##########################################");
+			System.out.println("RoomReuqest Database has not been created.");
+			System.out.println("##########################################");
 		}catch(ClassNotFoundException e){
 			System.out.println("Caught ClassNotFoundException while reading from RequestRoomDB. Error 24");
 		}catch(IOException e){

@@ -36,7 +36,7 @@ public class AdminRoom
 		{
 			System.out.println("ADMIN MENU");
 			System.out.println("-----------------------------");
-			System.out.println("1.Add Room.\n2.Modify Room Details.\n3.Evaluate Requests.\n4.Display Rooms.");
+			System.out.println("1.Add a Room.\n2.Remove a Room.\n3.Evaluate Requests.\n4.Display Rooms.");
 			System.out.println("5.Previous Menu.\n6.Clear Request DB.\n7.Exit\nEnter choice: ");
 			choice=inp.nextInt();
 			int prevMenu =0;
@@ -44,7 +44,7 @@ public class AdminRoom
 			{
 				case 1: RoomDB.addRoom();
 					break;
-				case 2: System.out.println("UNDER CONSTRUCTION :)");
+				case 2: RoomDB.removeRoom();
 					break;
 				case 3: AdminRoom.evaluateRequests();
 					break;
@@ -82,17 +82,19 @@ public class AdminRoom
 		//read from RoomRequestDB
 		ArrayList<Request> RequestsInDB = RoomBook.getRequestsMade();
 		//read from RoomDB
-		ArrayList<Room> RoomsInDB = RoomDB.getRoomList();
+		ArrayList<Room> RoomsInDB = null;
 		int decision=-1;
 		char confirm ='y';
 		String response="";
 		int r =0;
+		int atleastOnce=0;
 		//for each request in DB do the following
 		for(Request areq : RequestsInDB)
 		{
 			if(areq.getEvaluated())
 				continue;
 			//display request if valid
+			atleastOnce=1;
 			if(resolveConflicts(areq))
 			{
 				System.out.println("\nRequest No.\t:\t\t"+(++r));
@@ -105,6 +107,7 @@ public class AdminRoom
 				areq.setEvaluated(true);
 				areq.setBookingStatus("Denied by sofware due to conflicts with existing bookings.");
 				RoomBook.updateRoomRequestDB(RequestsInDB);				
+				continue;
 			}
 			//ask admin to pass judement on the Room booking Request also implement Confirmation
 			while(true)
@@ -141,6 +144,7 @@ public class AdminRoom
 			//do the following based on admins decision.
 			if(response.equals("Approved"))
 			{
+				RoomsInDB=RoomDB.getRoomList();
 				areq.setEvaluated(true);
 				areq.setBookingStatus("Approved");
 				for(Room aroom : RoomsInDB)
@@ -151,6 +155,7 @@ public class AdminRoom
 						aroom.setBookingDate(areq.getBookingDate());
 						aroom.setStartingTime(areq.getStartingTime());
 						aroom.setDuration(areq.getDuration());
+						aroom.setUID(areq.getRequestUID());
 					}
 				}
 				System.out.println("Writing to RoomDB with updated room information...");
@@ -170,6 +175,11 @@ public class AdminRoom
 				areq.setBookingStatus("Pending");
 				RoomBook.updateRoomRequestDB(RequestsInDB);				
 			}
+		}
+		if(atleastOnce==0){
+			System.out.println("\n\n#############################################");
+			System.out.println("There are no pending Requests for evaluation.");
+			System.out.println("#############################################");
 		}
 	}
 	public static boolean resolveConflicts(Request areq)

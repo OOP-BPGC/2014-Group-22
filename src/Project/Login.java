@@ -1,5 +1,5 @@
 package Project;
-
+import java.io.Console;
 import java.io.IOException;
 import java.util.Scanner;
 import org.jsoup.Connection;
@@ -47,7 +47,13 @@ public class Login {
         
         id = "null";
         String password = "null";
-        
+        Console console = System.console();
+		if (console == null)
+		{
+		        System.out.println("Couldn't get Console instance");
+		        System.exit(0);
+		}
+	
         System.out.println("Enter your Moodle login credentials:");
         Scanner sc = new Scanner(System.in);
         while(!connect(id, password))
@@ -59,8 +65,8 @@ public class Login {
             
             System.out.println("Enter id: ");
             id = sc.nextLine();
-            System.out.println("Enter password: ");
-            password = sc.nextLine();
+	    char passwordArray[] = console.readPassword("Enter password: ");
+            password = new String(passwordArray);
         }
         name = extractName();
         return true;
@@ -130,11 +136,17 @@ public class Login {
     	
 	public static boolean isAdmin()
 	{
-		Scanner in = new Scanner(System.in);
+	        Console console = System.console();
+		if (console == null)
+		{
+		        System.out.println("Couldn't get Console instance");
+		        System.exit(0);
+		}
 		while(true)
 		{
-			System.out.println("\nEnter admin password");
-			if(in.nextLine().equals("ADMIN"))
+			char passwordArray[] = console.readPassword("Enter password: ");
+			String temp = new String(passwordArray);
+			if(temp.equals("ADMIN"))
 			{
 				return true;
 			}

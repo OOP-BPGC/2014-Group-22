@@ -31,6 +31,10 @@ public class Room implements Serializable
 	 */
 	private ArrayList<String> duration = new ArrayList<String>();
 	/*
+	 *ArrayList to store UIDS bookings.
+	 */
+	private ArrayList<String> uid = new ArrayList<String>();
+	/*
 	 *To hold upper limit of capacity for each room
 	 */
 	private int capacity;
@@ -46,61 +50,17 @@ public class Room implements Serializable
 	public void setStatus(String stat)
 	{	status=stat;
 	}
-
-	public boolean setBookingDate(int day, int month, int year)
-	{
-		int flag=0;
-		if(year>=2014)
-		{
-			if(month==2)
-			{	
-				if(day>=1&&day<=28)
-					flag=1;
-			}
-			else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12)	
-			{
-				if(day>=1&&day<=31)
-					flag=1;
-			}
-			else if(month==4||month==6||month==8||month==9||month==11)
-			{
-				if(day>=1&&day<=30)
-					flag=1;
-			}
-		}
-		if(flag==1)
-		{
-			bookingDate.add(day+"/"+month+"/"+year);
-			return true;
-		}
-		return false;
-	}
 	public void setBookingDate(String bd)
 	{
 		bookingDate.add(bd);
-	}
-	public boolean setStartingTime(int hour, int minutes)
-	{
-		if(hour>=0&&hour<=24&&minutes>=0&&minutes<=60)
-		{	
-			startingTime.add(hour+":"+minutes);
-			return true;	
-		}
-		return false;
 	}
 	public void setStartingTime(String st)
 	{
 		startingTime.add(st);
 	}
-	
-	public boolean setDuration(double hours)
+	public void setUID(String id)
 	{
-		if(hours>0&&hours<=15)
-		{
-			duration.add(hours+"");
-			return true;
-		}
-		return false;
+		uid.add(id);
 	}
 	public void setDuration(String dt)
 	{
@@ -124,6 +84,9 @@ public class Room implements Serializable
 	public ArrayList<String> getBookingDate()
 	{	return bookingDate;
 	}
+	public ArrayList<String> getUID()
+	{	return uid;
+	}
 	public int getCapacity()
 	{	return capacity;
 	}
@@ -144,5 +107,12 @@ public class Room implements Serializable
 			}
 		}
 		
+	}
+	public void removeBooking(int index)
+	{
+		bookingDate.remove(index);
+		startingTime.remove(index);
+		duration.remove(index);
+		uid.remove(index);
 	}
 }

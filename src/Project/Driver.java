@@ -16,8 +16,13 @@ public class Driver
 		while(menu1=='y'||menu1=='Y')
 		{
 			System.out.println("MAIN MENU");
-			System.out.println("-----------------------------");
+			System.out.println("##############################");
 			System.out.println("1.Class Room Booking.\n2.Cab Booking.\n3.Exit");
+			System.out.println("##############################");
+			System.out.println("\n\n-----------------------------------------");
+			System.out.println("To abort at any time, press 'Ctrl+C'.");
+			System.out.println("-----------------------------------------");
+			System.out.println("\n\nEnter choice");
 			inp = in.nextInt();
 			switch(inp)
 			{
