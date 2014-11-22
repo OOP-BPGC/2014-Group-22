@@ -1,6 +1,5 @@
 package Project;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,9 +13,8 @@ import org.joda.time.format.DateTimeFormatter;
 /*
  *@author AbhishekTiwari
  */
-abstract class Book implements Serializable
-{
-	private String UID = "lolWA";
+abstract class Book {
+	private String UID = "";
 	
 	public String getUID()
 	{
@@ -39,10 +37,11 @@ abstract class Book implements Serializable
 		int rand4=(int)(Math.random()*len2);
 		return letters[rand1]+nos[rand2]+letters[rand3]+nos[rand4];		
 	}
+	
 	public abstract void generateForm();
 	public abstract void displayStatus(String UID);
 	
-	// TODO: Shifted cancelRequest to CabDB
+	// Shifted cancelRequest to CabDB
 	public abstract void cancelRequest(String UID);
 	
 	public static boolean isValidTimeFormat(String t)
@@ -108,13 +107,12 @@ abstract class Book implements Serializable
 	 */
 	public static int compareDate(String d1, String d2)
 	{
-		if(d1 == null)
+		/*if(d1 == null)
 		{
 			System.out.println("NULL!!!!");
-		}
+		}*/
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 		DateTime date1 = formatter.parseDateTime(d1), date2;
-		// int dow = date1.getDayOfWeek();
 			
    		if(d2 == null)
    		{

@@ -1,8 +1,6 @@
 package Project;
 
-import java.io.Serializable;
-
-public class Cab implements Serializable {
+public class Cab {
 	
 	private String licensePlate;
 	private int capacity;
@@ -43,7 +41,7 @@ public class Cab implements Serializable {
 	}
 	public void setDriverPhone(String ph)
 	{
-		driverPhone = ph; // Implement regex in calling method 		
+		driverPhone = ph; // Implemented regex in calling method 		
 	}	
 	public void setCapacity(int n)
 	{

@@ -14,9 +14,26 @@ import org.jsoup.nodes.Document;
 
 public class Login {
 	
-	public static String id;
-	public static String name;
-    private static String bodyHtml = "null";
+	private static String id;
+	private static String name;
+	
+    public static String getId() {
+		return Login.id;
+	}
+
+	public static void setId(String id) {
+		Login.id = id;
+	}
+
+	public static String getName() {
+		return Login.name;
+	}
+
+	public static void setName(String name) {
+		Login.name = name;
+	}
+
+	private static String bodyHtml = "null";
     
     /**
      * This is the main method which will be called from Driver.java to get

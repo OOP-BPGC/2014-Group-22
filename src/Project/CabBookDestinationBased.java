@@ -1,6 +1,5 @@
 package Project;
 
-import java.io.Serializable;
 import java.util.Scanner;
 
 /**

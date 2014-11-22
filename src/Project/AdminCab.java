@@ -19,7 +19,7 @@ public class AdminCab {
 		while(invalidLicensePlateNo)
 		{
 			System.out.println("Enter cab license plate number: ");
-			licensePlateNumber = sc.nextLine(); // TODO: Maybe implement regex for this too?
+			licensePlateNumber = sc.nextLine();
 			Pattern pat = Pattern.compile("^([A-Za-z][A-Za-z])([0-9][0-9])([A-Za-z][A-Za-z])[0-9][0-9][0-9][0-9]$");
 			Matcher match = pat.matcher(licensePlateNumber);
 			if(match.find(0))
@@ -36,7 +36,7 @@ public class AdminCab {
 		System.out.println("Enter cab capacity: ");
 		int capacity = sc.nextInt(); // TODO: Implement type checking here
 		newCab.setCapacity(capacity);
-		
+				
 		sc.nextLine();
 		System.out.println("Enter driver name: ");
 		String driverName = sc.nextLine();

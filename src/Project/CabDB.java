@@ -142,7 +142,7 @@ public class CabDB {
 			BufferedReader br = new BufferedReader(new FileReader(bookingType + ".db"));     
 			if (br.readLine() == null)
 			{
-			    System.out.println("File empty!");
+			    //System.out.println("File empty!");
 			    br.close();
 			    return;
 			}
@@ -319,7 +319,7 @@ public class CabDB {
 		readAllFromDB();
 		//System.out.println("Cabs in cab fleet = " + CabDB.CabListFleet.size());
 		
-		System.out.println("CabDB.freeCabs > CabListDest.size() = " + CabListDest.size()); // Debug statement
+		//System.out.println("CabDB.freeCabs > CabListDest.size() = " + CabListDest.size()); // Debug statement
 		for(int i = 0; i < CabListDest.size(); i++)
 		{
 			// Checks whether final date is less than current date
@@ -339,7 +339,7 @@ public class CabDB {
 		}
 		
 		// Same as above for distance and time based
-		System.out.println("CabDB.freeCabs > CabListDist.size() = " + CabListDist.size()); // Debug statement
+		//System.out.println("CabDB.freeCabs > CabListDist.size() = " + CabListDist.size()); // Debug statement
 		for(int i = 0; i < CabListDist.size(); i++)
 		{
 			// Checks whether final date is less than current date
@@ -381,7 +381,6 @@ public class CabDB {
 		writeAllToDB();
 	}
 	
-	// TODO: Verify the logic once
 	/**
 	 * Queries all databases and finds an un-booked cab
 	 * @param bookingType
@@ -428,7 +427,8 @@ public class CabDB {
 		{
 			if(CabListDest.get(i).cab.getCapacity() < reqdCapacity ||
 					Book.compareDate(CabListDest.get(i).getInitialDate(), initialDate) == 1 && Book.compareDate(CabListDest.get(i).getFinalDate(), finalDate) == 1 ||
-					Book.compareDate(initialDate, CabListDest.get(i).getInitialDate()) == 1 && Book.compareDate(finalDate, CabListDest.get(i).getFinalDate()) == 1
+					Book.compareDate(initialDate, CabListDest.get(i).getInitialDate()) == 1 && Book.compareDate(finalDate, CabListDest.get(i).getFinalDate()) == 1 ||
+					CabListDest.get(i).getInitialDate().equals(initialDate)
 					)
 			{
 				availableCabs.put(new String(CabListDist.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -438,7 +438,8 @@ public class CabDB {
 		{
 			if(CabListDist.get(i).cab.getCapacity() < reqdCapacity ||
 					Book.compareDate(CabListDist.get(i).getInitialDate(), initialDate) == 1 && Book.compareDate(CabListDist.get(i).getFinalDate(), finalDate) == 1 ||
-					Book.compareDate(initialDate, CabListDist.get(i).getInitialDate()) == 1 && Book.compareDate(finalDate, CabListDist.get(i).getFinalDate()) == 1
+					Book.compareDate(initialDate, CabListDist.get(i).getInitialDate()) == 1 && Book.compareDate(finalDate, CabListDist.get(i).getFinalDate()) == 1 ||
+					CabListDest.get(i).getInitialDate().equals(initialDate)
 					)
 			{
 				availableCabs.put(new String(CabListDist.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -448,7 +449,8 @@ public class CabDB {
 		{
 			if(CabListTime.get(i).cab.getCapacity() < reqdCapacity ||
 					Book.compareDate(CabListTime.get(i).getInitialDate(), initialDate) == 1 && Book.compareDate(CabListTime.get(i).getFinalDate(), finalDate) == 1 ||
-					Book.compareDate(initialDate, CabListTime.get(i).getInitialDate()) == 1 && Book.compareDate(finalDate, CabListTime.get(i).getFinalDate()) == 1
+					Book.compareDate(initialDate, CabListTime.get(i).getInitialDate()) == 1 && Book.compareDate(finalDate, CabListTime.get(i).getFinalDate()) == 1 ||
+					CabListDest.get(i).getInitialDate().equals(initialDate)
 					)
 			{
 				availableCabs.put(new String(CabListTime.get(i).cab.getLicensePlate()), new Integer(-1));
@@ -528,5 +530,6 @@ public class CabDB {
 				return;
 			}
 		}
+		System.out.println("No booking found for the given UID!");
 	}
 }

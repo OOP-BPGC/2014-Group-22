@@ -1,6 +1,5 @@
 package Project;
 
-import java.io.Serializable;
 import java.util.Scanner;
 
 import org.joda.time.DateTime;
@@ -24,13 +23,12 @@ public abstract class CabBook extends Book {
 	protected Cab cab;
 	protected String bookingType;
 	protected String bookedBy; // Stores the id of user who booked it
-	//
 	
 	public CabBook()
 	{
 		super();
 		cab = null;
-		bookedBy = Login.id;
+		bookedBy = Login.getId();
 	}
 	
 	public String getInitialTime() {
@@ -144,7 +142,7 @@ public abstract class CabBook extends Book {
 		boolean invalidDate = true;
 		while(invalidDate) // Checks whether input Date is valid
 		{
-			System.out.println("Enter the arrival Date (in format dd/mm/yyyy) : ");
+			System.out.println("Enter the return date (in format dd/mm/yyyy) : ");
 			this.finalDate = sc.nextLine();
 			if(Book.isValidDateFormat(this.finalDate))
 			{
@@ -191,7 +189,7 @@ public abstract class CabBook extends Book {
 			}
 			else
 			{
-				System.out.println("Invalid time format!");
+				System.out.println("Invalid time format! Use format hh:mm");
 			}
 		}
 	}
@@ -206,7 +204,7 @@ public abstract class CabBook extends Book {
 		boolean invalidTime = true;
 		while(invalidTime) // Checks whether input time is valid
 		{
-			System.out.println("Enter the arrival time (in format hh:mm) : ");
+			System.out.println("Enter the return time (in format hh:mm) : ");
 			this.finalTime = sc.nextLine();
 			if(Book.isValidTimeFormat(this.finalTime))
 			{
@@ -223,7 +221,7 @@ public abstract class CabBook extends Book {
 			}
 			else
 			{
-				System.out.println("Invalid time format!");
+				System.out.println("Invalid time format! Use format hh:mm");
 			}
 		}
 	}

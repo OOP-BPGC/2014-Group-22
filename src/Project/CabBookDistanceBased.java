@@ -1,6 +1,5 @@
 package Project;
 
-import java.io.Serializable;
 import java.util.Scanner;
 
 /**
@@ -18,6 +17,14 @@ public class CabBookDistanceBased extends CabBook {
 		super();
 		this.bookingType = "Distance";
 		this.setUID(this.generateUID());
+	}
+	
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 	
 	/**
@@ -78,7 +85,7 @@ public class CabBookDistanceBased extends CabBook {
 		{
 			return false;
 		}
-		System.out.println("trolololol -------" + this.finalDate);
+		//System.out.println("trolololol -------" + this.finalDate);
 		CabDB.CabListDist.add(this);
 		CabDB.writeToDB(bookingType);
 		return true;
@@ -93,13 +100,5 @@ public class CabBookDistanceBased extends CabBook {
 	public void cancelRequest(String UID)
 	{
 		// Nothing here
-	}
-
-	public int getDistance() {
-		return distance;
-	}
-
-	public void setDistance(int distance) {
-		this.distance = distance;
 	}
 }
