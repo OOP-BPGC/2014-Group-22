@@ -1,10 +1,10 @@
 package Project;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.Hours;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -14,7 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
  * as its subclasses
  * @author nisarg
  */
-public abstract class CabBook extends Book {
+public abstract class CabBook extends Book implements Serializable{
 
 	// All common variables to the three sub classes
 	protected String initialDate;

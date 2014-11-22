@@ -1,5 +1,6 @@
 package Project;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,9 +14,9 @@ import org.joda.time.format.DateTimeFormatter;
 /*
  *@author AbhishekTiwari
  */
-abstract class Book
+abstract class Book implements Serializable
 {
-	protected String UID;
+	protected String UID = "lolWA";
 	
 	public String getUID()
 	{

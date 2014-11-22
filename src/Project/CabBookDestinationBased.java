@@ -12,7 +12,6 @@ import java.util.Scanner;
 
 public class CabBookDestinationBased extends CabBook implements Serializable {
 	
-	private static final long serialVersionUID = 1L; // Done to avoid warnings
 	private String initialDestination;
 	private String finalDestination;
 	private String[] destinations = {"BITS", "Verna", "Zuari", "Panjim", 
@@ -22,7 +21,7 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 	{
 		super();
 		this.bookingType = "Destination";
-		this.UID = generateUID();
+		this.UID = this.generateUID();
 	}
 	
 	/**
@@ -31,99 +30,90 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 	public void generateForm()
 	{
 		Scanner sc = new Scanner(System.in);
-		String bookAnotherCab = "y";
-		
-		while(bookAnotherCab.equals("y"))
-		{
-			System.out.println("Currently available destinations are - ");
-			for(String dest: destinations)
-			{
-				System.out.print(dest + " ");
-			}
 
-			// CHECK DESTINATION VALIDITY
+		System.out.println("Currently available destinations are - ");
+		for(String dest: destinations)
+		{
+			System.out.print(dest + " ");
+		}
+
+		// CHECK DESTINATION VALIDITY
+		
+		boolean invalidDestination = true;
+		while(invalidDestination) // Check whether the entered destination is present in
+									// the destination array.
+		{
+			System.out.println("\nEnter the initial destination: ");
+			this.initialDestination = sc.nextLine();
 			
-			boolean invalidDestination = true;
-			while(invalidDestination) // Check whether the entered destination is present in
-										// the destination array.
+			for(String dest: destinations) // Verify entered destination
 			{
-				System.out.println("\nEnter the initial destination: ");
-				this.initialDestination = sc.nextLine();
-				
-				for(String dest: destinations) // Verify entered destination
+				if(dest.equals(initialDestination))
 				{
-					if(dest.equals(initialDestination))
-					{
-						invalidDestination = false;
-						break;
-					}
-				}
-				if(invalidDestination)
-				{
-					System.out.println("Destination not present in database! Please enter a valid destination");
-				}
-			}
-			
-			invalidDestination = true;
-			while(invalidDestination) // Check whether the entered destination is present in
-				// the destination array.
-			{
-				System.out.println("Enter the final destination: ");
-				this.finalDestination = sc.nextLine();
-				
-				if(finalDestination.equalsIgnoreCase(initialDestination))
-				{
-					System.out.println("Final destination cannot be the same as initial destination!");
-					continue;
-				}
-				
-				for(String dest: destinations) // Verify entered destination
-				{
-					if(dest.equalsIgnoreCase(finalDestination))
-					{
-						invalidDestination = false;
-						break;
-					}
-				}
-				if(invalidDestination)
-				{
-					System.out.println("Destination not present in database!");
+					invalidDestination = false;
+					break;
 				}
 			}
-			
-			// CHECK DATE VALIDITY
-			
-			this.inputInitialDate();
-			this.inputFinalDate();
-			
-			// CHECK TIME VALIDITY
-			
-			this.inputInitialTime();
-			this.inputFinalTime();
-			
-			System.out.println("Enter the number of people: ");
-			int requiredCapacity = sc.nextInt();
-			
-			CabDB.freeCabs();
-			
-			boolean cabBookStatus = this.bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
-			
-			if(cabBookStatus) // Only register the booking if free cab available
+			if(invalidDestination)
 			{
-				generateUID();
-				System.out.println("Booking successful. Your request id is " + getUID());
-			}
-			else
-			{
-				System.out.println("No cab free for the given time!");
-			}
-			System.out.println("Book again? (y/n): ");
-			bookAnotherCab = "z";
-			while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
-			{
-				bookAnotherCab = sc.nextLine();
+				System.out.println("Destination not present in database! Please enter a valid destination");
 			}
 		}
+		
+		invalidDestination = true;
+		while(invalidDestination) // Check whether the entered destination is present in
+			// the destination array.
+		{
+			System.out.println("Enter the final destination: ");
+			this.finalDestination = sc.nextLine();
+			
+			if(finalDestination.equalsIgnoreCase(initialDestination))
+			{
+				System.out.println("Final destination cannot be the same as initial destination!");
+				continue;
+			}
+			
+			for(String dest: destinations) // Verify entered destination
+			{
+				if(dest.equalsIgnoreCase(finalDestination))
+				{
+					invalidDestination = false;
+					break;
+				}
+			}
+			if(invalidDestination)
+			{
+				System.out.println("Destination not present in database!");
+			}
+		}
+		
+		// CHECK DATE VALIDITY
+		
+		this.inputInitialDate();
+		this.inputFinalDate();
+		
+		// CHECK TIME VALIDITY
+		
+		this.inputInitialTime();
+		this.inputFinalTime();
+		
+		System.out.println("Enter the number of people: ");
+		int requiredCapacity = sc.nextInt();
+		
+		CabDB.freeCabs();
+		
+		boolean cabBookStatus = this.bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
+		
+		if(cabBookStatus) // Only register the booking if free cab available
+		{
+			this.UID = this.generateUID();
+			System.out.println("Booking successful. Your request id is " + this.getUID());
+		}
+		else
+		{
+			System.out.println("No cab free for the given time!");
+		}
+		return;
 	}
 	
 	/**

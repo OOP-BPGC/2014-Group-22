@@ -11,8 +11,6 @@ import java.util.Scanner;
  */
 public class CabBookTimeBased extends CabBook implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
-
 	public CabBookTimeBased()
 	{
 		super();
@@ -26,43 +24,32 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 	public void generateForm()
 	{
 		Scanner sc = new Scanner(System.in);
-		String bookAnotherCab = "y";
 		
-		while(bookAnotherCab.equalsIgnoreCase("y"))
+		// CHECK DATE VALIDITY
+		
+		this.inputInitialDate();
+		this.inputFinalDate();
+		
+		// CHECK TIME VALIDITY
+		
+		this.inputInitialTime();
+		this.inputFinalTime();
+		
+		System.out.println("Enter the number of people: ");
+		int requiredCapacity = sc.nextInt();
+		
+		CabDB.freeCabs();
+		
+		boolean cabBookStatus = this.bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
+		
+		if(cabBookStatus) // Only register the booking if free cab available
 		{
-			
-			// CHECK DATE VALIDITY
-			
-			this.inputInitialDate();
-			this.inputFinalDate();
-			
-			// CHECK TIME VALIDITY
-			
-			this.inputInitialTime();
-			this.inputFinalTime();
-			
-			System.out.println("Enter the number of people: ");
-			int requiredCapacity = sc.nextInt();
-			
-			CabDB.freeCabs();
-			
-			boolean cabBookStatus = this.bookCab(this.bookingType, requiredCapacity); // Get a free cab from cab fleet
-			
-			if(cabBookStatus) // Only register the booking if free cab available
-			{
-				generateUID();
-				System.out.println("Booking successful. Your request id is " + getUID());
-			}
-			else
-			{
-				System.out.println("No cab free for the given time!");
-			}
-			System.out.println("Book again? (y/n): ");
-			bookAnotherCab = "z";
-			while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
-			{
-				bookAnotherCab = sc.nextLine();
-			}
+			this.UID = this.generateUID();
+			System.out.println("Booking successful. Your request id is " + this.getUID());
+		}
+		else
+		{
+			System.out.println("No cab free for the given time!");
 		}
 	}
 	

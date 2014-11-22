@@ -320,6 +320,7 @@ public class CabDB {
 	 */
 	public static void cancelRequest(String UID)
 	{
+		System.out.println("Passed UID: " + UID);
 		CabDB.readAllFromDB();
 		
 		for(int i = 0; i < CabDB.CabListDest.size(); i++)
@@ -327,14 +328,19 @@ public class CabDB {
 			if(CabDB.CabListDest.get(i).getUID().equals(UID))
 			{
 				CabDB.CabListDest.remove(i);
+				CabDB.writeToDB("Destination");
+				System.out.println("Cancellatin successful!");
 				return;
 			}
 		}
 		for(int i = 0; i < CabDB.CabListDist.size(); i++)
 		{
+			System.out.println("List uid = " + CabListDist.get(i).getUID());
 			if(CabDB.CabListDist.get(i).getUID().equals(UID))
 			{
 				CabDB.CabListDist.remove(i);
+				CabDB.writeToDB("Distance");
+				System.out.println("Cancellatin successful!");
 				return;
 			}
 		}
@@ -343,9 +349,10 @@ public class CabDB {
 			if(CabDB.CabListTime.get(i).getUID().equals(UID))
 			{
 				CabDB.CabListTime.remove(i);
+				CabDB.writeToDB("Time");
+				System.out.println("Cancellatin successful!");
 				return;
 			}
 		}
-		CabDB.writeAllToDB(); // Write changes to DB
 	}
 }

@@ -88,18 +88,48 @@ public class Driver
 								break;
 							case 2:
 								Login.authenticateUser();
-								CabBookDistanceBased cabDist = new CabBookDistanceBased();
-								cabDist.generateForm();
+								String bookAnotherCab = "y";
+								while(bookAnotherCab.equals("y"))
+								{
+									CabBookDistanceBased cabDist = new CabBookDistanceBased();
+									cabDist.generateForm();
+									System.out.println("Book again? (y/n): ");
+									bookAnotherCab = "z";
+									while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
+									{
+										bookAnotherCab = in.nextLine();
+									}
+								}
 								break;
 							case 3:
 								Login.authenticateUser();
-								CabBookTimeBased cabTime = new CabBookTimeBased();
-								cabTime.generateForm();
+								bookAnotherCab = "y";
+								while(bookAnotherCab.equals("y"))
+								{
+									CabBookTimeBased cabTime = new CabBookTimeBased();
+									cabTime.generateForm();
+									System.out.println("Book again? (y/n): ");
+									bookAnotherCab = "z";
+									while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
+									{
+										bookAnotherCab = in.nextLine();
+									}
+								}
 								break;
 							case 4:
 								Login.authenticateUser();
-								CabBookDestinationBased cabDest = new CabBookDestinationBased();
-								cabDest.generateForm();
+								bookAnotherCab = "y";
+								while(bookAnotherCab.equals("y"))
+								{
+									CabBookDestinationBased cabDest = new CabBookDestinationBased();
+									cabDest.generateForm();
+									System.out.println("Book again? (y/n): ");
+									bookAnotherCab = "z";
+									while(!bookAnotherCab.equals("y") && !bookAnotherCab.equals("n"))
+									{
+										bookAnotherCab = in.nextLine();
+									}
+								}
 								break;
 							case 5:
 								Login.isAdmin();
@@ -108,10 +138,13 @@ public class Driver
 							case 6 :
 								System.out.println("Enter request ID: ");
 								String uid;
+								in.nextLine();
 								uid = in.nextLine();
+								CabDB.cancelRequest(uid);
+							case 7:
 								flag2=true;
 								break;
-							case 7 : System.exit(0);
+							case 8 : System.exit(0);
 								break;
 							default : System.out.println("Wrong choice, choose again.");
 						}	
