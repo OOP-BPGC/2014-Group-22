@@ -1,4 +1,5 @@
 package src;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -213,7 +214,7 @@ public class CabDB {
 					while(in.hasNextLine())
 					{
 						counter++;
-						System.out.println("counter = " + counter);
+						// System.out.println("counter = " + counter);
 						Cab cab = new Cab();
 						int booked = Integer.parseInt(in.nextLine());
 						cab.setBooked(booked);
@@ -392,6 +393,12 @@ public class CabDB {
 		// See whether any un-booked cab is there in DB
 		readAllFromDB();
 		
+		/*if(CabListFleet.size() == 0)
+		{
+			System.out.println("No cab present in cab database. Maybe you need to add some to your inventory?");
+			return null;
+		}*/
+		
 		// This loop searches for a cab with 0 current bookings from CabFleet.db
 		// System.out.println("CabDB.findCab > CabFleet.size() = " + CabListFleet.size()); // Debug statement
 		for(int i = 0; i < CabListFleet.size(); i++)
@@ -525,7 +532,7 @@ public class CabDB {
 			{
 				CabDB.CabListTime.remove(i);
 				CabDB.writeToDB("Time");
-				System.out.println("Cancellation successful!");
+				System.out.println("Cancellation successful! Have a nice day :)");
 				return;
 			}
 		}
