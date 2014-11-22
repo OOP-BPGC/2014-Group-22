@@ -15,7 +15,7 @@ public class AdminCab {
 		CabDB.readFromDB("CabFleet");
 		
 		System.out.println("Welcome to the administrator portal for cab booking system!");
-		System.out.println("Press\n1 to add a cab to the inventory\n2 to remove a cab from the inventory");
+		System.out.println("Press\n1 - Add a cab to the inventory\n2 - Remove a cab from the inventory");
 		String op = sc.nextLine();
 		
 		String licensePlateNumber = "";

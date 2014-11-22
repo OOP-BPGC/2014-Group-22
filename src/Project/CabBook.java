@@ -226,37 +226,15 @@ public abstract class CabBook extends Book {
 		}
 	}
 	
-	// TODO: Decide whether we need this method
-	public void displayStatus(String Uid)
+	// displayStatus() not needed for now
+	public void displayStatus(String UID)
 	{
-		CabDB.readAllFromDB();
 		
-		for(int i = 0; i < CabDB.CabListDest.size(); i++)
-		{
-			if(CabDB.CabListDest.get(i).getUID().equals(Uid))
-			{
-				CabDB.CabListDest.get(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabDB.CabListDist.size(); i++)
-		{
-			if(CabDB.CabListDist.get(i).getUID().equals(Uid))
-			{
-				CabDB.CabListDist.get(i);
-				return;
-			}
-		}
-		for(int i = 0; i < CabDB.CabListTime.size(); i++)
-		{
-			if(CabDB.CabListTime.get(i).getUID().equals(Uid))
-			{
-				CabDB.CabListTime.get(i);
-				return;
-			}
-		}
 	}
 	
+	/**
+	 * Shows tariffs for each type of booking
+	 */
 	public static void getFares()
 	{
 		System.out.println("###################################################################");
