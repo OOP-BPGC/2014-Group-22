@@ -1,4 +1,4 @@
-package Project;
+package src;
 //to addrooms, display rooms
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class AdminRoom
 			System.out.println("ADMIN MENU");
 			System.out.println("-----------------------------");
 			System.out.println("1.Add a Room.\n2.Remove a Room.\n3.Evaluate Requests.\n4.Display Rooms.");
-			System.out.println("5.Previous Menu.\n6.Clear Request DB.\n7.Exit\nEnter choice: ");
+			System.out.println("5.Previous Menu.\n6.Clear Database.\n7.Exit.\nEnter choice: ");
 			choice=inp.nextInt();
 			int prevMenu =0;
 			switch(choice)
@@ -52,18 +52,8 @@ public class AdminRoom
 					break;
 				case 5: prevMenu=1;
 					break;	
-				case 6: char confirm ='n';
-					System.out.println("\n\nAre you sure you eant to delete all evaluated requests?(y/n)");
-					System.out.println("-----------------------------------------------------------------");
-					System.out.println("After clearing DB, only pending requests will be left in database,");
-					System.out.println("as a result users who made requests that were approved or denied,");
-					System.out.println("will not be able to check the status. This function is designed to");
-					System.out.println("be used after the bookings are themselves over.");
-					System.out.println("-----------------------------------------------------------------");
-					confirm=inp.next().charAt(0);
-					if(confirm=='y'||confirm=='Y')
-						AdminRoom.clearRequestDB();
-					break;				
+				case 6: RoomDB.clearDB();
+					break;
 				case 7: System.exit(0);
 					break;
 				default: System.out.println("Wrong Choice. Please Try Again.");
@@ -196,7 +186,10 @@ public class AdminRoom
 		int minutes= Integer.parseInt(timeTemp[1]);//minutes
 		double duration = Double.parseDouble(areq.getDuration());
 		int attendance = areq.getAttendanceCount();
-		int result = RoomBook.roomChoiceCheck(areq.getRoom(),day,month,year,hours,minutes,duration,attendance);
+		char proj='n';
+		if(areq.getProjectorRequired())
+			proj='y';
+		int result = RoomBook.roomChoiceCheck(areq.getRoom(),day,month,year,hours,minutes,duration,attendance,proj);
 		if(result==1)	
 			return true;
 		else

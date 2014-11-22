@@ -1,4 +1,4 @@
-package Project;
+package src;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -44,13 +44,23 @@ public class RoomBook extends Book
 		int minutes=0;
 		double duration=0;
 		int roomBooked=0;
+		char projector='y';
 
 		System.out.println("\n\n#################################");
 		System.out.println("FILL IN THE FOLLOWING FIELDS");
 		System.out.println("#################################");
+		//take projector request
+		do{
+		System.out.println("\n############################################");
+		System.out.println("\nIs projector Required?(y/n)");
+		projector=inp.next().charAt(0);
+		}while(!newrequest.setProjectorRequired(projector));
+
+
 		//take booking day input
 		do{
-		System.out.println("\n------------------------------Room is to be booked for which day?");
+		System.out.println("\n############################################");
+		System.out.println("Room is to be booked for which day?");
 		System.out.println("Enter a digit for day and press enter");
 		System.out.println("then enter a digit for month (1-12) and press enter");
 		System.out.println("then enter year (>2014) and press enter");
@@ -61,7 +71,8 @@ public class RoomBook extends Book
 
 		//take starting time of booking
 		do{
-		System.out.println("\n------------------------------Starting time of booking?");
+		System.out.println("\n############################################");
+		System.out.println("\nStarting time of booking?");
 		System.out.println("Enter time in 24 hour format,");
 		System.out.println("Enter digit hours press enter,");
 		System.out.println("then enter minutes (0-60) and press enter.");
@@ -71,22 +82,25 @@ public class RoomBook extends Book
 		
 		//take 'duration' of booking input
 		do{
-		System.out.println("\n------------------------------Room is to be booked for how long?");
+		System.out.println("\n############################################");
+		System.out.println("\nRoom is to be booked for how long?");
 		System.out.println("Enter value in hours eg : 1.5, 2.5, 3 etc.");
 		duration=inp.nextDouble();
 		}while(!newrequest.setDuration(duration));
 		
-		//take attendance count			
-		System.out.println("--------------------------------Room is to be booked for how many persons?");
+		//take attendance count	
+		do{
+		System.out.println("\n############################################");		
+		System.out.println("Room is to be booked for how many persons?");
 		attendance=inp.nextInt();
-		newrequest.setAttendanceCount(attendance);
+		}while(!newrequest.setAttendanceCount(attendance));
 
 		//take reason for booking	
 		inp.nextLine();
-		System.out.println("\n------------------------------Enter Reason for requesting room. Use only 1 Line.");	
+		System.out.println("\nEnter Reason for requesting room. Use only 1 Line.");	
 		line=inp.nextLine();
 		newrequest.setReason(line);
-		inp.nextLine();
+
 
 		while(confirmRoom==2)
 		{
@@ -94,7 +108,7 @@ public class RoomBook extends Book
 			System.out.println("Enter choice of room:");
 			System.out.println("(Do not change capital letters to small))");
 			room=inp.next();
-			int result =roomChoiceCheck(room,day,month,year,hour,minutes,duration,attendance);
+			int result =roomChoiceCheck(room,day,month,year,hour,minutes,duration,attendance,projector);
 			if(result==-1)
 			{
 				System.out.println("#################################");
@@ -126,6 +140,12 @@ public class RoomBook extends Book
 				System.out.println("\n------------Request Posted. UID is :"+newrequest.getRequestUID()+"-----------------------------------");
 
 			}
+			else if(result==5)
+			{
+				System.out.println("#################################");
+				System.out.println(room+" does not have a working projector.");
+				System.out.println("Please choose a different room.");
+			}
 			System.out.println("1.Confirm Room.");
 			System.out.println("2.Choose a different Room.");
 			System.out.println("3.Discard booking.");
@@ -156,8 +176,9 @@ public class RoomBook extends Book
 	 *	 2 : Room capacity < expected Attendance
 	 *	 3 : Requested room is already booked at exactly the same time slot and day.
 	 *	 4 : Requested time slot is in conflict with an existing booking.
+	 *	 5 : Projector requested but the room doesnt have a working projector.
 	 */
-	public static int roomChoiceCheck(String room, int day,int month,int year, int hourRT1,int minRT1, double duration,int attendance)
+	public static int roomChoiceCheck(String room, int day,int month,int year, int hourRT1,int minRT1, double duration,int attendance,char projector)
 	{
 		ArrayList<Room> roomList = new ArrayList<Room>();
 		roomList=RoomDB.getRoomList();
@@ -169,8 +190,10 @@ public class RoomBook extends Book
 			{
 				if(aroom.getCapacity()<attendance)
 					return 2;
+				else if((!aroom.getProjectorStatus())&&(projector=='y'||projector=='Y'))
+					return 5;
 				else if(aroom.getStatus().equals("Available"))
-					return 1;	
+					return 1;
 				else if(aroom.getStatus().equals("Booked"))
 				{
 					if(aroom.getBookingDate().contains(date))

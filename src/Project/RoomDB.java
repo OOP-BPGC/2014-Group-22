@@ -1,4 +1,4 @@
-package Project;
+package src;
 import java.util.Scanner;
 import java.util.ArrayList;
 //for writing objects
@@ -206,5 +206,29 @@ public class RoomDB
 	{
 		readFromDB();
 		return recoveredRoomList;
+	}
+	public static void clearDB()
+	{
+		readFromDB();
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		ArrayList<String> bookingdates =null;
+		int count=0;
+		for(Room aroom : recoveredRoomList)
+		{
+			bookingdates= aroom.getBookingDate();
+			int size = bookingdates.size();
+			for(int j=0; j<size; j++)
+			{
+				if(Book.compareDate(bookingdates.get(j),null)==-1)
+				{
+					count++;
+					aroom.removeBooking(j);
+				}
+			}
+		}
+		updateDB(recoveredRoomList);
+		System.out.println("###########################");
+		System.out.println("Records Updated. "+count+" booking(s) removed.");
+		
 	}
 }

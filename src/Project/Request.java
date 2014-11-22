@@ -1,4 +1,4 @@
-package Project;
+package src;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.IllegalFieldValueException;
@@ -25,6 +25,11 @@ public class Request implements Serializable
 	 *String to hold choice of room.
 	 */
 	private String room;
+	/*
+	 *Boolean var to hold projector required or not.
+	 */
+	private boolean proj;
+
 	/*
 	 *String to hold request UID.
 	 */
@@ -66,9 +71,16 @@ public class Request implements Serializable
 	{
 		this.reason=reason;
 	}
-	public void setAttendanceCount(int att)		
+	public boolean setAttendanceCount(int att)		
 	{	
-		attendanceCount=att;
+		if(att>0&&att<500)
+		{
+			attendanceCount=att;
+			return true;
+		}	
+		else
+			System.out.println("!ERROR! For attendance, enter a value between 1-500");
+		return false;
 	}
 	public void setRoom(String room)
 	{	
@@ -324,20 +336,42 @@ public class Request implements Serializable
 	}
 	public void displayRequest()
 	{
-		System.out.println("Student ID        :	"+Login.getId()+
-				   "\nRequest UID     :	"+requestUID+
-				   "\nRoom Requested  :	"+room+
-				   "\nReason Listed   :	"+reason+
-				   "\nAttendance      :	"+attendanceCount+
-				   "\nBooking Date    :	"+bookingDate+
-				   "\nStarting Time   :	"+startingTime+
-				   "\nDuration(Hours) :	"+duration);
+		System.out.println("Student ID                 :	"+Login.getId()+
+				   "\nRequest UID              :	"+requestUID+
+				   "\nRoom Requested           :	"+room+
+				   "\nReason Listed            :	"+reason+
+				   "\nProjector Requested      :	"+proj+
+				   "\nAttendance               :	"+attendanceCount+
+				   "\nBooking Date             :	"+bookingDate+
+				   "\nStarting Time            :	"+startingTime+
+				   "\nDuration(Hours)          :	"+duration);
+
 	}
 	public void setEvaluated(boolean set)
 	{	evaluated=set;
 	}
 	public boolean getEvaluated()
 	{	return evaluated;
+	}
+	public boolean setProjectorRequired(char a)
+	{
+		if(a=='y'||a=='Y')
+		{
+			proj=true;
+			return true;
+		}
+		else if(a=='n'||a=='N')
+		{
+			proj=false;
+			return true;
+		}
+		else 
+			System.out.println("!ERROR! Enter y/n for whether projector is required or not.");
+		return false;
+	}
+	public boolean getProjectorRequired()
+	{
+		return proj;
 	}
 	/*
 	public void setID()
