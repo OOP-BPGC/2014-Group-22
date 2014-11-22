@@ -49,7 +49,7 @@ public class CabBookDestinationBased extends CabBook {
 		System.out.println("Currently available destinations are - ");
 		for(String dest: destinations)
 		{
-			System.out.print(dest);
+			System.out.print(dest + "  ");
 		}
 
 		// CHECK DESTINATION VALIDITY

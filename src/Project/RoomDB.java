@@ -1,6 +1,4 @@
 package Project;
-
-import Project.Room;
 import java.util.Scanner;
 import java.util.ArrayList;
 //for writing objects
@@ -25,14 +23,42 @@ public class RoomDB
 		char addRoom = 'y';
 		char projector = 'n';
 		Scanner inp = new Scanner(System.in);
+		String roomCheck="";
+		int flag=0;
 		//Clear RoomList first to avoid repetition of objects while adding multiple rooms in the same login session
 		if(RoomList.size()!=0)
-			RoomList.clear();				
+			RoomList.clear();
+		readFromDB();				
 		while(addRoom=='y'||addRoom=='Y')
 		{
+			flag=0;
 			Room newroom = new Room();
 			System.out.println("Enter Room Number");
-			newroom.setRoomNumber(inp.next());
+			roomCheck=inp.next();
+			for(Room temp : recoveredRoomList)
+			{
+				if(temp.getRoomNumber().equals(roomCheck))
+				{
+					flag=1;
+					break;
+				}
+			}
+			for(Room temp : RoomList)
+			{
+				if(temp.getRoomNumber().equals(roomCheck))
+				{
+					flag=1;
+					break;
+				}
+			}
+			if(flag==1)
+			{
+				System.out.println(roomCheck+" already exists in Database!!\n\n");
+				System.out.println("Add more rooms?(y/n)");
+				addRoom=inp.next().charAt(0);
+				continue;
+			}
+			newroom.setRoomNumber(roomCheck);
 			System.out.println("Enter Room's Projector status(y/n)");
 			projector = inp.next().charAt(0);
 			if(projector=='y'||projector=='Y')
@@ -50,6 +76,57 @@ public class RoomDB
 		//as soon as we've taken all inputs into RoomList object, write it to DB
 		//as opposed to this we can write each object to DB as it is taken, DISCUSS which is better.
 		writeToDB();
+	}
+	public static void removeRoom()
+	{
+		char again='y', confirm='n';
+		String room="";
+		Scanner inp = new Scanner(System.in);
+		int found=0;
+		int index=0;
+		int flag=0;
+		while(again=='y'||again=='Y')
+		{
+			found=0;
+			//read in list of rooms
+			readFromDB();
+			if(recoveredRoomList.size()==0)
+			{
+				System.out.println("\n\n!!!! No rooms in Database. Aborting...");
+				break;
+			}
+			System.out.println("Enter name of room to be removed.");
+			room=inp.next();
+			for(Room temp : recoveredRoomList)
+			{
+				if(temp.getRoomNumber().equals(room))
+				{
+					found=1;
+					if(temp.getStatus().equals("Booked"))
+						System.out.println("\n\n"+room+" already has bookings. Deleting room will remove all bookings!");
+					System.out.println("\n\n-------------Are you sure you want to remove "+room);
+					confirm=inp.next().charAt(0);
+					if(confirm=='y'||confirm=='Y')
+					{
+						flag=1;
+						index=recoveredRoomList.indexOf(temp);
+						break;
+					}
+					else break;					
+				}
+			}
+			if(flag==1)	
+			{
+				recoveredRoomList.remove(index);
+				updateDB(recoveredRoomList);
+				System.out.println("\n"+room+" removed from Database.");
+			}
+			if(found==0)
+				System.out.println("\n\n!! "+room+" not found in Database.");
+			System.out.println("\n\nRemove more rooms?(y/n)");
+			again=inp.next().charAt(0);
+		}
+
 	}
 	public static void writeToDB()
 	{
@@ -84,7 +161,9 @@ public class RoomDB
 			ois = new ObjectInputStream(fis);
 			recoveredRoomList=(ArrayList<Room>)ois.readObject();
 		}catch(FileNotFoundException e){
-			System.out.println("Caught FileNotFoundException while reading from DB.");
+			System.out.println("####################################");
+			System.out.println("Room Database has not been created.");
+			System.out.println("####################################");
 		}catch(ClassNotFoundException e){
 			System.out.println("Caught ClassNotFoundException while reading from DB.");
 		}catch(IOException e){
