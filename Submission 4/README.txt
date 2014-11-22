@@ -3,9 +3,9 @@ Name 			Student ID 	  Roles 	  	Role-based 	  Overall
 							  	Contribution(%) Contribution(%)
 -----------------------------------------------------------------------------------------
 Varsheeth Talluri	2013A7PS045G	UML, Proj Req, CRC     	100%		   15%
-Nisarg Shah		2013A7PS694G	Proj. Req, Coding 	100%		   25%
+Nisarg Shah		2013A7PS694G	Proj. Req, Coding 	100%		   20%
 Shubham Jain		2013A7PS007G	Unit Tests, Proj Req 	100%		   10%
-Shubham Jain		2013A7PS049G	Unit Tests, Proj Req	100%		   10%
+Shubham Jain		2013A7PS049G	Unit Tests, Proj Req	100%		   15%
 Abhishek Tiwari		2013A7PS810G	Coding, UseCases  	100%		   30%
 Arnab Bhattacharya	2013A7PS070G	Proj Req, Use Cases	50%		   8%
 Ahmad Jauhar		2012A3PS100G						   2%
