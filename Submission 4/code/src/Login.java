@@ -1,5 +1,5 @@
-package Project;
-
+package src;
+import java.io.Console;
 import java.io.IOException;
 import java.util.Scanner;
 import org.jsoup.Connection;
@@ -14,10 +14,62 @@ import org.jsoup.nodes.Document;
 
 public class Login {
 	
-	public static String id;
-	public static String name;
-    private static String bodyHtml = "null";
+	private static String id;
+	private static String name;
+	
+    public static String getId() {
+		return Login.id;
+	}
+
+	public static void setId(String id) {
+		Login.id = id;
+	}
+
+	public static String getName() {
+		return Login.name;
+	}
+
+	public static void setName(String name) {
+		Login.name = name;
+	}
+
+	private static String bodyHtml = "null";
     
+    /**
+     * This is the main method which will be called from Driver.java to get
+     * user details.
+     * @return true if authentication successful, false otherwise
+     */
+    public static boolean authenticateUser()
+    {
+        // TODO: Implement password hiding in console. To be done after project
+    	// runs successfully in console.
+        
+        id = "null";
+        String password = "null";
+        Console console = System.console();
+	if (console == null) {
+	        System.out.println("Couldn't get Console instance");
+	        System.exit(0);
+	}
+	
+        System.out.println("Enter your Moodle login credentials:");
+        Scanner sc = new Scanner(System.in);
+        while(!connect(id, password))
+        {
+            if(!id.equals("null"))
+            {
+                System.out.println("Authentication failed! Try again!");
+            }
+            
+            System.out.println("Enter id: ");
+            id = sc.nextLine();
+	    char passwordArray[] = console.readPassword("Enter password: ");
+            password = new String(passwordArray);
+        }
+        name = extractName();
+        return true;
+    }
     
     /**
      * This method extracts the user's name from the HTML obtained from
@@ -41,44 +93,11 @@ public class Login {
         return name;
     }
     
-    
-    /**
-     * This is the main method which will be called from Driver.java to get
-     * user details.
-     */
-    public static boolean authenticateUser()
-    {
-        // TODO: Implement password hiding in console. To be done after project
-    	// runs successfully in console.
-        
-        id = "null";
-        String password = "null";
-        
-        System.out.println("Enter your Moodle login credentials:");
-        while(!connect(id, password))
-        {
-            if(!id.equals("null"))
-            {
-                System.out.println("Authentication failed! Try again!");
-            }
-            
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter id: ");
-            id = sc.nextLine();
-            System.out.println("Enter password: ");
-            password = sc.nextLine();
-        }
-        
-        name = extractName();
-        return true;
-    }    
-    
-    
     /**
      * Core method which connects to Moodle server and authenticates
      * the user's credentials.
-     * @param id
-     * @param pwd
+     * @param id The moodle username
+     * @param password Moodle password
      * @return True if login successful else False.
      */
     
@@ -114,24 +133,28 @@ public class Login {
     	}
     }
     	
-    	public static boolean isAdmin()
-    	{
-    		while(true)
-    		{
-    			System.out.println("\nEnter admin password");
-    			Scanner in=new Scanner(System.in);
-    			if(in.nextLine().equals("ADMIN"))
-    			{
-    				return true;
-    			}
-    			System.out.println("\nIncorrect password");
-    		}	
-    	}
-    }
+	public static boolean isAdmin()
+	{
+	        Console console = System.console();
+		if (console == null) {
+		        System.out.println("Couldn't get Console instance");
+		        System.exit(0);
+		}
+		while(true)
+		{
+			char passwordArray[] = console.readPassword("Enter password: ");
+			String temp = new String(passwordArray);
+			if(temp.equals("ADMIN"))
+			{
+				return true;
+			}
+			System.out.println("\nIncorrect password");
+		}
+	}
 
 /* Debug method. Do not remove this.
     public static void main(String[] args)
     {
     	System.out.println(connect("f2013694", "Qwerty1234-"));
     }*/
-
+}

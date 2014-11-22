@@ -1,0 +1,3 @@
+javac -d bin/. -classpath lib/*:. src/*.java;
+cd bin;
+java -classpath ../lib/*:. src.Driver;
