@@ -9,7 +9,7 @@ import java.util.Scanner;
  * and written to Distance.db
  * @author nisarg
  */
-public class CabBookDistanceBased extends CabBook implements Serializable {
+public class CabBookDistanceBased extends CabBook {
 	
 	private int distance;
 	
@@ -17,7 +17,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 	{
 		super();
 		this.bookingType = "Distance";
-		this.UID = generateUID();
+		this.setUID(this.generateUID());
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 		this.inputInitialTime();
 		
 		// Final time = Initial time (for simplicity)
-		this.initialTime = this.finalTime; 
+		this.finalTime = this.initialTime; 
 		
 		System.out.println("Enter the number of people: ");
 		int requiredCapacity = sc.nextInt();
@@ -55,7 +55,6 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 		
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
-			this.UID = this.generateUID();
 			System.out.println("Booking successful. Your request id is " + this.getUID()); // generateUID called in the constructor
 		}
 		else
@@ -94,5 +93,13 @@ public class CabBookDistanceBased extends CabBook implements Serializable {
 	public void cancelRequest(String UID)
 	{
 		// Nothing here
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 }

@@ -9,13 +9,13 @@ import java.util.Scanner;
  * and written to Time.db
  * @author nisarg
  */
-public class CabBookTimeBased extends CabBook implements Serializable {
+public class CabBookTimeBased extends CabBook {
 	
 	public CabBookTimeBased()
 	{
 		super();
 		this.bookingType = "Time";
-		this.UID = generateUID();
+		this.setUID(this.generateUID());
 	}
 	
 	/**
@@ -44,7 +44,6 @@ public class CabBookTimeBased extends CabBook implements Serializable {
 		
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
-			this.UID = this.generateUID();
 			System.out.println("Booking successful. Your request id is " + this.getUID());
 		}
 		else

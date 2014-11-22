@@ -1,15 +1,16 @@
 package Project;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 
 
@@ -37,96 +38,35 @@ public class CabDB {
 	 */
 	public static void writeToDB(String bookingType)
 	{
-		
-		PrintWriter out = null;
 		try {
-			
-			out = new PrintWriter(bookingType + ".db");
+			FileOutputStream fos = new FileOutputStream(bookingType + ".db");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			
 			switch(bookingType)
 			{
 				case "CabFleet":
-					for(int i = 0; i < CabListFleet.size(); i++)
-					{
-						Cab cab = CabListFleet.get(i);
-						out.println(cab.getBooked());
-						out.println(cab.getCapacity());
-						out.println(cab.getDriver());
-						out.println(cab.getDriverPhone());
-						out.println(cab.getLicensePlate());
-					}
+					oos.writeObject(CabListFleet);
 					break;
 				case "Destination":
-					for(int i = 0; i < CabListDest.size(); i++)
-					{
-						CabBookDestinationBased cabDest = CabListDest.get(i);
-						Cab cab = cabDest.getCab();						
-						out.println(cab.getBooked());
-						out.println(cab.getCapacity());
-						out.println(cab.getDriver());
-						out.println(cab.getDriverPhone());
-						out.println(cab.getLicensePlate());
-						out.println(cabDest.getInitialDestination());
-						out.println(cabDest.getFinalDestination());
-						out.println(cabDest.getInitialDate());
-						out.println(cabDest.getFinalDate());
-						out.println(cabDest.getInitialTime());
-						out.println(cabDest.getFinalTime());
-						out.println(cabDest.getBookingType());
-						out.println(cabDest.getBookedBy());
-						out.println(cabDest.getUID());
-					}
+					oos.writeObject(CabListDest);
 					break;
 				case "Distance":
-					for(int i = 0; i < CabListDist.size(); i++)
-					{
-						CabBookDistanceBased cabDist = CabListDist.get(i);
-						Cab cab = cabDist.getCab();						
-						out.println(cab.getBooked());
-						out.println(cab.getCapacity());
-						out.println(cab.getDriver());
-						out.println(cab.getDriverPhone());
-						out.println(cab.getLicensePlate());
-						out.println(cabDist.getDistance());
-						out.println(cabDist.getInitialDate());
-						out.println(cabDist.getFinalDate());
-						out.println(cabDist.getInitialTime());
-						out.println(cabDist.getFinalTime());
-						out.println(cabDist.getBookingType());
-						out.println(cabDist.getBookedBy());
-						out.println(cabDist.getUID());
-					}
+					oos.writeObject(CabListDist);
 					break;
-				case "Time": 
-					for(int i = 0; i < CabListTime.size(); i++)
-					{
-						CabBookTimeBased cabTime = CabListTime.get(i);
-						Cab cab = cabTime.getCab();						
-						out.println(cab.getBooked());
-						out.println(cab.getCapacity());
-						out.println(cab.getDriver());
-						out.println(cab.getDriverPhone());
-						out.println(cab.getLicensePlate());
-						out.println(cabTime.getInitialDate());
-						out.println(cabTime.getFinalDate());
-						out.println(cabTime.getInitialTime());
-						out.println(cabTime.getFinalTime());
-						out.println(cabTime.getBookingType());
-						out.println(cabTime.getBookedBy());
-						out.println(cabTime.getUID());
-					}
+				case "Time":
+					oos.writeObject(CabListTime);
 					break;
 				default:
 					; // Throw some exception if you want
 			}
-			out.flush();
-		}catch(Exception e) {
+			
+			oos.close();
+			fos.close();
+			
+		}catch(IOException e) {
 			
 			// System.out.println("Caught IOException while writing to DB.");
 			
-		}
-		finally {
-			out.close();
 		}
 	}
 	
@@ -138,158 +78,44 @@ public class CabDB {
 	{
 		try{
 			
-			File inFile = new File(bookingType + ".db");
-			BufferedReader br = new BufferedReader(new FileReader(bookingType + ".db"));     
-			if (br.readLine() == null)
-			{
-			    System.out.println("File empty!");
-			    br.close();
-			    return;
-			}
-			Scanner in = new Scanner(inFile);
+			FileInputStream fis = new FileInputStream(bookingType + ".db");
+			ObjectInputStream ois = new ObjectInputStream(fis);
 			
 			switch(bookingType)
 			{
 				case "CabFleet":
 					CabListFleet.clear(); // Empty the ArrayList before reading
-					while(in.hasNextLine())
-					{
-						Cab cab = new Cab();
-						int booked = Integer.parseInt(in.nextLine());
-						cab.setBooked(booked);
-						int capacity = Integer.parseInt(in.nextLine());
-						cab.setCapacity(capacity);
-						String driver = in.nextLine();
-						cab.setDriver(driver);
-						String driverPhone = in.nextLine();
-						cab.setDriverPhone(driverPhone);
-						String licensePlateNo = in.nextLine();
-						cab.setLicensePlate(licensePlateNo);
-						CabListFleet.add(cab);
-					}
+					CabListFleet = (ArrayList)ois.readObject();
 					break;
 					
 				case "Destination":
 					CabListDest.clear();
-					while(in.hasNextLine())
-					{
-						Cab cab = new Cab();
-						int booked = Integer.parseInt(in.nextLine());
-						cab.setBooked(booked);
-						int capacity = Integer.parseInt(in.nextLine());
-						cab.setCapacity(capacity);
-						String driver = in.nextLine();
-						cab.setDriver(driver);
-						String driverPhone = in.nextLine();
-						cab.setDriverPhone(driverPhone);
-						String licensePlateNo = in.nextLine();
-						cab.setLicensePlate(licensePlateNo);
-						CabBookDestinationBased cabDest = new CabBookDestinationBased();
-						cabDest.setCab(cab);
-						String initialDest = in.nextLine();
-						cabDest.setInitialDestination(initialDest);
-						String finalDest = in.nextLine();
-						cabDest.setFinalDestination(finalDest);
-						String initialDt = in.nextLine();
-						cabDest.setInitialDate(initialDt);
-						String finalDt = in.nextLine();
-						cabDest.setFinalDate(finalDt);
-						String initialTime = in.nextLine();
-						cabDest.setInitialTime(initialTime);
-						String finalTime = in.nextLine();
-						cabDest.setFinalTime(finalTime);
-						String bookingT = in.nextLine();
-						cabDest.setBookingType(bookingT);
-						String bookedBy = in.nextLine();
-						cabDest.setBookedBy(bookedBy);
-						String uid = in.nextLine();
-						cabDest.setUID(uid);
-						CabListDest.add(cabDest);
-					}
+					CabListDest = (ArrayList)ois.readObject();
 					break;
 				
 				case "Distance":
 					CabListDist.clear();
-					int counter = 0;
-					while(in.hasNextLine())
-					{
-						counter++;
-						System.out.println("counter = " + counter);
-						Cab cab = new Cab();
-						int booked = Integer.parseInt(in.nextLine());
-						cab.setBooked(booked);
-						int capacity = Integer.parseInt(in.nextLine());
-						cab.setCapacity(capacity);
-						String driver = in.nextLine();
-						cab.setDriver(driver);
-						String driverPhone = in.nextLine();
-						cab.setDriverPhone(driverPhone);
-						String licensePlateNo = in.nextLine();
-						cab.setLicensePlate(licensePlateNo);
-						CabBookDistanceBased cabDist = new CabBookDistanceBased();
-						cabDist.setCab(cab);
-						int dist = Integer.parseInt(in.nextLine());
-						cabDist.setDistance(dist);
-						String initialDt = in.nextLine();
-						cabDist.setInitialDate(initialDt);
-						String finalDt = in.nextLine();
-						cabDist.setFinalDate(finalDt);
-						String initialTime = in.nextLine();
-						cabDist.setInitialTime(initialTime);
-						String finalTime = in.nextLine();
-						cabDist.setFinalTime(finalTime);
-						String bookingT = in.nextLine();
-						cabDist.setBookingType(bookingT);
-						String bookedBy = in.nextLine();
-						cabDist.setBookedBy(bookedBy);
-						String uid = in.nextLine();
-						cabDist.setUID(uid);
-						CabListDist.add(cabDist);
-					}
+					CabListDist = (ArrayList)ois.readObject();
 					break;
 					
 				case "Time":
 					CabListTime.clear();
-					while(in.hasNextLine())
-					{
-						Cab cab = new Cab();
-						int booked = in.nextInt();
-						cab.setBooked(booked);
-						int capacity = in.nextInt();
-						cab.setCapacity(capacity);
-						String driver = in.nextLine();
-						cab.setDriver(driver);
-						String driverPhone = in.nextLine();
-						cab.setDriverPhone(driverPhone);
-						String licensePlateNo = in.nextLine();
-						cab.setLicensePlate(licensePlateNo);
-						CabBookTimeBased cabTime = new CabBookTimeBased();
-						cabTime.setCab(cab);
-						String initialDt = in.nextLine();
-						cabTime.setInitialDate(initialDt);
-						String finalDt = in.nextLine();
-						cabTime.setFinalDate(finalDt);
-						String initialTime = in.nextLine();
-						cabTime.setInitialTime(initialTime);
-						String finalTime = in.nextLine();
-						cabTime.setFinalTime(finalTime);
-						String bookingT = in.nextLine();
-						cabTime.setBookingType(bookingT);
-						String bookedBy = in.nextLine();
-						cabTime.setBookedBy(bookedBy);
-						String uid = in.nextLine();
-						cabTime.setUID(uid);
-						CabListTime.add(cabTime);
-					}
+					CabListTime = (ArrayList)ois.readObject();
 					break;
 				default:
 					; // Throw some exception if you want
 			}
 			
+			ois.close();
+			fis.close();
+			
 		} catch(IOException e){
 			// System.out.println("Caught IOException while reading from DB.");
 			// e.printStackTrace();
-		}
+		} catch(ClassNotFoundException e){
+			// System.out.println("Caught ClassNotFoundException while reading from DB.");
+			// e.printStackTrace();
+		} 
 	}
 	
 	/**
@@ -395,14 +221,14 @@ public class CabDB {
 		readAllFromDB();
 		
 		// This loop searches for a cab with 0 current bookings from CabFleet.db
-		// System.out.println("CabDB.findCab > CabFleet.size() = " + CabListFleet.size()); // Debug statement
+		System.out.println("CabDB.findCab > CabFleet.size() = " + CabListFleet.size()); // Debug statement
 		for(int i = 0; i < CabListFleet.size(); i++)
 		{
 			System.out.println("cab size = " + CabListFleet.get(i).getCapacity());
 			if(CabListFleet.get(i).getBooked() == 0 && CabListFleet.get(i).getCapacity() >= reqdCapacity)
 			{
 				CabListFleet.get(i).incrementBooked();
-				// System.out.println("HURRAH! capacity = " + CabListFleet.get(i).getCapacity());
+				System.out.println("HURRAH! capacity = " + CabListFleet.get(i).getCapacity());
 				return CabListFleet.get(i);
 			}
 		}
@@ -503,7 +329,7 @@ public class CabDB {
 			{
 				CabDB.CabListDest.remove(i);
 				CabDB.writeToDB("Destination");
-				System.out.println("Cancellation successful!");
+				System.out.println("Cancellatin successful!");
 				return;
 			}
 		}
@@ -514,7 +340,7 @@ public class CabDB {
 			{
 				CabDB.CabListDist.remove(i);
 				CabDB.writeToDB("Distance");
-				System.out.println("Cancellation successful!");
+				System.out.println("Cancellatin successful!");
 				return;
 			}
 		}
@@ -524,7 +350,7 @@ public class CabDB {
 			{
 				CabDB.CabListTime.remove(i);
 				CabDB.writeToDB("Time");
-				System.out.println("Cancellation successful!");
+				System.out.println("Cancellatin successful!");
 				return;
 			}
 		}

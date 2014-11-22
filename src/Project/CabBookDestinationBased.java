@@ -10,18 +10,34 @@ import java.util.Scanner;
  * @author nisarg
  */
 
-public class CabBookDestinationBased extends CabBook implements Serializable {
+public class CabBookDestinationBased extends CabBook {
 	
 	private String initialDestination;
 	private String finalDestination;
 	private String[] destinations = {"BITS", "Verna", "Zuari", "Panjim", 
 									"Vasco"};
 	
+	public String getInitialDestination() {
+		return initialDestination;
+	}
+
+	public void setInitialDestination(String initialDestination) {
+		this.initialDestination = initialDestination;
+	}
+
+	public String getFinalDestination() {
+		return finalDestination;
+	}
+
+	public void setFinalDestination(String finalDestination) {
+		this.finalDestination = finalDestination;
+	}
+	
 	public CabBookDestinationBased()
 	{
 		super();
 		this.bookingType = "Destination";
-		this.UID = this.generateUID();
+		this.setUID(this.generateUID());
 	}
 	
 	/**
@@ -106,7 +122,6 @@ public class CabBookDestinationBased extends CabBook implements Serializable {
 		
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
-			this.UID = this.generateUID();
 			System.out.println("Booking successful. Your request id is " + this.getUID());
 		}
 		else

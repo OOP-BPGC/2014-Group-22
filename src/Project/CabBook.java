@@ -14,7 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
  * as its subclasses
  * @author nisarg
  */
-public abstract class CabBook extends Book implements Serializable{
+public abstract class CabBook extends Book {
 
 	// All common variables to the three sub classes
 	protected String initialDate;
@@ -235,7 +235,7 @@ public abstract class CabBook extends Book implements Serializable{
 		
 		for(int i = 0; i < CabDB.CabListDest.size(); i++)
 		{
-			if(CabDB.CabListDest.get(i).getUID().equals(UID))
+			if(CabDB.CabListDest.get(i).getUID().equals(Uid))
 			{
 				CabDB.CabListDest.get(i);
 				return;
@@ -243,7 +243,7 @@ public abstract class CabBook extends Book implements Serializable{
 		}
 		for(int i = 0; i < CabDB.CabListDist.size(); i++)
 		{
-			if(CabDB.CabListDist.get(i).getUID().equals(UID))
+			if(CabDB.CabListDist.get(i).getUID().equals(Uid))
 			{
 				CabDB.CabListDist.get(i);
 				return;
@@ -251,7 +251,7 @@ public abstract class CabBook extends Book implements Serializable{
 		}
 		for(int i = 0; i < CabDB.CabListTime.size(); i++)
 		{
-			if(CabDB.CabListTime.get(i).getUID().equals(UID))
+			if(CabDB.CabListTime.get(i).getUID().equals(Uid))
 			{
 				CabDB.CabListTime.get(i);
 				return;

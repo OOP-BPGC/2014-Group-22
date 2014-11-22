@@ -16,12 +16,17 @@ import org.joda.time.format.DateTimeFormatter;
  */
 abstract class Book implements Serializable
 {
-	protected String UID = "lolWA";
+	private String UID = "lolWA";
 	
 	public String getUID()
 	{
 		return this.UID;
 	}
+	public void setUID(String newUID)
+	{
+		this.UID = newUID;
+	}
+	
 	public String generateUID()
 	{
 		String[] letters={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
