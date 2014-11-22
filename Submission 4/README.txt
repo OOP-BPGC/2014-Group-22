@@ -28,10 +28,10 @@ Unit Tests
 Topic 			Number 		Test Status
 			of tests 	Pass 	Fail
 -----------------------------------------------------
-Unit Tests submitted at    6             6       0
+Unit Tests submitted at    4             4       0
 the end of Stage-2
 
-Tests added later          0             -       -
+Tests added later          2             2       0
 -----------------------------------------------------
 
 Execution Instructions
