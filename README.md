@@ -18,6 +18,9 @@ Resource Management software as a part of the course Object Oriented Programming
 
 <ul>
   <li>The JUnit tests are present in <i>src/Tests</i> directory</li>
+  <li>The Source code of the project is present in the <i>src/Project</i> directory.</li>
+  <li>The javadoc files referring to all the classes can be found in the <i>docs</i> directory</li>
+  <li>The UML diagrams of the project are present in the <i>uml_diagrams</i> directory</li>
   <li>Dependencies -
     <ul>
       <li><a href = "http://jsoup.org/packages/jsoup-1.8.1.jar">JSoup library</a></li>
