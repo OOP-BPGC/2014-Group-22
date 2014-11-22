@@ -85,6 +85,7 @@ public class Driver
 						switch(choice3)
 						{
 							case 1: 
+								CabBook.getFares();
 								break;
 							case 2:
 								Login.authenticateUser();

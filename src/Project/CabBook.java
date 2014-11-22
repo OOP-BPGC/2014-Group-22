@@ -23,6 +23,9 @@ public abstract class CabBook extends Book {
 	protected Cab cab;
 	protected String bookingType;
 	protected String bookedBy; // Stores the id of user who booked it
+	protected static String[] destinations={"Madgaon","Vasco","Goa Airport","Panjim","Baga","Colva",
+											"Bogmalo","Caculo Mall","Vagator","Palolem"};
+	protected static int[] destFare={400,200,100,600,900,400,150,650,1000,1200};
 	
 	public CabBook()
 	{
@@ -256,4 +259,102 @@ public abstract class CabBook extends Book {
 			}
 		}
 	}
+	
+	public static void getFares()
+	{
+		System.out.println("###################################################################");
+		System.out.println();
+		System.out.println("If you want to book a cab based on common destinations, you might want to see this list.");
+		System.out.println("The fares for fixed destinations are as follows : ");
+		System.out.println();
+
+		for(int i=0;i<destFare.length;i++)
+		{
+			System.out.println(destinations[i] + "\nFare : " + destFare[i] + "Rs");
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println("###################################################################");
+		System.out.println();
+		System.out.println("If you want to book a cab based on distance, you might want to see this portion of the form.");
+		System.out.println();
+		System.out.println("For <=5 persons,");
+		System.out.println("Price for 1 KM   ------------------------------  15Rs ");
+		System.out.println();
+		System.out.println("For >5 persons and <=10 persons,");
+		System.out.println("Price for 1 KM   ------------------------------  20Rs ");
+		System.out.println();
+		System.out.println("For >10 persons and <=20 persons,");
+		System.out.println("Price for 1 KM   ------------------------------  25Rs ");
+		System.out.println();
+		System.out.println("For >20 persons and <=40 persons,");
+		System.out.println("Price for 1 KM   ------------------------------  35Rs ");
+		System.out.println();
+		System.out.println("###################################################################");
+		System.out.println();
+		System.out.println("If you want to book a cab based on time, you might want to see this portion of the form.");
+		System.out.println();
+		System.out.println("For <=5 persons,");
+		System.out.println("Price for 1 hr   ------------------------------  120Rs ");
+		System.out.println();
+		System.out.println("For >5 persons and <=10 persons,");
+		System.out.println("Price for 1 hr   ------------------------------  140Rs ");
+		System.out.println();
+		System.out.println("For >10 persons and <=20 persons,");
+		System.out.println("Price for 1 hr   ------------------------------  160Rs ");
+		System.out.println();
+		System.out.println("For >20 persons and <=40 persons,");
+		System.out.println("Price for 1 hr   ------------------------------  200Rs ");
+		System.out.println();
+		System.out.println("###################################################################");
+	}
+	
+	public static int calcDistanceFare(int distance,int requiredCapacity)
+	{
+		if(requiredCapacity <= 5)
+		{
+			return distance*15;
+		}
+		else if(requiredCapacity > 5 && requiredCapacity<=10)
+		{
+			return distance*20;
+		}
+		else if(requiredCapacity > 10 && requiredCapacity <= 20)
+		{
+			return distance*25;
+		}
+		else if(requiredCapacity > 20 && requiredCapacity <= 40)
+		{
+			return distance*35;
+		}
+		else
+		{
+			return distance*(((requiredCapacity-1)/20)*5+30);
+		}
+	}
+	
+	public static int calcTimeFare(int timeDiff,int requiredCapacity)
+	{
+		if(requiredCapacity <= 4)
+		{
+			return timeDiff*120;
+		}
+		else if(requiredCapacity > 4 && requiredCapacity<=10)
+		{
+			return timeDiff*140;
+		}
+		else if(requiredCapacity > 10 && requiredCapacity <= 20)
+		{
+			return timeDiff*160;
+		}
+		else if(requiredCapacity > 20 && requiredCapacity <= 40)
+		{
+			return timeDiff*200;
+		}
+		else
+		{
+			return timeDiff*(((requiredCapacity-1)/20)*20+180);
+		}
+	}
 }
+

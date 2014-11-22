@@ -44,6 +44,8 @@ public class CabBookTimeBased extends CabBook {
 		if(cabBookStatus) // Only register the booking if free cab available
 		{
 			System.out.println("Booking successful. Your request id is " + this.getUID());
+	//		Not able to calculate timeDiff. If this is done, you can uncomment below comment.
+	//		System.out.println("The fare for your ride is : " + CabBook.calcTimeFare(this.timeDiff, requiredCapacity) + "Rs");
 		}
 		else
 		{
